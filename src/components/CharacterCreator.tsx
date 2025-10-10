@@ -1,0 +1,177 @@
+import { useState } from 'react';
+import { fillCharacterSheet, downloadPDF } from '../utils/pdfFiller';
+import type { BasicCharacterData } from '../utils/pdfFiller';
+import { CLASSES, RACES, HOUSES, FAITHS } from '../utils/athiaConstants';
+import './CharacterCreator.css';
+
+export function CharacterCreator() {
+  const [characterData, setCharacterData] = useState<BasicCharacterData>({
+    characterName: '',
+    class: '',
+    race: '',
+    house: '',
+    faith: '',
+    age: '',
+  });
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleInputChange = (field: keyof BasicCharacterData, value: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleGenerateCharacter = async () => {
+    setError(null);
+    setIsGenerating(true);
+
+    try {
+      // Validate required fields
+      if (!characterData.characterName.trim()) {
+        throw new Error('Character name is required');
+      }
+      if (!characterData.class) {
+        throw new Error('Class is required');
+      }
+      if (!characterData.race) {
+        throw new Error('Race is required');
+      }
+
+      // Generate the PDF
+      const pdfBytes = await fillCharacterSheet(
+        '/src/assets/pdfs/sheet.pdf',
+        characterData
+      );
+
+      // Download the filled PDF
+      const filename = `${characterData.characterName.replace(/\s+/g, '_')}_character_sheet.pdf`;
+      downloadPDF(pdfBytes, filename);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate character sheet');
+      console.error('Error generating character:', err);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  return (
+    <div className="character-creator">
+      <h1>Athia Character Creator</h1>
+
+      <form className="character-form" onSubmit={(e) => e.preventDefault()}>
+        <div className="form-group">
+          <label htmlFor="characterName">
+            Character Name <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="characterName"
+            value={characterData.characterName}
+            onChange={(e) => handleInputChange('characterName', e.target.value)}
+            placeholder="Enter character name"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="class">
+            Class <span className="required">*</span>
+          </label>
+          <select
+            id="class"
+            value={characterData.class}
+            onChange={(e) => handleInputChange('class', e.target.value)}
+            required
+          >
+            <option value="">Select a class</option>
+            {CLASSES.map(cls => (
+              <option key={cls} value={cls}>{cls}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="race">
+            Race <span className="required">*</span>
+          </label>
+          <select
+            id="race"
+            value={characterData.race}
+            onChange={(e) => handleInputChange('race', e.target.value)}
+            required
+          >
+            <option value="">Select a race</option>
+            {RACES.map(race => (
+              <option key={race} value={race}>{race}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="house">House</label>
+          <select
+            id="house"
+            value={characterData.house}
+            onChange={(e) => handleInputChange('house', e.target.value)}
+          >
+            <option value="">Select a house</option>
+            {HOUSES.map(house => (
+              <option key={house} value={house}>{house}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="faith">Faith</label>
+          <select
+            id="faith"
+            value={characterData.faith}
+            onChange={(e) => handleInputChange('faith', e.target.value)}
+          >
+            <option value="">Select a faith</option>
+            {FAITHS.map(faith => (
+              <option key={faith} value={faith}>{faith}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            value={characterData.age}
+            onChange={(e) => handleInputChange('age', e.target.value)}
+            placeholder="Enter age"
+            min="1"
+          />
+        </div>
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="button"
+          className="generate-button"
+          onClick={handleGenerateCharacter}
+          disabled={isGenerating}
+        >
+          {isGenerating ? 'Generating...' : 'Generate Character Sheet'}
+        </button>
+      </form>
+
+      <div className="help-text">
+        <p>
+          <strong>Note:</strong> This is a basic character sheet generator.
+          Fill in the basic information above and click "Generate Character Sheet"
+          to download a PDF with your character details.
+        </p>
+      </div>
+    </div>
+  );
+}
