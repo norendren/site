@@ -1,25 +1,70 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { fillCharacterSheet, downloadPDF } from '../utils/pdfFiller';
-import type { BasicCharacterData } from '../utils/pdfFiller';
+import type { BasicCharacterData, TalentAllocation } from '../utils/pdfFiller';
 import { CLASSES, RACES, HOUSES, FAITHS } from '../utils/athiaConstants';
+import {
+  ACOLYTE_PROGRESSION,
+  MAGE_PROGRESSION,
+  ROGUE_PROGRESSION,
+  WARRIOR_PROGRESSION
+} from '../utils/classReference';
+import { TalentAllocator } from './TalentAllocator';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
   const [characterData, setCharacterData] = useState<BasicCharacterData>({
     characterName: '',
     class: '',
+    level: '',
     race: '',
     house: '',
     faith: '',
     age: '',
+    talents: [],
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Calculate total talent points based on class and level
+  const totalTalentPoints = useMemo(() => {
+    const level = parseInt(characterData.level) || 1;
+    const className = characterData.class;
+
+    if (!className || level < 1 || level > 10) return 10; // Default
+
+    let progression;
+    switch (className) {
+      case 'Acolyte':
+        progression = ACOLYTE_PROGRESSION;
+        break;
+      case 'Mage':
+        progression = MAGE_PROGRESSION;
+        break;
+      case 'Rogue':
+        progression = ROGUE_PROGRESSION;
+        break;
+      case 'Warrior':
+        progression = WARRIOR_PROGRESSION;
+        break;
+      default:
+        return 10;
+    }
+
+    const levelData = progression[level - 1];
+    return levelData?.talentPoints || 10;
+  }, [characterData.class, characterData.level]);
 
   const handleInputChange = (field: keyof BasicCharacterData, value: string) => {
     setCharacterData(prev => ({
       ...prev,
       [field]: value,
+    }));
+  };
+
+  const handleTalentsChange = (talents: TalentAllocation[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      talents,
     }));
   };
 
@@ -93,6 +138,18 @@ export function CharacterCreator() {
         </div>
 
         <div className="form-group">
+          <label htmlFor="level">Level</label>
+          <input
+            type="number"
+            id="level"
+            value={characterData.level}
+            onChange={(e) => handleInputChange('level', e.target.value)}
+            placeholder="Enter level"
+            min="1"
+          />
+        </div>
+
+        <div className="form-group">
           <label htmlFor="race">
             Race <span className="required">*</span>
           </label>
@@ -148,6 +205,17 @@ export function CharacterCreator() {
             min="1"
           />
         </div>
+
+        {/* Talent Point Allocation */}
+        {characterData.class && characterData.level && (
+          <div className="form-section">
+            <TalentAllocator
+              totalTalentPoints={totalTalentPoints}
+              allocatedTalents={characterData.talents || []}
+              onTalentsChange={handleTalentsChange}
+            />
+          </div>
+        )}
 
         {error && (
           <div className="error-message">
