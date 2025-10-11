@@ -7,6 +7,11 @@ export interface TalentAllocation {
   points: number; // 0-6 points invested (1 point = 1 bubble)
 }
 
+export interface AttributeAllocation {
+  name: string;
+  points: number; // from -3 to +3
+}
+
 export interface BasicCharacterData {
   characterName: string;
   class: string;
@@ -16,6 +21,7 @@ export interface BasicCharacterData {
   faith: string;
   age: string;
   talents?: TalentAllocation[];
+  attributes?: AttributeAllocation[];
 }
 
 // Coordinate mappings for where to place text on the PDF
@@ -28,7 +34,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -132,6 +138,10 @@ export async function fillCharacterSheet(
     // Draw talent bubbles if talents are provided
     if (characterData.talents && characterData.talents.length > 0) {
       drawTalentBubbles(firstPage, characterData.talents);
+    }
+    if (characterData.attributes && characterData.attributes.length > 0) {
+      // drawTalentBubbles(firstPage, characterData.talents);
+      // drawTalentBubbles(firstPage, characterData.talents);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);

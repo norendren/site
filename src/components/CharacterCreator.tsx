@@ -106,7 +106,7 @@ export function CharacterCreator() {
 
   return (
     <div className="character-creator">
-      <h1>Athia Character Creator</h1>
+      <h1 style={{ color: '#cbd5e1'}}>Athia Character Creator</h1>
 
       <div className="creator-layout">
         <form className="character-form" onSubmit={(e) => e.preventDefault()}>

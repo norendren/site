@@ -83,6 +83,10 @@
   font-size: 1rem;
 }
 
+.talent-attribute {
+  margin-left: 4px;
+}
+
 .talent-bubbles {
   display: flex;
   gap: 8px;
