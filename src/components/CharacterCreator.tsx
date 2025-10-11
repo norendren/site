@@ -89,7 +89,7 @@ export function CharacterCreator() {
 
       // Generate the PDF
       const pdfBytes = await fillCharacterSheet(
-        '/src/assets/pdfs/sheet.pdf',
+        '/pdf/sheet.pdf',
         characterData
       );
 

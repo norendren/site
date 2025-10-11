@@ -108,7 +108,7 @@ const fieldMappings: Record<keyof BasicCharacterData, string> = {
 ### PDF not filling correctly
 - Use the PDF Inspector tool to verify field names
 - Check browser console for errors
-- Ensure the PDF at `/src/assets/pdfs/sheet.pdf` has form fields
+- Ensure the PDF at `/pdf/sheet.pdf` has form fields
 
 ### TypeScript errors
 - Run `npm install` to ensure pdf-lib is installed

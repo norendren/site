@@ -30,7 +30,7 @@ function PDFInspector() {
   const [viewMode, setViewMode] = useState<ViewMode>('interactive');
 
   const handleGetDimensions = async () => {
-    const dims = await getPDFDimensions('/src/assets/pdfs/sheet.pdf');
+    const dims = await getPDFDimensions('/pdf/sheet.pdf');
     setDimensions(dims);
   };
 
@@ -38,9 +38,9 @@ function PDFInspector() {
     let pdfBytes: Uint8Array;
 
     if (mode === 'text') {
-      pdfBytes = await testCoordinates('/src/assets/pdfs/sheet.pdf', testText, x, y, fontSize);
+      pdfBytes = await testCoordinates('/pdf/sheet.pdf', testText, x, y, fontSize);
     } else {
-      pdfBytes = await testBubbleCoordinates('/src/assets/pdfs/sheet.pdf', bubbleX, bubbleY, bubbleRadius, horizontalSpacing, bubblesToFill);
+      pdfBytes = await testBubbleCoordinates('/pdf/sheet.pdf', bubbleX, bubbleY, bubbleRadius, horizontalSpacing, bubblesToFill);
     }
 
     // Create blob URL for preview
@@ -446,7 +446,7 @@ function PDFInspector() {
 
         {viewMode === 'interactive' ? (
           <InteractivePDFViewer
-            pdfUrl="/src/assets/pdfs/sheet.pdf"
+            pdfUrl="/pdf/sheet.pdf"
             onCoordinateClick={handleCoordinateClick}
           />
         ) : previewUrl ? (
