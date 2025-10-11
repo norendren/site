@@ -1,9 +1,10 @@
 import { PDFDocument, rgb } from 'pdf-lib';
-import type { TalentExpertise } from './classReference';
+import { TALENT_ATTRIBUTES } from './classReference';
+import type { TalentName } from './classReference';
 
 export interface TalentAllocation {
   name: string;
-  expertise: TalentExpertise;
+  points: number; // 0-6 points invested (1 point = 1 bubble)
 }
 
 export interface BasicCharacterData {
@@ -38,33 +39,53 @@ const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents'>, Field
 };
 
 // Bubble sizing and spacing constants
-const BUBBLE_RADIUS = 4;
-const BUBBLE_HORIZONTAL_SPACING = 20; // Distance between bubbles (left-most to 2nd, 2nd to 3rd)
+const BUBBLE_RADIUS = 3;
+const BUBBLE_HORIZONTAL_SPACING = 10.5; // Distance between bubbles (left-most to 2nd, 2nd to 3rd)
 
-// Coordinate mappings for talent bubbles
-// Each talent maps to the position of its FIRST (left-most) bubble
-// The 2nd and 3rd bubbles are calculated automatically using BUBBLE_HORIZONTAL_SPACING
-interface TalentBubbleCoordinates {
-  x: number; // X position of the first bubble
-  y: number; // Y position of all bubbles for this talent
-}
+// Define the constants for the calculation
+const TALENT_START_Y = 372.5;
+const TALENT_Y_STEP = 14.125;
+const TALENT_STATIC_X = 484;
 
-const TALENT_BUBBLE_COORDINATES: Record<string, TalentBubbleCoordinates> = {
-  // TODO: Replace these placeholder values with actual coordinates from your character sheet
-  // Find the first bubble for each talent, then all others will be calculated automatically
-  'Athletics':    { x: 100, y: 600 },
-  'Notice':       { x: 100, y: 580 },
-  'Stealth':      { x: 100, y: 560 },
-  'Survival':     { x: 100, y: 540 },
-  'Exertion':     { x: 100, y: 520 },
-  'Recuperation': { x: 100, y: 500 },
-  'Lore':         { x: 100, y: 480 },
-  'Medicine':     { x: 100, y: 460 },
-  'Persuasion':   { x: 100, y: 440 },
-  'Deception':    { x: 100, y: 420 },
-  'Intimidation': { x: 100, y: 400 },
-  'Performance':  { x: 100, y: 380 },
-};
+// Define the exact order of talent names
+const TALENT_NAMES = [
+  'Athletics (STR)',
+  'Charisma (VAL)',
+  'Combat Rest (CON)',
+  'Concentration (INS)',
+  'Craft (DEX)',
+  'Discipline (VAL)',
+  'Endurance (CON)',
+  'Exertion (STR)',
+  'Faith (VAL)',
+  'Hermetics (KNO)',
+  'Notice (INS)',
+  'Recuperation (CON)',
+  'Scholar (KNO)',
+  'Stealth (DEX)',
+  'Survival (KNO)',
+  'Swimming (STR)',
+  'Taming (INS)',
+  'Thievery (DEX)',
+] as const;
+
+// Assuming TalentBubbleCoordinates and Record are defined elsewhere
+type TalentBubbleCoordinates = { x: number; y: number };
+
+// Build the final constant using .reduce() to calculate the Y coordinate
+const TALENT_BUBBLE_COORDINATES: Record<typeof TALENT_NAMES[number], TalentBubbleCoordinates> =
+  TALENT_NAMES.reduce((acc, name, index) => {
+    // The y value is calculated by subtracting the step * the index from the start Y
+    // Index starts at 0 for 'Athletics (STR)'
+    const y = TALENT_START_Y - (index * TALENT_Y_STEP);
+
+    acc[name] = {
+      x: TALENT_STATIC_X,
+      y: y,
+    };
+    return acc;
+  }, {} as Record<typeof TALENT_NAMES[number], TalentBubbleCoordinates>);
+
 
 /**
  * Fills the Athia character sheet PDF with basic character information
@@ -124,46 +145,44 @@ export async function fillCharacterSheet(
 
 /**
  * Draws filled circles (bubbles) on the PDF for talent allocations
- * Each talent has 3 bubbles: Apprentice, Journeyman, Master
- * Filled bubbles indicate the expertise level achieved
+ * Each talent has 6 bubbles: 1-2 (Apprentice), 3-5 (Journeyman), 6 (Master)
+ * Each point invested = 1 filled bubble
  *
  * The system works mathematically:
  * 1. Define the position of the FIRST bubble for each talent in TALENT_BUBBLE_COORDINATES
- * 2. The 2nd bubble is automatically placed at x + BUBBLE_HORIZONTAL_SPACING
- * 3. The 3rd bubble is automatically placed at x + (BUBBLE_HORIZONTAL_SPACING * 2)
+ * 2. Each subsequent bubble is placed at x + BUBBLE_HORIZONTAL_SPACING
  */
 function drawTalentBubbles(page: any, talents: TalentAllocation[]): void {
   talents.forEach((talent) => {
+    // Build the full talent key (e.g., "Athletics (STR)")
+    const attribute = TALENT_ATTRIBUTES[talent.name as TalentName];
+    const fullTalentKey = `${talent.name} (${attribute})` as typeof TALENT_NAMES[number];
+
     // Get the coordinates for this talent's first bubble
-    const coords = TALENT_BUBBLE_COORDINATES[talent.name];
+    const coords = TALENT_BUBBLE_COORDINATES[fullTalentKey];
 
     if (!coords) {
-      console.warn(`No bubble coordinates defined for talent: ${talent.name}`);
+      console.warn(`No bubble coordinates defined for talent: ${talent.name} (${attribute})`);
       return;
     }
 
-    // Determine how many bubbles to fill based on expertise level
-    const bubblesToFill = talent.expertise === 'apprentice' ? 1
-                       : talent.expertise === 'journeyman' ? 2
-                       : talent.expertise === 'master' ? 3
-                       : 0;
+    // Only draw filled bubbles (don't draw empty outline bubbles)
+    const bubblesToFill = Math.min(talent.points, 6); // Cap at 6 bubbles
 
-    // Draw the 3 bubbles (Apprentice, Journeyman, Master)
-    for (let bubbleIndex = 0; bubbleIndex < 3; bubbleIndex++) {
+    for (let bubbleIndex = 0; bubbleIndex < bubblesToFill; bubbleIndex++) {
       // Calculate X position: first bubble + (spacing * bubble index)
       const x = coords.x + (bubbleIndex * BUBBLE_HORIZONTAL_SPACING);
       const y = coords.y;
-      const filled = bubbleIndex < bubblesToFill;
 
-      // Draw circle
+      // Draw filled circle (no empty outlines)
       page.drawCircle({
         x: x,
         y: y,
         size: BUBBLE_RADIUS,
         borderColor: rgb(0, 0, 0),
         borderWidth: 1,
-        color: filled ? rgb(0, 0, 0) : undefined,
-        opacity: filled ? 1 : 0,
+        color: rgb(0, 0, 0),
+        opacity: 1,
       });
     }
   });

@@ -9,13 +9,15 @@ import {
   WARRIOR_PROGRESSION
 } from '../utils/classReference';
 import { TalentAllocator } from './TalentAllocator';
+import { ClassInfoPreview } from './ClassInfoPreview';
+import { ClassInfoPanel } from './ClassInfoPanel';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
   const [characterData, setCharacterData] = useState<BasicCharacterData>({
     characterName: '',
     class: '',
-    level: '',
+    level: '1',
     race: '',
     house: '',
     faith: '',
@@ -24,6 +26,7 @@ export function CharacterCreator() {
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isClassInfoOpen, setIsClassInfoOpen] = useState(false);
 
   // Calculate total talent points based on class and level
   const totalTalentPoints = useMemo(() => {
@@ -105,7 +108,8 @@ export function CharacterCreator() {
     <div className="character-creator">
       <h1>Athia Character Creator</h1>
 
-      <form className="character-form" onSubmit={(e) => e.preventDefault()}>
+      <div className="creator-layout">
+        <form className="character-form" onSubmit={(e) => e.preventDefault()}>
         <div className="form-group">
           <label htmlFor="characterName">
             Character Name <span className="required">*</span>
@@ -233,6 +237,26 @@ export function CharacterCreator() {
         </button>
       </form>
 
+        {/* Right sidebar: Helper text area */}
+        <aside className="helper-sidebar">
+          <div className="sidebar-sticky">
+            {characterData.class ? (
+              <ClassInfoPreview
+                className={characterData.class}
+                currentLevel={parseInt(characterData.level) || 1}
+                currentTalentPoints={totalTalentPoints}
+                onShowDetails={() => setIsClassInfoOpen(true)}
+              />
+            ) : (
+              <div className="helper-placeholder">
+                <h3>Need help choosing?</h3>
+                <p>Select a class to learn more about it. We'll show you details about playstyle, strengths, and what makes each class unique.</p>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+
       <div className="help-text">
         <p>
           <strong>Note:</strong> This is a basic character sheet generator.
@@ -240,6 +264,15 @@ export function CharacterCreator() {
           to download a PDF with your character details.
         </p>
       </div>
+
+      {/* Layer 2: Detailed info modal */}
+      {characterData.class && (
+        <ClassInfoPanel
+          className={characterData.class}
+          isOpen={isClassInfoOpen}
+          onClose={() => setIsClassInfoOpen(false)}
+        />
+      )}
     </div>
   );
 }

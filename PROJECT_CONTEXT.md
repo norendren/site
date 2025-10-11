@@ -1,0 +1,409 @@
+# Athia RPG Character Generator - Project Context
+
+## Project Goal
+Create a character creation tool for the Athia RPG that generates fully filled-out PDF character sheets and educates new players about the game system during character creation.
+
+## Current Status: Phase 1 (Basic Fields + PDF Generation)
+
+### What Works ✅
+- Basic character form with 6 core fields (Name, Class, Race, House, Faith, Age)
+- Level selection and talent point calculation per class (defaults to level 1)
+- **Talent point allocation system** (18 talents with individual point tracking, 0-6 points per talent)
+- **Educational helper text system** (Layer 1: inline preview, Layer 2: detailed modal)
+- PDF generation and download using pdf-lib
+- PDF coordinate-based field filling (all basic fields mapped)
+- PDF talent bubble rendering (6 bubbles per talent, arithmetic coordinate calculation)
+- Class progression tracking using arithmetic progression (base + increment × (level - 1))
+
+### What's In Progress 🚧
+- Testing and refining PDF coordinate accuracy for all fields
+- Adding validation for talent point limits at character creation (max 3 points per talent)
+
+### What's Next 📋
+- Extend helper text to races, talents, and other fields
+- Complete PDF coordinate mapping for all basic fields
+- Add stat calculation system (CON, DEX, INS, KNO, STR, VAL)
+- Implement racial perks and abilities
+- Add derived stats (Health, Defense, Daring, etc.)
+
+---
+
+## Design System - Color Palette
+
+**IMPORTANT**: Always reference this palette when adding new UI components or styling. All colors have been tested for WCAG AA accessibility (4.5:1 contrast ratio minimum).
+
+### Primary Brand Colors
+```css
+/* Indigo/Purple Theme - Main brand colors */
+--primary-500: #3949ab;      /* Primary actions, headings */
+--primary-400: #5e35b1;      /* Gradients, accents */
+--primary-300: #7986cb;      /* Borders, less prominent elements */
+--primary-200: #9fa8da;      /* Hover states, muted actions */
+--primary-100: #c5cae9;      /* Very light backgrounds */
+--primary-50:  #e8eaf6;      /* Card backgrounds, sections */
+```
+
+### Text Colors (Light Mode)
+```css
+--text-primary:   #1a1a1a;   /* Body text, high emphasis */
+--text-secondary: #2c2c2c;   /* Paragraphs, medium emphasis */
+--text-tertiary:  #424242;   /* Labels, low emphasis */
+--text-muted:     #616161;   /* Disabled, placeholder text */
+```
+
+### Text Colors (Dark Mode)
+```css
+--text-primary-dark:   #ffffff;   /* Body text, high emphasis */
+--text-secondary-dark: #f5f5f5;   /* Paragraphs, medium emphasis */
+--text-tertiary-dark:  #e0e0e0;   /* Labels, low emphasis */
+--text-muted-dark:     #bdbdbd;   /* Disabled, placeholder text */
+```
+
+### Background Colors (Light Mode)
+```css
+--bg-base:     #ffffff;      /* Main background */
+--bg-card:     #f5f5f5;      /* Card/panel backgrounds */
+--bg-hover:    #fafafa;      /* Hover states */
+--bg-border:   #e0e0e0;      /* Borders and dividers */
+```
+
+### Background Colors (Dark Mode)
+```css
+--bg-base-dark:    #1e1e1e;  /* Main background */
+--bg-card-dark:    #2a2a2a;  /* Card/panel backgrounds */
+--bg-hover-dark:   #333333;  /* Hover states */
+--bg-border-dark:  #404040;  /* Borders and dividers */
+```
+
+### Semantic Colors - Success (Green)
+```css
+/* Light Mode */
+--success-text:       #1b5e20;  /* Dark green text */
+--success-bg:         #e8f5e9;  /* Very light green background */
+--success-icon:       #2e7d32;  /* Medium green for icons */
+--success-border:     #81c784;  /* Light green borders */
+
+/* Dark Mode */
+--success-text-dark:  #a5d6a7;  /* Light green text */
+--success-bg-dark:    rgba(46, 125, 50, 0.3);  /* Semi-transparent green */
+--success-icon-dark:  #81c784;  /* Lighter green for icons */
+```
+
+### Semantic Colors - Warning/Attention (Orange)
+```css
+/* Light Mode */
+--warning-text:       #e65100;  /* Dark orange text */
+--warning-bg:         #fff3e0;  /* Very light orange background */
+--warning-icon:       #f57c00;  /* Medium orange for icons */
+--warning-border:     #ffb74d;  /* Light orange borders */
+
+/* Dark Mode */
+--warning-text-dark:  #ffcc80;  /* Light orange text */
+--warning-bg-dark:    rgba(245, 124, 0, 0.3);  /* Semi-transparent orange */
+--warning-icon-dark:  #ffb74d;  /* Lighter orange for icons */
+```
+
+### Semantic Colors - Error (Red)
+```css
+/* Light Mode */
+--error-text:         #c62828;  /* Dark red text */
+--error-bg:           #ffebee;  /* Very light red background */
+--error-icon:         #e53935;  /* Medium red for icons */
+
+/* Dark Mode */
+--error-text-dark:    #ef9a9a;  /* Light red text */
+--error-bg-dark:      rgba(229, 57, 53, 0.3);  /* Semi-transparent red */
+```
+
+### Semantic Colors - Info (Blue)
+```css
+/* Light Mode */
+--info-text:          #0d47a1;  /* Dark blue text */
+--info-bg:            #e3f2fd;  /* Very light blue background */
+--info-icon:          #1976d2;  /* Medium blue for icons */
+
+/* Dark Mode */
+--info-text-dark:     #90caf9;  /* Light blue text */
+--info-bg-dark:       rgba(25, 118, 210, 0.3);  /* Semi-transparent blue */
+```
+
+### Accent Colors
+```css
+--accent-purple:      #6a1b9a;  /* Secondary accent (light mode) */
+--accent-purple-dark: #ce93d8;  /* Secondary accent (dark mode) */
+```
+
+### Usage Guidelines
+
+**DO ✓**
+- Use `--text-primary` (#1a1a1a) for important body text on light backgrounds
+- Use solid backgrounds (#e8f5e9, #fff3e0) for semantic colored sections
+- Test all custom colors with a contrast checker (aim for 4.5:1 minimum)
+- Use gradients with `--primary-500` → `--primary-400` for buttons/emphasis
+- Add `font-weight: 500-700` to improve readability on colored backgrounds
+
+**DON'T ✗**
+- Don't use rgba() with < 10% opacity for backgrounds with text (too low contrast)
+- Don't use `#333` or `#666` (replace with `--text-primary/secondary/tertiary`)
+- Don't create new purple/blue shades - use the existing primary palette
+- Don't place dark text on dark backgrounds or light on light
+- Avoid pure black (#000000) - use `--text-primary` (#1a1a1a) instead
+
+### Common Patterns
+
+**Card/Panel with Border:**
+```css
+background: #e8eaf6;  /* --primary-50 */
+border: 1px solid #9fa8da;  /* --primary-300 */
+color: #1a1a1a;  /* --text-primary */
+```
+
+**Clickable Link/Button:**
+```css
+color: #3949ab;  /* --primary-500 */
+font-weight: 700;
+```
+
+**Gradient Background:**
+```css
+background: linear-gradient(135deg, #3949ab 0%, #5e35b1 100%);
+color: white;  /* Always white on gradient */
+```
+
+**List Item with Semantic Color:**
+```css
+/* Success item */
+background: #e8f5e9;
+color: #1b5e20;
+border-left: 4px solid #2e7d32;
+```
+
+---
+
+## Architecture Overview
+
+### Tech Stack
+- **Frontend**: React 18 + TypeScript + Vite
+- **PDF Manipulation**: pdf-lib
+- **Styling**: CSS Modules
+
+### Key Files Map
+```
+src/
+├── components/
+│   ├── CharacterCreator.tsx       # Main form component with two-column layout
+│   ├── CharacterCreator.css       # Form styling with grid layout
+│   ├── TalentAllocator.tsx        # Talent point distribution UI (0-6 points per talent)
+│   ├── TalentAllocator.css        # Talent bubble styling
+│   ├── ClassInfoPreview.tsx       # Layer 1: Inline class summary on selection
+│   ├── ClassInfoPreview.css       # Preview card styling
+│   ├── ClassInfoPanel.tsx         # Layer 2: Detailed class modal
+│   └── ClassInfoPanel.css         # Modal overlay styling
+├── data/
+│   └── classDescriptions.ts       # Rich class data for educational helper text
+├── utils/
+│   ├── pdfFiller.ts               # PDF generation logic with bubble rendering
+│   ├── pdfInspector.ts            # Dev tool for finding PDF coordinates
+│   ├── athiaConstants.ts          # Game data: CLASSES, RACES, HOUSES, FAITHS
+│   └── classReference.ts          # Class progression with arithmetic formulas
+├── pages/
+│   ├── CharacterGenerator.tsx     # Main page
+│   └── PDFInspector.tsx           # Coordinate mapping tool
+└── assets/
+    ├── pdfs/
+    │   ├── sheet.pdf              # Fillable character sheet
+    │   └── chargen.pdf            # Character generation reference
+    ├── athia-quickstart.md        # Quick reference rules
+    └── athia-talents-reference.md # All 18 talents with mechanics
+```
+
+### Current Data Structure
+```typescript
+BasicCharacterData {
+  characterName: string
+  class: string          // Acolyte, Mage, Rogue, Warrior
+  level: string          // Defaults to '1'
+  race: string          // Human, Bantam, Dwarf, Elf, Ferox, Goblin, Orc
+  house: string         // Asos, Blayth, Cerrak, Draur, Lloar, Onin, Thercer
+  faith: string         // None, Erebos, Ilios, Selene, The Triad
+  age: string
+  talents: TalentAllocation[]  // 18 talents with point allocation
+}
+
+TalentAllocation {
+  name: string          // One of 18 talent names
+  points: number        // 0-6 points invested (1 point = 1 bubble)
+}
+```
+
+---
+
+## Key Decisions Made
+
+### PDF Filling Approach
+**Decision**: Use coordinate-based text rendering instead of form field filling
+**Why**: More control over positioning, font, and formatting. Form fields can be inconsistent.
+**Trade-off**: Need to manually map all field coordinates (tracked in PDF_COORDINATE_TRACKING.md)
+
+### Talent System Architecture
+**Decision**: Use point-based tracking (0-6 points per talent) instead of discrete expertise levels
+**Why**: More granular control, direct mapping to bubbles (1 point = 1 bubble), simpler increment/decrement logic
+**Implementation**: `TalentAllocation` interface uses `points: number` instead of `expertise: TalentExpertise`
+**Trade-off**: Expertise labels (Apprentice/Journeyman/Master) derived from points rather than stored directly
+
+**Decision**: Calculate total talent points using arithmetic progression
+**Why**: Each class has different base and per-level progression (Acolyte: 10 + 3/lvl, Rogue: 15 + 4/lvl, etc.)
+**Formula**: `base + (increment × (level - 1))`
+**Implementation**: `generateProgression()` in `classReference.ts` uses arithmetic calculation instead of static tables
+
+### State Management
+**Decision**: Keep flat state structure for Phase 1, plan for nested structure later
+**Why**: Simpler for basic fields, but will need derived stats later (see CHARACTER_DATA_ARCHITECTURE.md)
+**Future**: Will expand to include calculated stats, racial bonuses, class features
+
+### Educational UX (Current Work)
+**Decision**: Multi-layer progressive disclosure system
+**Why**: Balance between helping new players learn without overwhelming them
+**Approach**:
+  - Layer 1: Inline summary on selection
+  - Layer 2: Detailed info panel/modal
+  - (Future) Layer 3: Comparison mode
+
+---
+
+## Known Issues & Limitations
+
+### PDF Coordinate Mapping is Tedious
+- Only "Character Name" field verified so far (52, 738)
+- Need to map: Class, Race, House, Faith, Age, and future fields
+- Use PDFInspector tool at `/pdf-inspector` to find coordinates
+- PDF origin is bottom-left (0,0), Y increases upward
+
+### No Validation Rules Yet
+- Need to add race/class restrictions (e.g., "Bantam can't be Warrior")
+- No stat point pool validation
+- No talent point overspending prevention (TalentAllocator handles this but need validation feedback)
+
+### Static Game Data
+- Classes, races, houses, faiths are hardcoded in `athiaConstants.ts`
+- Based on Athia RPG Core Rulebook page numbers (documented in ATHIA_RACES_CLASSES.md)
+- Will need rich data (descriptions, abilities, bonuses) for helper text and auto-calculation
+
+---
+
+## Game Content Reference
+
+### Classes (Page 138)
+- **Acolyte** (Page 142): Divine spellcasters and healers
+- **Mage** (Page 145): Arcane magic wielders
+- **Rogue** (Page 147): Stealth and skill specialists
+- **Warrior** (Page 150): Martial combat experts
+
+### Races (Page 116)
+- **Human** (Page 117): Standard, versatile
+- **Bantam** (Page 120): Small, agile
+- **Dwarf** (Page 123): Sturdy, resilient
+- **Elf** (Page 126): Graceful, magical affinity
+- **Ferox** (Page 129): Bestial, fierce
+- **Goblin** (Page 132): Cunning, resourceful
+- **Orc** (Page 135): Powerful, tribal
+
+### Talent System
+18 core talents that characters allocate points to (in rulebook order):
+1. Athletics (STR)
+2. Charisma (VAL)
+3. Combat Rest (CON)
+4. Concentration (INS)
+5. Craft (DEX)
+6. Discipline (VAL)
+7. Endurance (CON)
+8. Exertion (STR)
+9. Faith (VAL)
+10. Hermetics (KNO)
+11. Notice (INS)
+12. Recuperation (CON)
+13. Scholar (KNO)
+14. Stealth (DEX)
+15. Survival (KNO)
+16. Swimming (STR)
+17. Taming (INS)
+18. Thievery (DEX)
+
+**Point-Based System:**
+- Each talent can have 0-6 points invested
+- 1 point = 1 filled bubble on character sheet
+- Expertise levels derived from points:
+  - 0 points: Untrained (disadvantage on checks)
+  - 1-2 points: Apprentice
+  - 3-5 points: Journeyman (never worse than double disadvantage)
+  - 6 points: Master (never at disadvantage)
+- **Character Creation Limit**: Maximum 3 points per talent at creation (Journeyman)
+- Master level (6 points) only achievable through advancement
+
+**Talent Points by Class:**
+Each class gets different talent points per level (tracked in classReference.ts):
+- Acolyte: 10 base + 3 per level
+- Mage: 10 base + 3 per level
+- Rogue: 15 base + 4 per level
+- Warrior: 10 base + 3 per level
+
+---
+
+## Development Workflow
+
+### Starting Development
+```bash
+npm run dev
+# Visit http://localhost:5173/character-generator
+```
+
+### Finding PDF Coordinates
+1. Visit `/pdf-inspector`
+2. Enter test text and adjust X/Y coordinates
+3. Preview until positioned correctly
+4. Update `PDF_COORDINATE_TRACKING.md` and `pdfFiller.ts`
+
+### Adding New Features
+1. Update this file (PROJECT_CONTEXT.md) with decisions made
+2. Implement feature
+3. Update relevant documentation files
+4. Test PDF generation end-to-end
+
+---
+
+## Future Roadmap
+
+### Phase 2: Derived Stats & Calculations
+- Create race/class data files with bonuses and abilities
+- Add stat allocation UI (CON, DEX, INS, KNO, STR, VAL)
+- Calculate derived stats (Health, Defense, Daring, etc.)
+- Display calculated values in UI before PDF generation
+
+### Phase 3: Advanced Features
+- Multi-step wizard UI for guided creation
+- Equipment selection and tracking
+- Magic system (Arcane/Divine spells)
+- Character export/import (save progress)
+- Validation and error handling
+- Responsive design for mobile
+
+### Phase 4: Polish
+- Comparison mode for classes/races
+- Tooltips and contextual help throughout
+- Example character templates
+- Print-friendly view
+- Dark mode
+
+---
+
+## Notes & Pain Points
+
+- **PDF coordinate mapping is tedious** - Consider automating or creating better tooling
+- **Game data is scattered** - Need centralized data files for rich content (descriptions, mechanics)
+- **No backend** - Everything is client-side. Future consideration: save characters to cloud?
+- **PDF must have correct dimensions** - Current sheet.pdf uses bottom-left origin coordinate system
+
+---
+
+*Last Updated: 2025-10-11*
+*Current Focus: Connecting talent point allocation to PDF bubble rendering*

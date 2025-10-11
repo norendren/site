@@ -1,10 +1,7 @@
 .character-creator {
-  max-width: 600px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .character-creator h1 {
@@ -13,10 +10,22 @@
   margin-bottom: 2rem;
 }
 
+/* Two-column layout: form on left, helper on right */
+.creator-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  align-items: start;
+}
+
 .character-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
@@ -102,4 +111,68 @@
 
 .help-text strong {
   color: #2d3748;
+}
+
+/* Helper sidebar */
+.helper-sidebar {
+  position: relative;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 200px;
+}
+
+/* Placeholder when no selection made */
+.helper-placeholder {
+  padding: 2rem;
+  text-align: center;
+  color: #718096;
+}
+
+.helper-placeholder h3 {
+  margin: 0 0 1rem 0;
+  color: #4a5568;
+  font-size: 1.2rem;
+}
+
+.helper-placeholder p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsive: stack vertically on smaller screens */
+@media (max-width: 1024px) {
+  .creator-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .sidebar-sticky {
+    position: static;
+  }
+
+  .helper-sidebar {
+    order: -1; /* Show helper above form on mobile */
+  }
+}
+
+@media (max-width: 640px) {
+  .character-creator {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .character-form {
+    padding: 1.5rem;
+  }
+
+  .helper-placeholder {
+    padding: 1.5rem;
+  }
 }

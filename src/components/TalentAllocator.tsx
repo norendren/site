@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { COMMON_TALENTS, TALENT_COSTS } from '../utils/classReference';
-import type { TalentExpertise } from '../utils/classReference';
+import { ATHIA_TALENTS, TALENT_ATTRIBUTES } from '../utils/classReference';
+import type { TalentName } from '../utils/classReference';
 import type { TalentAllocation } from '../utils/pdfFiller';
 import './TalentAllocator.css';
 
@@ -16,86 +16,81 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
   // Calculate spent talent points
   const spentPoints = useMemo(() => {
     return allocatedTalents.reduce((total, talent) => {
-      return total + TALENT_COSTS[talent.expertise];
+      return total + talent.points;
     }, 0);
   }, [allocatedTalents]);
 
   const remainingPoints = totalTalentPoints - spentPoints;
 
-  // Get current expertise for a talent
-  const getTalentExpertise = (talentName: string): TalentExpertise => {
+  // Get current points for a talent
+  const getTalentPoints = (talentName: string): number => {
     const talent = allocatedTalents.find(t => t.name === talentName);
-    return talent?.expertise || 'none';
+    return talent?.points || 0;
   };
 
-  // Check if we can afford to upgrade a talent
-  const canAffordUpgrade = (currentExpertise: TalentExpertise): boolean => {
-    const nextLevel: TalentExpertise =
-      currentExpertise === 'none' ? 'apprentice' :
-      currentExpertise === 'apprentice' ? 'journeyman' :
-      currentExpertise === 'journeyman' ? 'master' :
-      'master';
-
-    if (nextLevel === currentExpertise) return false; // Already at max
-
-    const costDifference = TALENT_COSTS[nextLevel] - TALENT_COSTS[currentExpertise];
-    return remainingPoints >= costDifference;
+  // Check if we can afford to add a point
+  const canAffordUpgrade = (currentPoints: number): boolean => {
+    return currentPoints < 6 && remainingPoints >= 1;
   };
 
-  // Set talent expertise level
-  const setTalentExpertise = (talentName: string, expertise: TalentExpertise) => {
+  // Set talent points
+  const setTalentPoints = (talentName: string, points: number) => {
     const newTalents = allocatedTalents.filter(t => t.name !== talentName);
 
-    if (expertise !== 'none') {
-      newTalents.push({ name: talentName, expertise });
+    if (points > 0) {
+      newTalents.push({ name: talentName, points });
     }
 
     onTalentsChange(newTalents);
   };
 
-  // Increment talent expertise
+  // Increment talent (add 1 point)
   const incrementTalent = (talentName: string) => {
-    const currentExpertise = getTalentExpertise(talentName);
+    const currentPoints = getTalentPoints(talentName);
 
-    if (!canAffordUpgrade(currentExpertise)) return;
+    if (!canAffordUpgrade(currentPoints)) return;
 
-    const nextExpertise: TalentExpertise =
-      currentExpertise === 'none' ? 'apprentice' :
-      currentExpertise === 'apprentice' ? 'journeyman' :
-      'master';
-
-    setTalentExpertise(talentName, nextExpertise);
+    setTalentPoints(talentName, currentPoints + 1);
   };
 
-  // Decrement talent expertise
+  // Decrement talent (remove 1 point)
   const decrementTalent = (talentName: string) => {
-    const currentExpertise = getTalentExpertise(talentName);
+    const currentPoints = getTalentPoints(talentName);
 
-    if (currentExpertise === 'none') return;
+    if (currentPoints === 0) return;
 
-    const prevExpertise: TalentExpertise =
-      currentExpertise === 'master' ? 'journeyman' :
-      currentExpertise === 'journeyman' ? 'apprentice' :
-      'none';
-
-    setTalentExpertise(talentName, prevExpertise);
+    setTalentPoints(talentName, currentPoints - 1);
   };
 
   // Render expertise bubbles
-  const renderBubbles = (expertise: TalentExpertise) => {
-    const filledCount = TALENT_COSTS[expertise];
-
+  // Total 6 bubbles: 1-2 = Apprentice, 3-5 = Journeyman, 6 = Master
+  const renderBubbles = (points: number) => {
     return (
       <div className="talent-bubbles">
-        {[1, 2, 3].map(level => (
-          <div
-            key={level}
-            className={`bubble ${level <= filledCount ? 'filled' : 'empty'}`}
-            title={level === 1 ? 'Apprentice' : level === 2 ? 'Journeyman' : 'Master'}
-          />
-        ))}
+        {[1, 2, 3, 4, 5, 6].map(level => {
+          let title = '';
+          if (level <= 2) title = 'Apprentice';
+          else if (level <= 5) title = 'Journeyman';
+          else title = 'Master';
+
+          return (
+            <div
+              key={level}
+              className={`bubble ${level <= points ? 'filled' : 'empty'}`}
+              title={title}
+            />
+          );
+        })}
       </div>
     );
+  };
+
+  // Get expertise label from points
+  const getExpertiseLabel = (points: number): string => {
+    if (points === 0) return '—';
+    if (points <= 2) return 'App';
+    if (points <= 5) return 'Jrn';
+    return 'Mst';
   };
 
   return (
@@ -111,10 +106,11 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
       </div>
 
       <div className="talent-list">
-        {COMMON_TALENTS.map((talentName) => {
-          const expertise = getTalentExpertise(talentName);
-          const canUpgrade = canAffordUpgrade(expertise);
-          const canDowngrade = expertise !== 'none';
+        {ATHIA_TALENTS.map((talentName: TalentName) => {
+          const points = getTalentPoints(talentName);
+          const canUpgrade = canAffordUpgrade(points);
+          const canDowngrade = points > 0;
+          const attribute = TALENT_ATTRIBUTES[talentName];
 
           return (
             <div
@@ -122,9 +118,12 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
               className={`talent-row ${selectedTalent === talentName ? 'selected' : ''}`}
               onClick={() => setSelectedTalent(talentName)}
             >
-              <div className="talent-name">{talentName}</div>
+              <div className="talent-name">
+                {talentName}
+                <span className="talent-attribute">({attribute})</span>
+              </div>
 
-              {renderBubbles(expertise)}
+              {renderBubbles(points)}
 
               <div className="talent-controls">
                 <button
@@ -140,10 +139,7 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
                 </button>
 
                 <span className="expertise-label">
-                  {expertise === 'none' ? '—' :
-                   expertise === 'apprentice' ? 'App' :
-                   expertise === 'journeyman' ? 'Jrn' :
-                   'Mst'}
+                  {getExpertiseLabel(points)}
                 </span>
 
                 <button

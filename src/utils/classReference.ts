@@ -1,9 +1,9 @@
 /**
  * ATHIA CLASS REFERENCE
- * Condensed guide for character creation
+ * Arithmetic progression system for character advancement
  */
 
-export interface ClassProgression {
+export interface ClassProgressionData {
   level: number;
   abilities: number;
   attributeBonus: number;
@@ -17,6 +17,75 @@ export interface ClassProgression {
 }
 
 /**
+ * Base configuration for arithmetic progression
+ */
+interface ProgressionConfig {
+  baseTalentPoints: number;
+  talentPointsPerLevel: number;
+  baseHealth: {
+    fatigued: number;
+    battered: number;
+    injured: number;
+  };
+  healthPerLevel: {
+    fatigued: number;
+    battered: number;
+    injured: number;
+  };
+  classSpecificBase: Record<string, number | string>;
+  classSpecificPerLevel: Record<string, number>;
+}
+
+/**
+ * Calculate value using arithmetic progression
+ * Formula: baseValue + (increment * (level - 1))
+ */
+function calculateProgression(base: number, perLevel: number, level: number): number {
+  return base + (perLevel * (level - 1));
+}
+
+/**
+ * Generate progression table for a class using arithmetic progression
+ */
+function generateProgression(config: ProgressionConfig, maxLevel: number = 10): ClassProgressionData[] {
+  const progression: ClassProgressionData[] = [];
+
+  for (let level = 1; level <= maxLevel; level++) {
+    const data: ClassProgressionData = {
+      level,
+      // Abilities: 2 at level 1, +1 per level
+      abilities: calculateProgression(2, 1, level),
+      // Attribute Bonus: every 2 levels (0, 1, 1, 2, 2, 3, 3, 4, 4, 5)
+      attributeBonus: Math.floor((level - 1) / 2),
+      health: {
+        fatigued: calculateProgression(config.baseHealth.fatigued, config.healthPerLevel.fatigued, level),
+        battered: calculateProgression(config.baseHealth.battered, config.healthPerLevel.battered, level),
+        injured: calculateProgression(config.baseHealth.injured, config.healthPerLevel.injured, level),
+      },
+      talentPoints: calculateProgression(config.baseTalentPoints, config.talentPointsPerLevel, level),
+      classSpecific: {}
+    };
+
+    // Calculate class-specific progressions
+    for (const [key, baseValue] of Object.entries(config.classSpecificBase)) {
+      if (typeof baseValue === 'number' && key in config.classSpecificPerLevel) {
+        data.classSpecific[key] = calculateProgression(
+          baseValue,
+          config.classSpecificPerLevel[key],
+          level
+        );
+      } else {
+        data.classSpecific[key] = baseValue;
+      }
+    }
+
+    progression.push(data);
+  }
+
+  return progression;
+}
+
+/**
  * ACOLYTE - Divine Magic User
  *
  * Key Features:
@@ -27,19 +96,23 @@ export interface ClassProgression {
  *
  * Armor: Light, Medium, Shields
  * Weapons: All Common
+ *
+ * Starting Values:
+ * - Talent Points: 10 (+3 per level)
+ * - Health: Fatigued 5 (+5/lvl), Battered 4 (+4/lvl), Injured 2 (+1/lvl)
+ * - Favor: 8 (+2 per level)
+ * - Stamina: 3 (+1 per level)
  */
-export const ACOLYTE_PROGRESSION: ClassProgression[] = [
-  { level: 1, abilities: 2, attributeBonus: 0, health: { fatigued: 5, battered: 4, injured: 2 }, talentPoints: 10, classSpecific: { favor: 8, stamina: 3, bless: 1 } },
-  { level: 2, abilities: 3, attributeBonus: 1, health: { fatigued: 10, battered: 8, injured: 3 }, talentPoints: 13, classSpecific: { favor: 10, stamina: 4, bless: 1 } },
-  { level: 3, abilities: 4, attributeBonus: 1, health: { fatigued: 15, battered: 12, injured: 4 }, talentPoints: 16, classSpecific: { favor: 12, stamina: 5, bless: 2 } },
-  { level: 4, abilities: 5, attributeBonus: 2, health: { fatigued: 20, battered: 16, injured: 5 }, talentPoints: 19, classSpecific: { favor: 14, stamina: 6, bless: 2 } },
-  { level: 5, abilities: 6, attributeBonus: 2, health: { fatigued: 25, battered: 20, injured: 6 }, talentPoints: 22, classSpecific: { favor: 16, stamina: 7, bless: 3 } },
-  { level: 6, abilities: 7, attributeBonus: 3, health: { fatigued: 30, battered: 24, injured: 7 }, talentPoints: 25, classSpecific: { favor: 18, stamina: 8, bless: 3 } },
-  { level: 7, abilities: 8, attributeBonus: 3, health: { fatigued: 35, battered: 28, injured: 8 }, talentPoints: 28, classSpecific: { favor: 20, stamina: 9, bless: 4 } },
-  { level: 8, abilities: 9, attributeBonus: 4, health: { fatigued: 40, battered: 32, injured: 9 }, talentPoints: 31, classSpecific: { favor: 22, stamina: 10, bless: 4 } },
-  { level: 9, abilities: 10, attributeBonus: 4, health: { fatigued: 45, battered: 36, injured: 10 }, talentPoints: 34, classSpecific: { favor: 24, stamina: 11, bless: 5 } },
-  { level: 10, abilities: 11, attributeBonus: 5, health: { fatigued: 50, battered: 40, injured: 11 }, talentPoints: 37, classSpecific: { favor: 26, stamina: 12, bless: 5 } },
-];
+const ACOLYTE_CONFIG: ProgressionConfig = {
+  baseTalentPoints: 10,
+  talentPointsPerLevel: 3,
+  baseHealth: { fatigued: 5, battered: 4, injured: 2 },
+  healthPerLevel: { fatigued: 5, battered: 4, injured: 1 },
+  classSpecificBase: { favor: 8, stamina: 3, bless: 1 },
+  classSpecificPerLevel: { favor: 2, stamina: 1 }
+};
+
+export const ACOLYTE_PROGRESSION = generateProgression(ACOLYTE_CONFIG);
 
 /**
  * MAGE - Arcane Magic User
@@ -52,19 +125,23 @@ export const ACOLYTE_PROGRESSION: ClassProgression[] = [
  *
  * Armor: None
  * Weapons: Choose 1 Common weapon
+ *
+ * Starting Values:
+ * - Talent Points: 10 (+3 per level)
+ * - Health: Fatigued 3 (+3/lvl), Battered 6 (+6/lvl), Injured 2 (+1/lvl)
+ * - Mana: 3 (+0 per level, occasional bumps)
+ * - Aptitude: 5 (+2 per level)
  */
-export const MAGE_PROGRESSION: ClassProgression[] = [
-  { level: 1, abilities: 2, attributeBonus: 0, health: { fatigued: 3, battered: 6, injured: 2 }, talentPoints: 10, classSpecific: { mana: 3, aptitude: 5 } },
-  { level: 2, abilities: 3, attributeBonus: 1, health: { fatigued: 6, battered: 12, injured: 3 }, talentPoints: 13, classSpecific: { mana: 4, aptitude: 7 } },
-  { level: 3, abilities: 4, attributeBonus: 1, health: { fatigued: 9, battered: 18, injured: 4 }, talentPoints: 16, classSpecific: { mana: 4, aptitude: 9 } },
-  { level: 4, abilities: 5, attributeBonus: 2, health: { fatigued: 12, battered: 24, injured: 5 }, talentPoints: 19, classSpecific: { mana: 4, aptitude: 11 } },
-  { level: 5, abilities: 6, attributeBonus: 2, health: { fatigued: 15, battered: 30, injured: 6 }, talentPoints: 22, classSpecific: { mana: 4, aptitude: 13 } },
-  { level: 6, abilities: 7, attributeBonus: 3, health: { fatigued: 18, battered: 36, injured: 7 }, talentPoints: 25, classSpecific: { mana: 5, aptitude: 15 } },
-  { level: 7, abilities: 8, attributeBonus: 3, health: { fatigued: 21, battered: 42, injured: 8 }, talentPoints: 28, classSpecific: { mana: 5, aptitude: 17 } },
-  { level: 8, abilities: 9, attributeBonus: 4, health: { fatigued: 24, battered: 48, injured: 9 }, talentPoints: 31, classSpecific: { mana: 5, aptitude: 19 } },
-  { level: 9, abilities: 10, attributeBonus: 4, health: { fatigued: 27, battered: 54, injured: 10 }, talentPoints: 34, classSpecific: { mana: 5, aptitude: 21 } },
-  { level: 10, abilities: 11, attributeBonus: 5, health: { fatigued: 30, battered: 60, injured: 11 }, talentPoints: 37, classSpecific: { mana: 6, aptitude: 23 } },
-];
+const MAGE_CONFIG: ProgressionConfig = {
+  baseTalentPoints: 10,
+  talentPointsPerLevel: 3,
+  baseHealth: { fatigued: 3, battered: 6, injured: 2 },
+  healthPerLevel: { fatigued: 3, battered: 6, injured: 1 },
+  classSpecificBase: { mana: 3, aptitude: 5 },
+  classSpecificPerLevel: { aptitude: 2, mana: 0 } // Mana increases irregularly
+};
+
+export const MAGE_PROGRESSION = generateProgression(MAGE_CONFIG);
 
 /**
  * ROGUE - Jack of All Trades
@@ -80,19 +157,23 @@ export const MAGE_PROGRESSION: ClassProgression[] = [
  *
  * Armor: Light
  * Weapons: All Common
+ *
+ * Starting Values:
+ * - Talent Points: 15 (+4 per level)
+ * - Health: Fatigued 4 (+4/lvl), Battered 5 (+5/lvl), Injured 2 (+1/lvl)
+ * - Hit Bonus: 1 (+1 per level)
+ * - Specialty: 2 (+1 every other level)
  */
-export const ROGUE_PROGRESSION: ClassProgression[] = [
-  { level: 1, abilities: 3, attributeBonus: 0, health: { fatigued: 4, battered: 5, injured: 2 }, talentPoints: 15, classSpecific: { hitBonus: 1, specialty: 2 } },
-  { level: 2, abilities: 4, attributeBonus: 1, health: { fatigued: 8, battered: 10, injured: 3 }, talentPoints: 19, classSpecific: { hitBonus: 2, specialty: 3 } },
-  { level: 3, abilities: 5, attributeBonus: 1, health: { fatigued: 12, battered: 15, injured: 4 }, talentPoints: 23, classSpecific: { hitBonus: 3, specialty: 3 } },
-  { level: 4, abilities: 6, attributeBonus: 2, health: { fatigued: 16, battered: 20, injured: 5 }, talentPoints: 27, classSpecific: { hitBonus: 4, specialty: 4 } },
-  { level: 5, abilities: 7, attributeBonus: 2, health: { fatigued: 20, battered: 25, injured: 6 }, talentPoints: 31, classSpecific: { hitBonus: 5, specialty: 4 } },
-  { level: 6, abilities: 8, attributeBonus: 3, health: { fatigued: 24, battered: 30, injured: 7 }, talentPoints: 35, classSpecific: { hitBonus: 6, specialty: 5 } },
-  { level: 7, abilities: 9, attributeBonus: 3, health: { fatigued: 28, battered: 35, injured: 8 }, talentPoints: 39, classSpecific: { hitBonus: 7, specialty: 5 } },
-  { level: 8, abilities: 10, attributeBonus: 4, health: { fatigued: 32, battered: 40, injured: 9 }, talentPoints: 43, classSpecific: { hitBonus: 8, specialty: 6 } },
-  { level: 9, abilities: 11, attributeBonus: 4, health: { fatigued: 36, battered: 45, injured: 10 }, talentPoints: 47, classSpecific: { hitBonus: 9, specialty: 6 } },
-  { level: 10, abilities: 12, attributeBonus: 5, health: { fatigued: 40, battered: 50, injured: 11 }, talentPoints: 51, classSpecific: { hitBonus: 10, specialty: 7 } },
-];
+const ROGUE_CONFIG: ProgressionConfig = {
+  baseTalentPoints: 15,
+  talentPointsPerLevel: 4,
+  baseHealth: { fatigued: 4, battered: 5, injured: 2 },
+  healthPerLevel: { fatigued: 4, battered: 5, injured: 1 },
+  classSpecificBase: { hitBonus: 1, specialty: 2 },
+  classSpecificPerLevel: { hitBonus: 1, specialty: 0 } // Specialty increases irregularly
+};
+
+export const ROGUE_PROGRESSION = generateProgression(ROGUE_CONFIG);
 
 /**
  * WARRIOR - Combat Specialist
@@ -105,59 +186,124 @@ export const ROGUE_PROGRESSION: ClassProgression[] = [
  *   - Ferocious: Fearless aggression
  *   - Martial: Enemy elimination
  *   - Strategic: Tactical advantage
- * - High Stamina (5 + 4 per level)
+ * - High Stamina
  *
  * Armor: Light, Medium, Heavy, Shields
  * Weapons: All Common, All Martial
+ *
+ * Starting Values:
+ * - Talent Points: 10 (+3 per level)
+ * - Health: Fatigued 6 (+6/lvl), Battered 3 (+3/lvl), Injured 2 (+1/lvl)
+ * - Damage Bonus: 2 (+2 per level)
+ * - Stamina: 5 (+4 per level)
+ * - Combat Styles: 1 (+1 at odd levels)
  */
-export const WARRIOR_PROGRESSION: ClassProgression[] = [
-  { level: 1, abilities: 2, attributeBonus: 0, health: { fatigued: 6, battered: 3, injured: 2 }, talentPoints: 10, classSpecific: { damageBonus: 2, combatStyles: 1, stamina: 5 } },
-  { level: 2, abilities: 3, attributeBonus: 1, health: { fatigued: 12, battered: 6, injured: 3 }, talentPoints: 13, classSpecific: { damageBonus: 4, combatStyles: 1, stamina: 9 } },
-  { level: 3, abilities: 4, attributeBonus: 1, health: { fatigued: 18, battered: 9, injured: 4 }, talentPoints: 16, classSpecific: { damageBonus: 6, combatStyles: 2, stamina: 13 } },
-  { level: 4, abilities: 5, attributeBonus: 2, health: { fatigued: 24, battered: 12, injured: 5 }, talentPoints: 19, classSpecific: { damageBonus: 8, combatStyles: 2, stamina: 17 } },
-  { level: 5, abilities: 6, attributeBonus: 2, health: { fatigued: 30, battered: 15, injured: 6 }, talentPoints: 22, classSpecific: { damageBonus: 10, combatStyles: 3, stamina: 21 } },
-  { level: 6, abilities: 7, attributeBonus: 3, health: { fatigued: 36, battered: 18, injured: 7 }, talentPoints: 25, classSpecific: { damageBonus: 12, combatStyles: 3, stamina: 25 } },
-  { level: 7, abilities: 8, attributeBonus: 3, health: { fatigued: 42, battered: 21, injured: 8 }, talentPoints: 28, classSpecific: { damageBonus: 14, combatStyles: 4, stamina: 29 } },
-  { level: 8, abilities: 9, attributeBonus: 4, health: { fatigued: 48, battered: 24, injured: 9 }, talentPoints: 31, classSpecific: { damageBonus: 16, combatStyles: 4, stamina: 33 } },
-  { level: 9, abilities: 10, attributeBonus: 4, health: { fatigued: 54, battered: 27, injured: 10 }, talentPoints: 34, classSpecific: { damageBonus: 18, combatStyles: 5, stamina: 37 } },
-  { level: 10, abilities: 11, attributeBonus: 5, health: { fatigued: 60, battered: 30, injured: 11 }, talentPoints: 37, classSpecific: { damageBonus: 20, combatStyles: 5, stamina: 41 } },
-];
+const WARRIOR_CONFIG: ProgressionConfig = {
+  baseTalentPoints: 10,
+  talentPointsPerLevel: 3,
+  baseHealth: { fatigued: 6, battered: 3, injured: 2 },
+  healthPerLevel: { fatigued: 6, battered: 3, injured: 1 },
+  classSpecificBase: { damageBonus: 2, combatStyles: 1, stamina: 5 },
+  classSpecificPerLevel: { damageBonus: 2, stamina: 4, combatStyles: 0 } // Combat styles increase irregularly
+};
+
+export const WARRIOR_PROGRESSION = generateProgression(WARRIOR_CONFIG);
+
+/**
+ * Helper function to get talent points for a specific class and level
+ */
+export function getTalentPoints(className: string, level: number): number {
+  if (level < 1 || level > 10) return 0;
+
+  const progressions: Record<string, ClassProgressionData[]> = {
+    'Acolyte': ACOLYTE_PROGRESSION,
+    'Mage': MAGE_PROGRESSION,
+    'Rogue': ROGUE_PROGRESSION,
+    'Warrior': WARRIOR_PROGRESSION,
+  };
+
+  const progression = progressions[className];
+  if (!progression) return 0;
+
+  return progression[level - 1]?.talentPoints || 0;
+}
 
 /**
  * TALENT EXPERTISE LEVELS & COSTS
  *
- * Talents can be improved through expertise levels:
- * - Apprentice: Basic proficiency (1 point)
- * - Journeyman: Advanced skill (1 additional point, 2 total)
- * - Master: Expert mastery (1 additional point, 3 total)
+ * Talents can be improved through expertise levels by spending Talent Points:
+ * - Untrained (0 points): Checks made at Disadvantage
+ * - Apprentice (1-2 points): Standard checks, 2 bubbles on sheet (A A)
+ * - Journeyman (3-5 points): Never worse than Double Disadvantage, 3 bubbles (J J J)
+ * - Master (6 points): Checks never at Disadvantage, 1 bubble (M)
  *
- * Note: Talent Points are also modified by Knowledge attribute
+ * Character Sheet Notation: Each talent has 6 bubbles + 1 empty (A A J J J M 0)
+ *
+ * IMPORTANT: At character creation, maximum initial investment is 3 points (Journeyman level).
+ * Master level can only be achieved through advancement.
+ *
+ * Total Talent Points = Class Base + Knowledge Modifier
+ *
+ * Note: Every point spent adds to Talent Score = Points + Attribute Modifier
  */
-export type TalentExpertise = 'none' | 'apprentice' | 'journeyman' | 'master';
+export type TalentExpertise = 'untrained' | 'apprentice' | 'journeyman' | 'master';
 
 export const TALENT_COSTS: Record<TalentExpertise, number> = {
-  none: 0,
-  apprentice: 1,
-  journeyman: 2,
-  master: 3,
+  untrained: 0,
+  apprentice: 1,  // 1-2 points total
+  journeyman: 3,  // 3-5 points total
+  master: 6,      // 6 points total (not available at character creation)
 };
 
+export const MAX_TALENT_AT_CREATION = 3; // Journeyman is max at character creation
+
 /**
- * Common Talents (partial list - would need full talent section from rules)
+ * All 18 Talents in Athia (in rulebook order)
+ * Format: "TalentName (Attribute)"
  */
-export const COMMON_TALENTS = [
-  'Athletics',
-  'Notice',
-  'Stealth',
-  'Survival',
-  'Exertion',
-  'Recuperation',
-  'Lore',
-  'Medicine',
-  'Persuasion',
-  'Deception',
-  'Intimidation',
-  'Performance',
+export const ATHIA_TALENTS = [
+  'Athletics',      // STR
+  'Charisma',       // VAL
+  'Combat Rest',    // CON
+  'Concentration',  // INS
+  'Craft',          // DEX
+  'Discipline',     // VAL
+  'Endurance',      // CON
+  'Exertion',       // STR
+  'Faith',          // VAL
+  'Hermetics',      // KNO
+  'Notice',         // INS
+  'Recuperation',   // CON
+  'Scholar',        // KNO
+  'Stealth',        // DEX
+  'Survival',       // KNO
+  'Swimming',       // STR
+  'Taming',         // INS
+  'Thievery',       // DEX
 ] as const;
 
-export type TalentName = typeof COMMON_TALENTS[number];
+export type TalentName = typeof ATHIA_TALENTS[number];
+
+/**
+ * Talent attribute associations
+ */
+export const TALENT_ATTRIBUTES: Record<TalentName, string> = {
+  'Athletics': 'STR',
+  'Charisma': 'VAL',
+  'Combat Rest': 'CON',
+  'Concentration': 'INS',
+  'Craft': 'DEX',
+  'Discipline': 'VAL',
+  'Endurance': 'CON',
+  'Exertion': 'STR',
+  'Faith': 'VAL',
+  'Hermetics': 'KNO',
+  'Notice': 'INS',
+  'Recuperation': 'CON',
+  'Scholar': 'KNO',
+  'Stealth': 'DEX',
+  'Survival': 'KNO',
+  'Swimming': 'STR',
+  'Taming': 'INS',
+  'Thievery': 'DEX',
+};
