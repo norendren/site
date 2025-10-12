@@ -1,17 +1,27 @@
 import { useState, useMemo } from 'react';
-import { ATHIA_TALENTS, TALENT_ATTRIBUTES } from '../utils/classReference';
+import { ATHIA_TALENTS, TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier } from '../utils/classReference';
 import type { TalentName } from '../utils/classReference';
-import type { TalentAllocation } from '../utils/pdfFiller';
+import type { TalentAllocation, AttributeAllocation } from '../utils/pdfFiller';
 import './TalentAllocator.css';
 
 interface TalentAllocatorProps {
   totalTalentPoints: number;
   allocatedTalents: TalentAllocation[];
+  allocatedAttributes: AttributeAllocation[];
   onTalentsChange: (talents: TalentAllocation[]) => void;
 }
 
-export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalentsChange }: TalentAllocatorProps) {
+export function TalentAllocator({ totalTalentPoints, allocatedTalents, allocatedAttributes, onTalentsChange }: TalentAllocatorProps) {
   const [selectedTalent, setSelectedTalent] = useState<string | null>(null);
+
+  // Create a map of attributes for quick lookup
+  const attributesMap = useMemo(() => {
+    const map = new Map<string, number>();
+    allocatedAttributes.forEach(attr => {
+      map.set(attr.name, attr.points);
+    });
+    return map;
+  }, [allocatedAttributes]);
 
   // Calculate spent talent points
   const spentPoints = useMemo(() => {
@@ -26,6 +36,14 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
   const getTalentPoints = (talentName: string): number => {
     const talent = allocatedTalents.find(t => t.name === talentName);
     return talent?.points || 0;
+  };
+
+  // Calculate the total talent score (Points + Attribute + Abilities + Racial)
+  const getTalentTotalScore = (talentName: TalentName): number => {
+    const talentPoints = getTalentPoints(talentName);
+    const attributeModifier = getTalentAttributeModifier(talentName, attributesMap);
+    // For now, abilities and racial bonuses are 0 (to be implemented later)
+    return calculateTalentScore(talentPoints, attributeModifier, 0, 0);
   };
 
   // Check if we can afford to add a point
@@ -108,9 +126,11 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
       <div className="talent-list">
         {ATHIA_TALENTS.map((talentName: TalentName) => {
           const points = getTalentPoints(talentName);
+          const totalScore = getTalentTotalScore(talentName);
           const canUpgrade = canAffordUpgrade(points);
           const canDowngrade = points > 0;
           const attribute = TALENT_ATTRIBUTES[talentName];
+          const attributeMod = getTalentAttributeModifier(talentName, attributesMap);
 
           return (
             <div
@@ -153,6 +173,13 @@ export function TalentAllocator({ totalTalentPoints, allocatedTalents, onTalents
                 >
                   +
                 </button>
+              </div>
+
+              <div className="talent-total">
+                <span className="total-label">Total:</span>
+                <span className="total-value" title={`${points} points + ${attributeMod >= 0 ? '+' : ''}${attributeMod} ${attribute}`}>
+                  {totalScore >= 0 ? '+' : ''}{totalScore}
+                </span>
               </div>
             </div>
           );

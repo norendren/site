@@ -8,7 +8,24 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 ### What Works ✅
 - Basic character form with 6 core fields (Name, Class, Race, House, Faith, Age)
 - Level selection and talent point calculation per class (defaults to level 1)
+- **Attribute allocation system** (6 attributes: CON, DEX, INS, KNO, STR, VAL)
+  - Campaign pool selector (Commoners: 0, Young Heroes: 2, Heroes: 4)
+  - Individual attribute adjustments from -3 to +3
+  - Validation ensuring total equals selected pool
+  - PDF text rendering for attribute values
 - **Talent point allocation system** (18 talents with individual point tracking, 0-6 points per talent)
+  - Talent score calculation: Points + Attribute Modifier + (future: Abilities + Racial Perks)
+  - Real-time total display in UI with attribute breakdown
+  - PDF rendering of talent totals
+- **Race reference data system** (comprehensive data structure for all 7 playable races)
+  - Physical traits (height, weight, lifespan)
+  - Health tier bonuses (Fatigued, Battered, Injured)
+  - All racial perks with concise mechanical summaries
+  - Ready for Perks section UI integration
+- **Health calculation system** (Fatigued, Battered, Injured maximums)
+  - Formula: Health Max = Race Bonus + CON Modifier + Class Bonus
+  - Automatic calculation and PDF rendering
+  - Current values left blank for player tracking
 - **Educational helper text system** (Layer 1: inline preview, Layer 2: detailed modal)
 - PDF generation and download using pdf-lib
 - PDF coordinate-based field filling (all basic fields mapped)
@@ -16,15 +33,15 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 - Class progression tracking using arithmetic progression (base + increment × (level - 1))
 
 ### What's In Progress 🚧
-- Testing and refining PDF coordinate accuracy for all fields
+- Testing and refining PDF coordinate accuracy for talent totals
 - Adding validation for talent point limits at character creation (max 3 points per talent)
 
 ### What's Next 📋
-- Extend helper text to races, talents, and other fields
-- Complete PDF coordinate mapping for all basic fields
-- Add stat calculation system (CON, DEX, INS, KNO, STR, VAL)
-- Implement racial perks and abilities
-- Add derived stats (Health, Defense, Daring, etc.)
+- Implement racial perk selection UI (choose 2 perks per character)
+- Extend helper text to races and talents
+- Implement class abilities bonuses to talent scores
+- Apply racial perk bonuses to talent scores
+- Add remaining derived stats (Defense, Daring, Stamina, etc.)
 
 ---
 
@@ -205,7 +222,8 @@ src/
 │   ├── pdfFiller.ts               # PDF generation logic with bubble rendering
 │   ├── pdfInspector.ts            # Dev tool for finding PDF coordinates
 │   ├── athiaConstants.ts          # Game data: CLASSES, RACES, HOUSES, FAITHS
-│   └── classReference.ts          # Class progression with arithmetic formulas
+│   ├── classReference.ts          # Class progression with arithmetic formulas
+│   └── raceReference.ts           # Comprehensive race data: traits, health bonuses, perks
 ├── pages/
 │   ├── CharacterGenerator.tsx     # Main page
 │   └── PDFInspector.tsx           # Coordinate mapping tool
@@ -227,7 +245,13 @@ BasicCharacterData {
   house: string         // Asos, Blayth, Cerrak, Draur, Lloar, Onin, Thercer
   faith: string         // None, Erebos, Ilios, Selene, The Triad
   age: string
-  talents: TalentAllocation[]  // 18 talents with point allocation
+  attributes: AttributeAllocation[]  // 6 core attributes
+  talents: TalentAllocation[]        // 18 talents with point allocation
+}
+
+AttributeAllocation {
+  name: string          // CON, DEX, INS, KNO, STR, VAL
+  points: number        // -3 to +3 modifier
 }
 
 TalentAllocation {
@@ -245,6 +269,21 @@ TalentAllocation {
 **Why**: More control over positioning, font, and formatting. Form fields can be inconsistent.
 **Trade-off**: Need to manually map all field coordinates (tracked in PDF_COORDINATE_TRACKING.md)
 
+### Attribute System Architecture
+**Decision**: Use pool-based allocation with individual modifiers (-3 to +3)
+**Why**: Matches Athia RPG rules where GM decides campaign power level (Commoners/Young Heroes/Heroes)
+**Formula**: `Total Attribute Pool = Base Pool (0/2/4) + Attribute Bonus from Level`
+- Attribute bonus increases every 2 levels: 0, 1, 1, 2, 2, 3, 3, 4, 4, 5
+- Level 1: +0, Level 2: +1, Level 3: +1, Level 4: +2, etc.
+**Implementation**:
+- `getAttributeBonus()` retrieves attribute bonus from class progression tables
+- `totalAttributePool` calculated using useMemo (recomputes when class/level/base pool changes)
+- `AttributeAllocator` component provides pool selector and individual attribute controls
+- Real-time validation ensures sum equals calculated total pool
+- All 6 attributes always rendered on PDF (defaulting to 0 if not set)
+**Example**: Level 2 Young Heroes character has pool of 3 (2 base + 1 level bonus)
+**Trade-off**: Requires validation logic to prevent over/under-allocation
+
 ### Talent System Architecture
 **Decision**: Use point-based tracking (0-6 points per talent) instead of discrete expertise levels
 **Why**: More granular control, direct mapping to bubbles (1 point = 1 bubble), simpler increment/decrement logic
@@ -255,6 +294,50 @@ TalentAllocation {
 **Why**: Each class has different base and per-level progression (Acolyte: 10 + 3/lvl, Rogue: 15 + 4/lvl, etc.)
 **Formula**: `base + (increment × (level - 1))`
 **Implementation**: `generateProgression()` in `classReference.ts` uses arithmetic calculation instead of static tables
+
+**Decision**: Calculate talent scores dynamically from multiple sources
+**Why**: Athia RPG formula: Talent Score = Talent Points + Attribute Modifier + Abilities + Racial Perks
+**Implementation**:
+- `calculateTalentScore()` utility function in `classReference.ts`
+- `getTalentAttributeModifier()` looks up associated attribute for each talent
+- UI displays real-time totals with tooltip showing breakdown
+- PDF renders formatted total scores (+/- sign)
+**Current State**: Implements Points + Attribute Modifier (abilities and racial perks = 0 placeholder)
+**Future**: Will add ability and racial bonuses when those systems are implemented
+
+### Race Reference System Architecture
+**Decision**: Create comprehensive managed data structure for all race information
+**Why**: Avoid repeatedly consulting PDF, enable easy integration into character creator UI
+**Implementation**:
+- `raceReference.ts` contains complete data for all 7 playable races
+- Each race includes: physical traits (height, weight, lifespan), health tier bonuses, all racial perks
+- Racial perks have concise mechanical summaries for UI tooltips and display
+- Type-safe interfaces with helper functions for querying race data
+**Data Tracked**:
+- **Health Tier Bonuses**: Fatigued/Battered/Injured modifiers per race (e.g., Human: +1/+1/+1, Ferox: +0/+0/+3)
+- **Physical Traits**: Average height/weight (male/female), lifespan in years
+- **Racial Perks**: All available perks (characters choose 2) with mechanical summaries
+  - Example: "Advantage on Hit Check and Damage vs Savage family creatures"
+  - Ready for integration into Perks section UI and talent score calculations
+**Future Use**:
+- Perks selection UI component
+- Racial perk bonuses to talent scores (part of formula: Points + Attribute + Abilities + Racial Perks)
+- Race comparison/educational tooltips
+
+### Health Calculation System Architecture
+**Decision**: Calculate maximum health tier values from three sources (Race + CON + Class)
+**Why**: Athia RPG health system uses three tiers (Fatigued, Battered, Injured) with bonuses from multiple sources
+**Formula**: `Health Maximum = Race Bonus + CON Modifier + Class Bonus (by level)`
+**Implementation**:
+- `getClassHealthBonuses()` retrieves class health values from progression tables
+- `getRaceHealthBonuses()` retrieves race health tier modifiers
+- `drawHealthMaximums()` calculates and renders all three tier maximums on PDF
+- Current health values left blank for player tracking during gameplay
+**Example Calculation** (Level 1 Human Warrior with CON +2):
+- Fatigued: +1 (Human) + 2 (CON) + 6 (Warrior) = 9
+- Battered: +1 (Human) + 2 (CON) + 3 (Warrior) = 6
+- Injured: +1 (Human) + 2 (CON) + 2 (Warrior) = 5
+**PDF Coordinates**: Health maximums placed at x:500, y:710/685/660 (user will adjust as needed)
 
 ### State Management
 **Decision**: Keep flat state structure for Phase 1, plan for nested structure later
@@ -406,4 +489,4 @@ npm run dev
 ---
 
 *Last Updated: 2025-10-11*
-*Current Focus: Connecting talent point allocation to PDF bubble rendering*
+*Current Focus: Fixed attribute pool progression. Attribute pool now correctly includes level-based bonuses (base pool + attribute bonus from class level). Level 2+ characters now get additional attribute points to allocate.*

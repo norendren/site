@@ -1,6 +1,7 @@
 import { PDFDocument, rgb } from 'pdf-lib';
-import { TALENT_ATTRIBUTES } from './classReference';
+import { TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier, getClassHealthBonuses } from './classReference';
 import type { TalentName } from './classReference';
+import { getRaceHealthBonuses } from './raceReference';
 
 export interface TalentAllocation {
   name: string;
@@ -52,6 +53,24 @@ const BUBBLE_HORIZONTAL_SPACING = 10.5; // Distance between bubbles (left-most t
 const TALENT_START_Y = 372.5;
 const TALENT_Y_STEP = 14.125;
 const TALENT_STATIC_X = 484;
+const TALENT_TOTAL_X = 440; // X position for talent total scores (after the bubbles)
+const TALENT_TOTAL_Y_OFFSET = -4; // Vertical offset for talent totals (adjust if text appears too high/low)
+
+// Attribute text coordinates
+// Each attribute value is drawn as text at a specific position
+const ATTRIBUTE_START_Y = 645; // Starting Y position for first attribute (CON)
+const ATTRIBUTE_Y_STEP = 28.25; // Vertical spacing between attributes
+const ATTRIBUTE_ZERO_X = 120; // X position where the attribute value text is drawn
+
+// Attribute names in order on the PDF
+const ATTRIBUTE_NAMES = ['CON', 'DEX', 'INS', 'KNO', 'STR', 'VAL'] as const;
+
+// Health tier maximum coordinates (top-right area of sheet)
+// These are educated guesses - user will adjust if needed
+const HEALTH_MAX_X = 530; // X position for health maximum values
+const HEALTH_FATIGUED_Y = 620; // Y position for Fatigued max
+const HEALTH_BATTERED_Y = 592; // Y position for Battered max
+const HEALTH_INJURED_Y = 565; // Y position for Injured max
 
 // Define the exact order of talent names
 const TALENT_NAMES = [
@@ -118,8 +137,8 @@ export async function fillCharacterSheet(
   // Draw each field at its specified coordinates
   try {
     Object.entries(characterData).forEach(([key, value]) => {
-      // Skip talents - they're handled separately
-      if (key === 'talents') return;
+      // Skip talents and attributes - they're handled separately
+      if (key === 'talents' || key === 'attributes') return;
 
       if (typeof value === 'string' && value.trim()) { // Only draw if there's a value
         const coords = FIELD_COORDINATES[key as keyof typeof FIELD_COORDINATES];
@@ -139,9 +158,16 @@ export async function fillCharacterSheet(
     if (characterData.talents && characterData.talents.length > 0) {
       drawTalentBubbles(firstPage, characterData.talents);
     }
-    if (characterData.attributes && characterData.attributes.length > 0) {
-      // drawTalentBubbles(firstPage, characterData.talents);
-      // drawTalentBubbles(firstPage, characterData.talents);
+
+    // Draw talent total scores (always draw for all talents)
+    drawTalentTotals(firstPage, characterData.talents || [], characterData.attributes || [], font);
+
+    // Draw attribute values as text (always draw all 6 attributes, defaulting to 0)
+    drawAttributeValues(firstPage, characterData.attributes || [], font);
+
+    // Draw health tier maximums (Fatigued, Battered, Injured)
+    if (characterData.class && characterData.race) {
+      drawHealthMaximums(firstPage, characterData, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -195,6 +221,182 @@ function drawTalentBubbles(page: any, talents: TalentAllocation[]): void {
         opacity: 1,
       });
     }
+  });
+}
+
+/**
+ * Draws talent total scores as text on the PDF
+ * For each talent, calculates: Talent Points + Attribute Modifier + Abilities + Racial Perks
+ * Currently only includes Talent Points + Attribute Modifier (abilities and racial perks not yet implemented)
+ *
+ * The system works as follows:
+ * 1. Each talent has a fixed Y position based on its index in TALENT_NAMES
+ * 2. All totals are drawn at the same X position (TALENT_TOTAL_X)
+ * 3. Values are formatted with +/- sign
+ */
+function drawTalentTotals(
+  page: any,
+  talents: TalentAllocation[],
+  attributes: AttributeAllocation[],
+  font: any
+): void {
+  // Create maps for quick lookup
+  const talentMap = new Map<string, number>();
+  talents.forEach(talent => {
+    talentMap.set(talent.name, talent.points);
+  });
+
+  const attributeMap = new Map<string, number>();
+  attributes.forEach(attr => {
+    attributeMap.set(attr.name, attr.points);
+  });
+
+  // Draw total for each talent in the list
+  TALENT_NAMES.forEach((fullTalentKey, index) => {
+    // Extract talent name (e.g., "Athletics" from "Athletics (STR)")
+    const talentName = fullTalentKey.split(' (')[0] as TalentName;
+
+    // Get talent points
+    const talentPoints = talentMap.get(talentName) ?? 0;
+
+    // Get attribute modifier
+    const attributeModifier = getTalentAttributeModifier(talentName, attributeMap);
+
+    // Calculate total score (abilities and racial perks are 0 for now)
+    const totalScore = calculateTalentScore(talentPoints, attributeModifier, 0, 0);
+
+    // Calculate Y position based on talent index, applying the vertical offset
+    const y = TALENT_START_Y - (index * TALENT_Y_STEP) + TALENT_TOTAL_Y_OFFSET;
+
+    // Format the score with sign
+    const scoreText = totalScore >= 0 ? `+${totalScore}` : `${totalScore}`;
+
+    // Draw the total score
+    page.drawText(scoreText, {
+      x: TALENT_TOTAL_X,
+      y: y,
+      size: 10,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+  });
+}
+
+/**
+ * Calculates and draws maximum health values for each tier
+ * Formula: Health Max = Race Bonus + CON Modifier + Class Bonus
+ *
+ * @param page - PDF page to draw on
+ * @param characterData - Character data including class, race, level, and attributes
+ * @param font - Font to use for rendering
+ */
+function drawHealthMaximums(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  // Get race bonuses
+  const raceHealthBonuses = getRaceHealthBonuses(characterData.race);
+  if (!raceHealthBonuses) {
+    console.warn(`No health bonuses found for race: ${characterData.race}`);
+    return;
+  }
+
+  // Get class bonuses
+  const level = parseInt(characterData.level) || 1;
+  const classHealthBonuses = getClassHealthBonuses(characterData.class, level);
+  if (!classHealthBonuses) {
+    console.warn(`No health bonuses found for class: ${characterData.class} at level ${level}`);
+    return;
+  }
+
+  // Get CON modifier from attributes
+  const attributeMap = new Map<string, number>();
+  (characterData.attributes || []).forEach(attr => {
+    attributeMap.set(attr.name, attr.points);
+  });
+  const conModifier = attributeMap.get('CON') ?? 0;
+
+  // Calculate maximums
+  const fatigued = raceHealthBonuses.fatigued + conModifier + classHealthBonuses.fatigued;
+  const battered = raceHealthBonuses.battered + conModifier + classHealthBonuses.battered;
+  const injured = raceHealthBonuses.injured + conModifier + classHealthBonuses.injured;
+
+  // Draw Fatigued max
+  page.drawText(fatigued.toString(), {
+    x: HEALTH_MAX_X,
+    y: HEALTH_FATIGUED_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw Battered max
+  page.drawText(battered.toString(), {
+    x: HEALTH_MAX_X,
+    y: HEALTH_BATTERED_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw Injured max
+  page.drawText(injured.toString(), {
+    x: HEALTH_MAX_X,
+    y: HEALTH_INJURED_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+}
+
+/**
+ * Draws attribute values as text on the PDF
+ * Each attribute displays its numeric value (-3 to +3)
+ * Positive values are prefixed with "+" (e.g., "+2")
+ * Zero is displayed as "0"
+ * Negative values display with their minus sign (e.g., "-1")
+ *
+ * The system works as follows:
+ * 1. Each attribute has a fixed Y position based on its index in ATTRIBUTE_NAMES
+ * 2. All values are drawn at the same X position (ATTRIBUTE_ZERO_X)
+ * 3. Font size is 12pt by default
+ * 4. All 6 attributes are always drawn, defaulting to 0 if not specified
+ */
+function drawAttributeValues(page: any, attributes: AttributeAllocation[], font: any): void {
+  // Create a map of attribute values for quick lookup
+  const attributeMap = new Map<string, number>();
+  attributes.forEach(attr => {
+    attributeMap.set(attr.name, attr.points);
+  });
+
+  // Draw all 6 attributes, using 0 as default if not specified
+  ATTRIBUTE_NAMES.forEach((attrName, attrIndex) => {
+    // Get the value from the map, or default to 0
+    const points = attributeMap.get(attrName) ?? 0;
+
+    // Calculate Y position based on attribute index
+    const y = ATTRIBUTE_START_Y - (attrIndex * ATTRIBUTE_Y_STEP);
+
+    // Format the attribute value with sign
+    let valueText: string;
+    if (points > 0) {
+      valueText = `+${points}`;
+    } else if (points === 0) {
+      valueText = "0";
+    } else {
+      valueText = `${points}`; // Negative sign is already included
+    }
+
+    // Draw the text
+    page.drawText(valueText, {
+      x: ATTRIBUTE_ZERO_X,
+      y: y,
+      size: 16,
+      font: font,
+      bold: true,
+      color: rgb(0, 0, 0),
+    });
   });
 }
 

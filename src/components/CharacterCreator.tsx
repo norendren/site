@@ -1,14 +1,16 @@
 import { useState, useMemo } from 'react';
 import { fillCharacterSheet, downloadPDF } from '../utils/pdfFiller';
-import type { BasicCharacterData, TalentAllocation } from '../utils/pdfFiller';
+import type { BasicCharacterData, TalentAllocation, AttributeAllocation } from '../utils/pdfFiller';
 import { CLASSES, RACES, HOUSES, FAITHS } from '../utils/athiaConstants';
 import {
   ACOLYTE_PROGRESSION,
   MAGE_PROGRESSION,
   ROGUE_PROGRESSION,
-  WARRIOR_PROGRESSION
+  WARRIOR_PROGRESSION,
+  getAttributeBonus
 } from '../utils/classReference';
 import { TalentAllocator } from './TalentAllocator';
+import { AttributeAllocator } from './AttributeAllocator';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import './CharacterCreator.css';
@@ -23,10 +25,22 @@ export function CharacterCreator() {
     faith: '',
     age: '',
     talents: [],
+    attributes: [],
   });
+  const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isClassInfoOpen, setIsClassInfoOpen] = useState(false);
+
+  // Calculate total attribute pool: base pool + level bonus
+  const totalAttributePool = useMemo(() => {
+    const level = parseInt(characterData.level) || 1;
+    const className = characterData.class;
+
+    // Base pool (campaign setting) + attribute bonus from level
+    const levelBonus = getAttributeBonus(className, level);
+    return baseAttributePool + levelBonus;
+  }, [characterData.class, characterData.level, baseAttributePool]);
 
   // Calculate total talent points based on class and level
   const totalTalentPoints = useMemo(() => {
@@ -69,6 +83,17 @@ export function CharacterCreator() {
       ...prev,
       talents,
     }));
+  };
+
+  const handleAttributesChange = (attributes: AttributeAllocation[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      attributes,
+    }));
+  };
+
+  const handleAttributePoolChange = (pool: number) => {
+    setBaseAttributePool(pool);
   };
 
   const handleGenerateCharacter = async () => {
@@ -210,12 +235,23 @@ export function CharacterCreator() {
           />
         </div>
 
+        {/* Attribute Allocation */}
+        <div className="form-section">
+          <AttributeAllocator
+            attributePool={totalAttributePool}
+            allocatedAttributes={characterData.attributes || []}
+            onAttributesChange={handleAttributesChange}
+            onPoolChange={handleAttributePoolChange}
+          />
+        </div>
+
         {/* Talent Point Allocation */}
         {characterData.class && characterData.level && (
           <div className="form-section">
             <TalentAllocator
               totalTalentPoints={totalTalentPoints}
               allocatedTalents={characterData.talents || []}
+              allocatedAttributes={characterData.attributes || []}
               onTalentsChange={handleTalentsChange}
             />
           </div>

@@ -56,7 +56,7 @@ function generateProgression(config: ProgressionConfig, maxLevel: number = 10): 
       // Abilities: 2 at level 1, +1 per level
       abilities: calculateProgression(2, 1, level),
       // Attribute Bonus: every 2 levels (0, 1, 1, 2, 2, 3, 3, 4, 4, 5)
-      attributeBonus: Math.floor((level - 1) / 2),
+      attributeBonus: Math.floor(level / 2),
       health: {
         fatigued: calculateProgression(config.baseHealth.fatigued, config.healthPerLevel.fatigued, level),
         battered: calculateProgression(config.baseHealth.battered, config.healthPerLevel.battered, level),
@@ -229,6 +229,54 @@ export function getTalentPoints(className: string, level: number): number {
 }
 
 /**
+ * Helper function to get health tier bonuses for a specific class and level
+ * @param className - Name of the class (Acolyte, Mage, Rogue, Warrior)
+ * @param level - Character level (1-10)
+ * @returns Health tier bonuses or undefined if class not found
+ */
+export function getClassHealthBonuses(
+  className: string,
+  level: number
+): { fatigued: number; battered: number; injured: number } | undefined {
+  if (level < 1 || level > 10) return undefined;
+
+  const progressions: Record<string, ClassProgressionData[]> = {
+    'Acolyte': ACOLYTE_PROGRESSION,
+    'Mage': MAGE_PROGRESSION,
+    'Rogue': ROGUE_PROGRESSION,
+    'Warrior': WARRIOR_PROGRESSION,
+  };
+
+  const progression = progressions[className];
+  if (!progression) return undefined;
+
+  return progression[level - 1]?.health;
+}
+
+/**
+ * Helper function to get attribute bonus for a specific class and level
+ * Attribute bonus increases every 2 levels (0, 1, 1, 2, 2, 3, 3, 4, 4, 5)
+ * @param className - Name of the class (Acolyte, Mage, Rogue, Warrior)
+ * @param level - Character level (1-10)
+ * @returns Attribute bonus or 0 if class not found
+ */
+export function getAttributeBonus(className: string, level: number): number {
+  if (!className || level < 1 || level > 10) return 0;
+
+  const progressions: Record<string, ClassProgressionData[]> = {
+    'Acolyte': ACOLYTE_PROGRESSION,
+    'Mage': MAGE_PROGRESSION,
+    'Rogue': ROGUE_PROGRESSION,
+    'Warrior': WARRIOR_PROGRESSION,
+  };
+
+  const progression = progressions[className];
+  if (!progression) return 0;
+
+  return progression[level - 1]?.attributeBonus || 0;
+}
+
+/**
  * TALENT EXPERTISE LEVELS & COSTS
  *
  * Talents can be improved through expertise levels by spending Talent Points:
@@ -307,3 +355,36 @@ export const TALENT_ATTRIBUTES: Record<TalentName, string> = {
   'Taming': 'INS',
   'Thievery': 'DEX',
 };
+
+/**
+ * Calculate the total talent score
+ * Formula: Talent Score = Talent Points + Attribute Modifier + Abilities + Racial Perks
+ *
+ * @param talentPoints - Number of points invested in the talent (0-6)
+ * @param attributeModifier - The modifier from the associated attribute (-3 to +3)
+ * @param abilityBonus - Bonus from class abilities (default 0, for future implementation)
+ * @param racialBonus - Bonus from racial perks (default 0, for future implementation)
+ * @returns The total talent score
+ */
+export function calculateTalentScore(
+  talentPoints: number,
+  attributeModifier: number,
+  abilityBonus: number = 0,
+  racialBonus: number = 0
+): number {
+  return talentPoints + attributeModifier + abilityBonus + racialBonus;
+}
+
+/**
+ * Get the attribute modifier for a specific talent
+ * @param talentName - The name of the talent
+ * @param attributes - Map of attribute names to their values
+ * @returns The attribute modifier for this talent
+ */
+export function getTalentAttributeModifier(
+  talentName: TalentName,
+  attributes: Map<string, number>
+): number {
+  const attrName = TALENT_ATTRIBUTES[talentName];
+  return attributes.get(attrName) ?? 0;
+}

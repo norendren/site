@@ -56,7 +56,7 @@
 
 .talent-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   align-items: center;
   gap: 15px;
   padding: 12px 15px;
@@ -170,4 +170,30 @@
   color: #991b1b;
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+.talent-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 60px;
+  padding: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.total-label {
+  font-size: 0.7rem;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.total-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2563eb;
+  font-family: 'Courier New', monospace;
 }
