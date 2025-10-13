@@ -11,11 +11,13 @@ import {
 } from '../utils/classReference';
 import { TalentAllocator } from './TalentAllocator';
 import { AttributeAllocator } from './AttributeAllocator';
+import { RacialPerksSelector } from './RacialPerksSelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
+  const [currentStep, setCurrentStep] = useState(1);
   const [characterData, setCharacterData] = useState<BasicCharacterData>({
     characterName: '',
     class: '',
@@ -24,6 +26,7 @@ export function CharacterCreator() {
     house: '',
     faith: '',
     age: '',
+    racialPerks: [],
     talents: [],
     attributes: [],
   });
@@ -96,6 +99,60 @@ export function CharacterCreator() {
     setBaseAttributePool(pool);
   };
 
+  const handleRacialPerksChange = (racialPerks: string[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      racialPerks,
+    }));
+  };
+
+  const validateStep = (step: number): boolean => {
+    setError(null);
+
+    switch (step) {
+      case 1:
+        if (!characterData.characterName.trim()) {
+          setError('Character name is required');
+          return false;
+        }
+        if (!characterData.class) {
+          setError('Class is required');
+          return false;
+        }
+        if (!characterData.race) {
+          setError('Race is required');
+          return false;
+        }
+        return true;
+      case 2:
+        // Racial perks validation
+        if (!characterData.racialPerks || characterData.racialPerks.length !== 2) {
+          setError('Please select exactly 2 racial perks');
+          return false;
+        }
+        return true;
+      case 3:
+        // Attribute validation - optional for now
+        return true;
+      case 4:
+        // Talent validation - optional for now
+        return true;
+      default:
+        return true;
+    }
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 5));
+    }
+  };
+
+  const handleBack = () => {
+    setError(null);
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
+
   const handleGenerateCharacter = async () => {
     setError(null);
     setIsGenerating(true);
@@ -129,149 +186,326 @@ export function CharacterCreator() {
     }
   };
 
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="step-content">
+            <h2>Basic Information</h2>
+            <p className="step-description">Let's start with the basics about your character.</p>
+
+            <div className="form-group">
+              <label htmlFor="characterName">
+                Character Name <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="characterName"
+                value={characterData.characterName}
+                onChange={(e) => handleInputChange('characterName', e.target.value)}
+                placeholder="Enter character name"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="class">
+                Class <span className="required">*</span>
+              </label>
+              <select
+                id="class"
+                value={characterData.class}
+                onChange={(e) => handleInputChange('class', e.target.value)}
+                required
+              >
+                <option value="">Select a class</option>
+                {CLASSES.map(cls => (
+                  <option key={cls} value={cls}>{cls}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="level">Level</label>
+              <input
+                type="number"
+                id="level"
+                value={characterData.level}
+                onChange={(e) => handleInputChange('level', e.target.value)}
+                placeholder="Enter level"
+                min="1"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="race">
+                Race <span className="required">*</span>
+              </label>
+              <select
+                id="race"
+                value={characterData.race}
+                onChange={(e) => handleInputChange('race', e.target.value)}
+                required
+              >
+                <option value="">Select a race</option>
+                {RACES.map(race => (
+                  <option key={race} value={race}>{race}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="house">House</label>
+              <select
+                id="house"
+                value={characterData.house}
+                onChange={(e) => handleInputChange('house', e.target.value)}
+              >
+                <option value="">Select a house</option>
+                {HOUSES.map(house => (
+                  <option key={house} value={house}>{house}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="faith">Faith</label>
+              <select
+                id="faith"
+                value={characterData.faith}
+                onChange={(e) => handleInputChange('faith', e.target.value)}
+              >
+                <option value="">Select a faith</option>
+                {FAITHS.map(faith => (
+                  <option key={faith} value={faith}>{faith}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="age">Age</label>
+              <input
+                type="number"
+                id="age"
+                value={characterData.age}
+                onChange={(e) => handleInputChange('age', e.target.value)}
+                placeholder="Enter age"
+                min="1"
+              />
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="step-content">
+            <h2>{characterData.race} Racial Perks Available</h2>
+            <p className="step-description">Choose 2 racial perks that define your character's unique heritage abilities.</p>
+            <RacialPerksSelector
+              race={characterData.race}
+              selectedPerks={characterData.racialPerks || []}
+              onPerksChange={handleRacialPerksChange}
+            />
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="step-content">
+            <h2>Attribute Allocation</h2>
+            <p className="step-description">Distribute your attribute points across your character's core stats. The total of all the attributes must not exceed the pool decided by the GM. Default is +2 for "Young Heroes"</p>
+            <AttributeAllocator
+              attributePool={totalAttributePool}
+              allocatedAttributes={characterData.attributes || []}
+              onAttributesChange={handleAttributesChange}
+              onPoolChange={handleAttributePoolChange}
+            />
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="step-content">
+            <h2>Talent Allocation</h2>
+            <p className="step-description">Choose your character's talents and abilities.</p>
+            {characterData.class && characterData.level ? (
+              <TalentAllocator
+                totalTalentPoints={totalTalentPoints}
+                allocatedTalents={characterData.talents || []}
+                allocatedAttributes={characterData.attributes || []}
+                onTalentsChange={handleTalentsChange}
+              />
+            ) : (
+              <div className="warning-message">
+                Please complete Step 1 (Basic Information) to configure talents.
+              </div>
+            )}
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className="step-content">
+            <h2>Review & Generate</h2>
+            <p className="step-description">Review your character and generate the PDF character sheet.</p>
+
+            <div className="review-section">
+              <h3>Character Summary</h3>
+              <div className="review-grid">
+                <div className="review-item">
+                  <span className="review-label">Name:</span>
+                  <span className="review-value">{characterData.characterName || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">Class:</span>
+                  <span className="review-value">{characterData.class || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">Level:</span>
+                  <span className="review-value">{characterData.level || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">Race:</span>
+                  <span className="review-value">{characterData.race || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">House:</span>
+                  <span className="review-value">{characterData.house || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">Faith:</span>
+                  <span className="review-value">{characterData.faith || '—'}</span>
+                </div>
+                <div className="review-item">
+                  <span className="review-label">Age:</span>
+                  <span className="review-value">{characterData.age || '—'}</span>
+                </div>
+              </div>
+
+              {characterData.racialPerks && characterData.racialPerks.length > 0 && (
+                <>
+                  <h3>Racial Perks</h3>
+                  <div className="review-list">
+                    {characterData.racialPerks.map((perk, idx) => (
+                      <div key={idx} className="review-list-item">
+                        <span>{perk}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {characterData.attributes && characterData.attributes.length > 0 && (
+                <>
+                  <h3>Attributes</h3>
+                  <div className="review-list">
+                    {characterData.attributes.map((attr, idx) => (
+                      <div key={idx} className="review-list-item">
+                        <span>{attr.name}:</span>
+                        <span>{attr.points}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {characterData.talents && characterData.talents.length > 0 && (
+                <>
+                  <h3>Talents</h3>
+                  <div className="review-list">
+                    {characterData.talents.map((talent, idx) => (
+                      <div key={idx} className="review-list-item">
+                        <span>{talent.name}:</span>
+                        <span>{talent.points}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="character-creator">
       <h1 style={{ color: '#cbd5e1'}}>Athia Character Creator</h1>
 
+      {/* Progress indicator */}
+      <div className="wizard-progress">
+        <div className={`progress-step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
+          <div className="progress-circle">1</div>
+          <div className="progress-label">Basic Info</div>
+        </div>
+        <div className="progress-line"></div>
+        <div className={`progress-step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
+          <div className="progress-circle">2</div>
+          <div className="progress-label">Perks</div>
+        </div>
+        <div className="progress-line"></div>
+        <div className={`progress-step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}`}>
+          <div className="progress-circle">3</div>
+          <div className="progress-label">Attributes</div>
+        </div>
+        <div className="progress-line"></div>
+        <div className={`progress-step ${currentStep >= 4 ? 'active' : ''} ${currentStep > 4 ? 'completed' : ''}`}>
+          <div className="progress-circle">4</div>
+          <div className="progress-label">Talents</div>
+        </div>
+        <div className="progress-line"></div>
+        <div className={`progress-step ${currentStep >= 5 ? 'active' : ''}`}>
+          <div className="progress-circle">5</div>
+          <div className="progress-label">Review</div>
+        </div>
+      </div>
+
       <div className="creator-layout">
-        <form className="character-form" onSubmit={(e) => e.preventDefault()}>
-        <div className="form-group">
-          <label htmlFor="characterName">
-            Character Name <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            id="characterName"
-            value={characterData.characterName}
-            onChange={(e) => handleInputChange('characterName', e.target.value)}
-            placeholder="Enter character name"
-            required
-          />
-        </div>
+        <div className="character-form">
+          {/* Step content */}
+          {renderStepContent()}
 
-        <div className="form-group">
-          <label htmlFor="class">
-            Class <span className="required">*</span>
-          </label>
-          <select
-            id="class"
-            value={characterData.class}
-            onChange={(e) => handleInputChange('class', e.target.value)}
-            required
-          >
-            <option value="">Select a class</option>
-            {CLASSES.map(cls => (
-              <option key={cls} value={cls}>{cls}</option>
-            ))}
-          </select>
-        </div>
+          {/* Error message */}
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
 
-        <div className="form-group">
-          <label htmlFor="level">Level</label>
-          <input
-            type="number"
-            id="level"
-            value={characterData.level}
-            onChange={(e) => handleInputChange('level', e.target.value)}
-            placeholder="Enter level"
-            min="1"
-          />
-        </div>
+          {/* Navigation buttons */}
+          <div className="wizard-navigation">
+            <button
+              type="button"
+              className="nav-button back-button"
+              onClick={handleBack}
+              disabled={currentStep === 1}
+            >
+              Back
+            </button>
 
-        <div className="form-group">
-          <label htmlFor="race">
-            Race <span className="required">*</span>
-          </label>
-          <select
-            id="race"
-            value={characterData.race}
-            onChange={(e) => handleInputChange('race', e.target.value)}
-            required
-          >
-            <option value="">Select a race</option>
-            {RACES.map(race => (
-              <option key={race} value={race}>{race}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="house">House</label>
-          <select
-            id="house"
-            value={characterData.house}
-            onChange={(e) => handleInputChange('house', e.target.value)}
-          >
-            <option value="">Select a house</option>
-            {HOUSES.map(house => (
-              <option key={house} value={house}>{house}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="faith">Faith</label>
-          <select
-            id="faith"
-            value={characterData.faith}
-            onChange={(e) => handleInputChange('faith', e.target.value)}
-          >
-            <option value="">Select a faith</option>
-            {FAITHS.map(faith => (
-              <option key={faith} value={faith}>{faith}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="age">Age</label>
-          <input
-            type="number"
-            id="age"
-            value={characterData.age}
-            onChange={(e) => handleInputChange('age', e.target.value)}
-            placeholder="Enter age"
-            min="1"
-          />
-        </div>
-
-        {/* Attribute Allocation */}
-        <div className="form-section">
-          <AttributeAllocator
-            attributePool={totalAttributePool}
-            allocatedAttributes={characterData.attributes || []}
-            onAttributesChange={handleAttributesChange}
-            onPoolChange={handleAttributePoolChange}
-          />
-        </div>
-
-        {/* Talent Point Allocation */}
-        {characterData.class && characterData.level && (
-          <div className="form-section">
-            <TalentAllocator
-              totalTalentPoints={totalTalentPoints}
-              allocatedTalents={characterData.talents || []}
-              allocatedAttributes={characterData.attributes || []}
-              onTalentsChange={handleTalentsChange}
-            />
+            {currentStep < 5 ? (
+              <button
+                type="button"
+                className="nav-button next-button"
+                onClick={handleNext}
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="generate-button"
+                onClick={handleGenerateCharacter}
+                disabled={isGenerating}
+              >
+                {isGenerating ? 'Generating...' : 'Generate Character Sheet'}
+              </button>
+            )}
           </div>
-        )}
-
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
-
-        <button
-          type="button"
-          className="generate-button"
-          onClick={handleGenerateCharacter}
-          disabled={isGenerating}
-        >
-          {isGenerating ? 'Generating...' : 'Generate Character Sheet'}
-        </button>
-      </form>
+        </div>
 
         {/* Right sidebar: Helper text area */}
         <aside className="helper-sidebar">
@@ -291,14 +525,6 @@ export function CharacterCreator() {
             )}
           </div>
         </aside>
-      </div>
-
-      <div className="help-text">
-        <p>
-          <strong>Note:</strong> This is a basic character sheet generator.
-          Fill in the basic information above and click "Generate Character Sheet"
-          to download a PDF with your character details.
-        </p>
       </div>
 
       {/* Layer 2: Detailed info modal */}

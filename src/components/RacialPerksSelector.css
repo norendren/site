@@ -1,0 +1,215 @@
+.racial-perks-selector {
+  width: 100%;
+  max-width: 100%;
+}
+
+.perks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #9fa8da;
+}
+
+.perks-header h3 {
+  margin: 0;
+  color: #3949ab;
+  font-size: 1.25rem;
+}
+
+.perks-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-size: 1rem;
+}
+
+.selected-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #5e35b1;
+}
+
+.selected-count.complete {
+  color: #2e7d32;
+}
+
+.perks-counter .separator {
+  color: #616161;
+  font-weight: 400;
+}
+
+.perks-counter .total-count {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #424242;
+}
+
+.perks-counter .label {
+  margin-left: 0.5rem;
+  color: #616161;
+  font-size: 0.875rem;
+}
+
+.perks-instruction {
+  background: #e3f2fd;
+  border-left: 4px solid #1976d2;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  color: #0d47a1;
+  font-size: 0.95rem;
+  border-radius: 4px;
+}
+
+.perks-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.perk-card {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.perk-card:hover:not(.disabled) {
+  border-color: #7986cb;
+  box-shadow: 0 2px 8px rgba(57, 73, 171, 0.15);
+  transform: translateY(-1px);
+}
+
+.perk-card.selected {
+  background: #e8eaf6;
+  border-color: #5e35b1;
+  border-width: 2px;
+}
+
+.perk-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.perk-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.perk-checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #9fa8da;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.perk-card.selected .perk-checkbox {
+  background: #5e35b1;
+  border-color: #5e35b1;
+}
+
+.perk-checkbox .checkmark {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.perk-title {
+  flex: 1;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 1.05rem;
+}
+
+.perk-card.selected .perk-title {
+  color: #5e35b1;
+}
+
+.perk-expand-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #9fa8da;
+  background: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #3949ab;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.perk-expand-btn:hover {
+  background: #e8eaf6;
+  border-color: #5e35b1;
+}
+
+.perk-summary {
+  color: #2c2c2c;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-left: 2.5rem;
+  max-height: 3rem;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.perk-summary.expanded {
+  max-height: 10rem;
+}
+
+.perks-warning {
+  background: #fff3e0;
+  border-left: 4px solid #f57c00;
+  padding: 0.75rem 1rem;
+  color: #e65100;
+  font-weight: 500;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.warning-message,
+.error-message {
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.warning-message {
+  background: #fff3e0;
+  border: 1px solid #ffb74d;
+  color: #e65100;
+}
+
+.error-message {
+  background: #ffebee;
+  border: 1px solid #e57373;
+  color: #c62828;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .perks-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .perk-summary {
+    padding-left: 0;
+  }
+}

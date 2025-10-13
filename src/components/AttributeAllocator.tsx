@@ -114,15 +114,15 @@ export function AttributeAllocator({
           <span className="total">{attributePool}</span>
           <span className="label">Points Remaining</span>
         </div>
-        {remaining !== 0 && (
-          <div className="pool-warning">
-            {remaining > 0 ? (
-              <span className="warning-text">⚠ You have {remaining} unspent point{remaining !== 1 ? 's' : ''}</span>
-            ) : (
-              <span className="error-text">❌ You are over by {Math.abs(remaining)} point{Math.abs(remaining) !== 1 ? 's' : ''}</span>
-            )}
-          </div>
-        )}
+        <div className="pool-warning">
+          {remaining > 0 ? (
+            <span className="warning-text">⚠ You have {remaining} unspent point{remaining !== 1 ? 's' : ''}</span>
+          ) : remaining < 0 ? (
+            <span className="error-text">❌ You are over by {Math.abs(remaining)} point{Math.abs(remaining) !== 1 ? 's' : ''}</span>
+          ) : (
+            <span className="success-text" style={{ visibility: 'hidden' }}>✓ All points allocated</span>
+          )}
+        </div>
       </div>
 
       <div className="attribute-list">

@@ -1,7 +1,7 @@
 import { PDFDocument, rgb } from 'pdf-lib';
 import { TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier, getClassHealthBonuses } from './classReference';
 import type { TalentName } from './classReference';
-import { getRaceHealthBonuses } from './raceReference';
+import { getRaceHealthBonuses, getRacePerks } from './raceReference';
 
 export interface TalentAllocation {
   name: string;
@@ -21,6 +21,7 @@ export interface BasicCharacterData {
   house: string;
   faith: string;
   age: string;
+  racialPerks?: string[]; // Array of 2 selected racial perk names
   talents?: TalentAllocation[];
   attributes?: AttributeAllocation[];
 }
@@ -35,7 +36,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -71,6 +72,12 @@ const HEALTH_MAX_X = 530; // X position for health maximum values
 const HEALTH_FATIGUED_Y = 620; // Y position for Fatigued max
 const HEALTH_BATTERED_Y = 592; // Y position for Battered max
 const HEALTH_INJURED_Y = 565; // Y position for Injured max
+
+// Racial perks coordinates (placeholder - adjust as needed)
+const RACIAL_PERKS_START_X = 94; // X position for racial perk text (left side)
+const RACIAL_PERKS_START_Y = 462; // Y position for first racial perk
+const RACIAL_PERKS_LINE_HEIGHT = 14; // Space between perk name and description
+const RACIAL_PERKS_PERK_SPACING = 36; // Space between perks
 
 // Define the exact order of talent names
 const TALENT_NAMES = [
@@ -168,6 +175,11 @@ export async function fillCharacterSheet(
     // Draw health tier maximums (Fatigued, Battered, Injured)
     if (characterData.class && characterData.race) {
       drawHealthMaximums(firstPage, characterData, font);
+    }
+
+    // Draw racial perks if selected
+    if (characterData.racialPerks && characterData.racialPerks.length > 0 && characterData.race) {
+      drawRacialPerks(firstPage, characterData, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -396,6 +408,59 @@ function drawAttributeValues(page: any, attributes: AttributeAllocation[], font:
       font: font,
       bold: true,
       color: rgb(0, 0, 0),
+    });
+  });
+}
+
+/**
+ * Draws racial perks on the PDF
+ * Shows the perk name and its mechanical summary for each selected perk
+ *
+ * @param page - PDF page to draw on
+ * @param characterData - Character data including race and selected perks
+ * @param font - Font to use for rendering
+ */
+function drawRacialPerks(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  // Get all available perks for this race
+  const availablePerks = getRacePerks(characterData.race);
+
+  if (!availablePerks || availablePerks.length === 0) {
+    console.warn(`No perks found for race: ${characterData.race}`);
+    return;
+  }
+
+  // Get the full perk details for selected perks
+  const selectedPerkDetails = (characterData.racialPerks || [])
+    .map(perkName => availablePerks.find(p => p.name === perkName))
+    .filter(Boolean); // Remove any undefined values
+
+  // Draw each perk
+  selectedPerkDetails.forEach((perk, index) => {
+    if (!perk) return;
+
+    // Calculate Y position for this perk
+    const yPosition = RACIAL_PERKS_START_Y - (index * RACIAL_PERKS_PERK_SPACING);
+
+    // Draw perk name (bold/larger)
+    page.drawText(perk.name, {
+      x: RACIAL_PERKS_START_X,
+      y: yPosition,
+      size: 10,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+
+    // Draw mechanical summary (smaller, indented slightly)
+    page.drawText(perk.mechanicalSummary, {
+      x: RACIAL_PERKS_START_X + 10,
+      y: yPosition - RACIAL_PERKS_LINE_HEIGHT,
+      size: 8,
+      font: font,
+      color: rgb(0.2, 0.2, 0.2),
     });
   });
 }
