@@ -1,7 +1,12 @@
 import { PDFDocument, rgb } from 'pdf-lib';
 import { TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier, getClassHealthBonuses } from './classReference';
 import type { TalentName } from './classReference';
-import { getRaceHealthBonuses, getRacePerks } from './raceReference';
+import { getRaceHealthBonuses, getRacePerks, calculateHealthTierBonuses } from './raceReference';
+import type {
+  ArcaneAptitudeAllocation,
+  RogueSpecialtySelection,
+  WarriorStyleSelection,
+} from './classSpecialties';
 
 export interface TalentAllocation {
   name: string;
@@ -24,6 +29,11 @@ export interface BasicCharacterData {
   racialPerks?: string[]; // Array of 2 selected racial perk names
   talents?: TalentAllocation[];
   attributes?: AttributeAllocation[];
+  // Class-specific specialties
+  arcaneAllocations?: ArcaneAptitudeAllocation[]; // Mage only
+  rogueSpecialties?: RogueSpecialtySelection[]; // Rogue only
+  warriorStyles?: WarriorStyleSelection[]; // Warrior only
+  // Acolyte Bless is auto-calculated from level, no storage needed
 }
 
 // Coordinate mappings for where to place text on the PDF
@@ -296,7 +306,7 @@ function drawTalentTotals(
 
 /**
  * Calculates and draws maximum health values for each tier
- * Formula: Health Max = Race Bonus + CON Modifier + Class Bonus
+ * Formula: Health Max = Race Bonus + CON Modifier + Class Bonus + Perk Bonus
  *
  * @param page - PDF page to draw on
  * @param characterData - Character data including class, race, level, and attributes
@@ -329,10 +339,15 @@ function drawHealthMaximums(
   });
   const conModifier = attributeMap.get('CON') ?? 0;
 
-  // Calculate maximums
-  const fatigued = raceHealthBonuses.fatigued + conModifier + classHealthBonuses.fatigued;
-  const battered = raceHealthBonuses.battered + conModifier + classHealthBonuses.battered;
-  const injured = raceHealthBonuses.injured + conModifier + classHealthBonuses.injured;
+  // Get perk bonuses (e.g., Dwarf "Hardy" = +1 Injured per level, Human "Resilient" = +1 Fatigued per level)
+  const perkHealthBonuses = characterData.racialPerks && characterData.racialPerks.length > 0
+    ? calculateHealthTierBonuses(characterData.race, characterData.racialPerks, level)
+    : { fatigued: 0, battered: 0, injured: 0 };
+
+  // Calculate maximums (now includes perk bonuses)
+  const fatigued = raceHealthBonuses.fatigued + conModifier + classHealthBonuses.fatigued + perkHealthBonuses.fatigued;
+  const battered = raceHealthBonuses.battered + conModifier + classHealthBonuses.battered + perkHealthBonuses.battered;
+  const injured = raceHealthBonuses.injured + conModifier + classHealthBonuses.injured + perkHealthBonuses.injured;
 
   // Draw Fatigued max
   page.drawText(fatigued.toString(), {

@@ -21,9 +21,11 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
   - Physical traits (height, weight, lifespan)
   - Health tier bonuses (Fatigued, Battered, Injured)
   - All racial perks with concise mechanical summaries
-  - Ready for Perks section UI integration
+  - **Racial perk selection UI** (choose 2 perks per character)
+  - **Formalized mechanical effects system** with typed effect data structures
+  - **Utility functions for calculating perk bonuses** (derived stats, health, talent points, etc.)
 - **Health calculation system** (Fatigued, Battered, Injured maximums)
-  - Formula: Health Max = Race Bonus + CON Modifier + Class Bonus
+  - Formula: Health Max = Race Bonus + CON Modifier + Class Bonus (+ Perk Bonuses ready)
   - Automatic calculation and PDF rendering
   - Current values left blank for player tracking
 - **Educational helper text system** (Layer 1: inline preview, Layer 2: detailed modal)
@@ -37,11 +39,14 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 - Adding validation for talent point limits at character creation (max 3 points per talent)
 
 ### What's Next 📋
-- Implement racial perk selection UI (choose 2 perks per character)
+- **Apply racial perk bonuses to calculations** (integrate bonus functions into character creator)
+  - Add talent point bonuses from perks like "Sharp" (+4 points)
+  - Add health tier bonuses from perks like "Hardy" and "Resilient"
+  - Add derived stat bonuses to final totals (Daring, Stamina, Favor, Mana)
 - Extend helper text to races and talents
 - Implement class abilities bonuses to talent scores
-- Apply racial perk bonuses to talent scores
 - Add remaining derived stats (Defense, Daring, Stamina, etc.)
+- Calculate and display base movement (accounting for "Fast" perk)
 
 ---
 
@@ -320,9 +325,46 @@ TalentAllocation {
   - Example: "Advantage on Hit Check and Damage vs Savage family creatures"
   - Ready for integration into Perks section UI and talent score calculations
 **Future Use**:
-- Perks selection UI component
+- Perks selection UI component (✓ IMPLEMENTED)
 - Racial perk bonuses to talent scores (part of formula: Points + Attribute + Abilities + Racial Perks)
 - Race comparison/educational tooltips
+
+### Racial Perk Mechanical Effects System Architecture
+**Decision**: Formalize perk effects using typed data structures instead of text-only descriptions
+**Why**: Enable automatic calculation of bonuses, prevent errors, make effects queryable and type-safe
+**Implementation**:
+- Each `RacialPerk` includes an `effects` array of typed `PerkEffect` objects
+- 10 effect types covering all mechanical impacts:
+  1. **DerivedStatEffect**: Bonuses to daring, stamina, favor, mana, defense (flat or per-level)
+  2. **TalentPointsEffect**: Additional talent points at character creation
+  3. **HealthTierEffect**: Bonus health per level for specific tier
+  4. **AttributeMaxModifierEffect**: Raises attribute cap from +3 to +4
+  5. **MovementEffect**: Changes base movement speed (20' → 30')
+  6. **TalentAdvantageEffect**: Grants advantage on specific talent checks
+  7. **DamageReductionEffect**: DR from arcane spells or physical attacks
+  8. **ProficiencyEffect**: Weapon, armor, or shield proficiencies
+  9. **CombatAdvantageEffect**: Advantage on hit/damage vs specific targets
+  10. **AbilityEffect**: Descriptive abilities (immunities, special mechanics)
+- Utility functions for calculating bonuses:
+  - `calculateDerivedStatBonuses()`: Total bonuses to all derived stats
+  - `calculateHealthTierBonuses()`: Health tier bonuses from perks
+  - `calculateTalentPointBonus()`: Bonus talent points (e.g., Human "Sharp" = +4)
+  - `getTalentsWithAdvantage()`: List of talents with advantage
+  - `getBaseMovement()`: Modified base movement speed
+  - `getProficiencies()`: All weapon/armor/shield proficiencies
+  - `getAttributeMaxModifiers()`: Attributes with raised caps
+  - `getAbilityDescriptions()`: Descriptive special abilities
+**Examples**:
+- Human "Courageous": `{ type: 'derivedStat', stat: 'daring', value: 1 }`
+- Human "Forceful": `{ type: 'derivedStat', stat: 'stamina', value: 1, perLevel: true }`
+- Bantam "Nimble": `{ type: 'attributeMaxModifier', attribute: 'DEX', maxValue: 4 }`
+- Dwarf "Hardy": `{ type: 'healthTier', tier: 'injured', value: 1, perLevel: true }`
+**Benefits**:
+- Type-safe: TypeScript catches errors at compile time
+- Queryable: Easy to filter effects by type
+- Testable: Pure functions make testing straightforward
+- Scalable: Adding new effect types doesn't break existing code
+- DRY: Calculation logic in one place, not scattered across components
 
 ### Health Calculation System Architecture
 **Decision**: Calculate maximum health tier values from three sources (Race + CON + Class)
@@ -488,5 +530,5 @@ npm run dev
 
 ---
 
-*Last Updated: 2025-10-11*
-*Current Focus: Fixed attribute pool progression. Attribute pool now correctly includes level-based bonuses (base pool + attribute bonus from class level). Level 2+ characters now get additional attribute points to allocate.*
+*Last Updated: 2025-10-13*
+*Current Focus: Implemented formalized racial perk mechanical effects system. All 84 racial perks across 7 races now have typed effect data structures (10 effect types) enabling automatic calculation of bonuses. Created utility functions for calculating derived stats, health tiers, talent points, proficiencies, and more from selected perks. Ready to integrate perk bonuses into character totals.*

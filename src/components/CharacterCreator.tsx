@@ -9,9 +9,16 @@ import {
   WARRIOR_PROGRESSION,
   getAttributeBonus
 } from '../utils/classReference';
+import { calculateTalentPointBonus } from '../utils/raceReference';
+import type {
+  ArcaneAptitudeAllocation,
+  RogueSpecialtySelection,
+  WarriorStyleSelection,
+} from '../utils/classSpecialties';
 import { TalentAllocator } from './TalentAllocator';
 import { AttributeAllocator } from './AttributeAllocator';
 import { RacialPerksSelector } from './RacialPerksSelector';
+import { ClassSpecialtySelector } from './ClassSpecialtySelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import './CharacterCreator.css';
@@ -29,6 +36,9 @@ export function CharacterCreator() {
     racialPerks: [],
     talents: [],
     attributes: [],
+    arcaneAllocations: [],
+    rogueSpecialties: [],
+    warriorStyles: [],
   });
   const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
   const [isGenerating, setIsGenerating] = useState(false);
@@ -45,7 +55,7 @@ export function CharacterCreator() {
     return baseAttributePool + levelBonus;
   }, [characterData.class, characterData.level, baseAttributePool]);
 
-  // Calculate total talent points based on class and level
+  // Calculate total talent points based on class and level + racial perk bonuses
   const totalTalentPoints = useMemo(() => {
     const level = parseInt(characterData.level) || 1;
     const className = characterData.class;
@@ -71,8 +81,15 @@ export function CharacterCreator() {
     }
 
     const levelData = progression[level - 1];
-    return levelData?.talentPoints || 10;
-  }, [characterData.class, characterData.level]);
+    const baseTalentPoints = levelData?.talentPoints || 10;
+
+    // Add bonus talent points from racial perks (e.g., Human "Sharp" = +4)
+    const perkBonus = characterData.race && characterData.racialPerks
+      ? calculateTalentPointBonus(characterData.race, characterData.racialPerks)
+      : 0;
+
+    return baseTalentPoints + perkBonus;
+  }, [characterData.class, characterData.level, characterData.race, characterData.racialPerks]);
 
   const handleInputChange = (field: keyof BasicCharacterData, value: string) => {
     setCharacterData(prev => ({
@@ -106,6 +123,27 @@ export function CharacterCreator() {
     }));
   };
 
+  const handleArcaneAllocationsChange = (arcaneAllocations: ArcaneAptitudeAllocation[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      arcaneAllocations,
+    }));
+  };
+
+  const handleRogueSpecialtiesChange = (rogueSpecialties: RogueSpecialtySelection[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      rogueSpecialties,
+    }));
+  };
+
+  const handleWarriorStylesChange = (warriorStyles: WarriorStyleSelection[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      warriorStyles,
+    }));
+  };
+
   const validateStep = (step: number): boolean => {
     setError(null);
 
@@ -132,9 +170,12 @@ export function CharacterCreator() {
         }
         return true;
       case 3:
-        // Attribute validation - optional for now
+        // Class specialties validation - optional for now
         return true;
       case 4:
+        // Attribute validation - optional for now
+        return true;
+      case 5:
         // Talent validation - optional for now
         return true;
       default:
@@ -144,7 +185,7 @@ export function CharacterCreator() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 5));
+      setCurrentStep(prev => Math.min(prev + 1, 6));
     }
   };
 
@@ -312,6 +353,30 @@ export function CharacterCreator() {
       case 3:
         return (
           <div className="step-content">
+            <h2>Class Specialty: {characterData.class}</h2>
+            <p className="step-description">Configure your class-specific abilities and specializations.</p>
+            {characterData.class && characterData.level ? (
+              <ClassSpecialtySelector
+                className={characterData.class}
+                level={parseInt(characterData.level) || 1}
+                arcaneAllocations={characterData.arcaneAllocations}
+                onArcaneChange={handleArcaneAllocationsChange}
+                rogueSpecialties={characterData.rogueSpecialties}
+                onRogueSpecialtiesChange={handleRogueSpecialtiesChange}
+                warriorStyles={characterData.warriorStyles}
+                onWarriorStylesChange={handleWarriorStylesChange}
+              />
+            ) : (
+              <div className="warning-message">
+                Please complete Step 1 (Basic Information) to configure class specialties.
+              </div>
+            )}
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="step-content">
             <h2>Attribute Allocation</h2>
             <p className="step-description">Distribute your attribute points across your character's core stats. The total of all the attributes must not exceed the pool decided by the GM. Default is +2 for "Young Heroes"</p>
             <AttributeAllocator
@@ -323,7 +388,7 @@ export function CharacterCreator() {
           </div>
         );
 
-      case 4:
+      case 5:
         return (
           <div className="step-content">
             <h2>Talent Allocation</h2>
@@ -343,7 +408,7 @@ export function CharacterCreator() {
           </div>
         );
 
-      case 5:
+      case 6:
         return (
           <div className="step-content">
             <h2>Review & Generate</h2>
@@ -449,16 +514,21 @@ export function CharacterCreator() {
         <div className="progress-line"></div>
         <div className={`progress-step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}`}>
           <div className="progress-circle">3</div>
-          <div className="progress-label">Attributes</div>
+          <div className="progress-label">Class</div>
         </div>
         <div className="progress-line"></div>
         <div className={`progress-step ${currentStep >= 4 ? 'active' : ''} ${currentStep > 4 ? 'completed' : ''}`}>
           <div className="progress-circle">4</div>
+          <div className="progress-label">Attributes</div>
+        </div>
+        <div className="progress-line"></div>
+        <div className={`progress-step ${currentStep >= 5 ? 'active' : ''} ${currentStep > 5 ? 'completed' : ''}`}>
+          <div className="progress-circle">5</div>
           <div className="progress-label">Talents</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 5 ? 'active' : ''}`}>
-          <div className="progress-circle">5</div>
+        <div className={`progress-step ${currentStep >= 6 ? 'active' : ''}`}>
+          <div className="progress-circle">6</div>
           <div className="progress-label">Review</div>
         </div>
       </div>
@@ -486,7 +556,7 @@ export function CharacterCreator() {
               Back
             </button>
 
-            {currentStep < 5 ? (
+            {currentStep < 6 ? (
               <button
                 type="button"
                 className="nav-button next-button"
