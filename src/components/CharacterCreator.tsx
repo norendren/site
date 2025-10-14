@@ -21,6 +21,7 @@ import { RacialPerksSelector } from './RacialPerksSelector';
 import { ClassSpecialtySelector } from './ClassSpecialtySelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
+import { DerivedStatsDisplay } from './DerivedStatsDisplay';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
@@ -486,6 +487,17 @@ export function CharacterCreator() {
                     ))}
                   </div>
                 </>
+              )}
+
+              {/* Show derived stats if class, race, and attributes are set */}
+              {characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0 && (
+                <DerivedStatsDisplay
+                  className={characterData.class}
+                  level={parseInt(characterData.level) || 1}
+                  raceName={characterData.race}
+                  selectedPerks={characterData.racialPerks || []}
+                  attributes={characterData.attributes}
+                />
               )}
             </div>
           </div>

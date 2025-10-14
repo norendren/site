@@ -2,9 +2,8 @@ Please read the following context files to understand the project:
 
 1. `.context/PROJECT_CONTEXT.md` - Main project overview, current status, architecture, design system, and key decisions
 2. `.context/CHARACTER_DATA_ARCHITECTURE.md` - Data structure design and implementation approach
-3. `.context/ATHIA_SETUP.md` - Initial setup notes and game system overview
-4. `.context/PDF_COORDINATE_TRACKING.md` - PDF field coordinate mappings
-5. `.context/ATHIA_RACES_CLASSES.md` - Game content reference for races and classes
+3. `.context/PDF_COORDINATE_TRACKING.md` - PDF field coordinate mappings
+4. `.context/ATHIA_RACES_CLASSES.md` - Game content reference for races and classes
 
 After reading these files, provide a brief summary of:
 - Current project status and what's working

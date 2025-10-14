@@ -35,18 +35,25 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 - Class progression tracking using arithmetic progression (base + increment × (level - 1))
 
 ### What's In Progress 🚧
-- Testing and refining PDF coordinate accuracy for talent totals
+- Testing and refining PDF coordinate accuracy for derived stats
 - Adding validation for talent point limits at character creation (max 3 points per talent)
 
+### Recently Completed ✨ (2025-10-14)
+- **Integrated all racial perk bonuses into character calculations**
+  - ✅ Talent point bonuses (e.g., Human "Sharp" +4 points) - working in talent pool
+  - ✅ Health tier bonuses (e.g., Dwarf "Hardy" +1 Injured/level) - working in health calculation
+  - ✅ Derived stat bonuses (e.g., Human "Courageous" +1 Daring) - working in new derived stats system
+  - ✅ Created `derivedStats.ts` utility with formulas for Defense, Daring, Stamina, Mana, Favor
+  - ✅ Added DerivedStatsDisplay component showing calculated stats with perk bonuses
+  - ✅ Integrated derived stats into Review step and PDF generation
+  - ✅ All bonuses now automatically calculated and applied throughout the system
+
 ### What's Next 📋
-- **Apply racial perk bonuses to calculations** (integrate bonus functions into character creator)
-  - Add talent point bonuses from perks like "Sharp" (+4 points)
-  - Add health tier bonuses from perks like "Hardy" and "Resilient"
-  - Add derived stat bonuses to final totals (Daring, Stamina, Favor, Mana)
 - Extend helper text to races and talents
 - Implement class abilities bonuses to talent scores
-- Add remaining derived stats (Defense, Daring, Stamina, etc.)
-- Calculate and display base movement (accounting for "Fast" perk)
+- Add base movement display and calculation (accounting for "Fast" perk)
+- Add derived stat for Movement Speed
+- Test PDF coordinate accuracy for all newly added fields
 
 ---
 
@@ -213,10 +220,16 @@ border-left: 4px solid #2e7d32;
 ```
 src/
 ├── components/
-│   ├── CharacterCreator.tsx       # Main form component with two-column layout
+│   ├── CharacterCreator.tsx       # Main 6-step wizard component
 │   ├── CharacterCreator.css       # Form styling with grid layout
 │   ├── TalentAllocator.tsx        # Talent point distribution UI (0-6 points per talent)
 │   ├── TalentAllocator.css        # Talent bubble styling
+│   ├── AttributeAllocator.tsx     # Attribute pool allocation UI
+│   ├── RacialPerksSelector.tsx    # 2-perk selection with mechanical summaries
+│   ├── RacialPerksSelector.css    # Perk card styling
+│   ├── ClassSpecialtySelector.tsx # Router for class-specific components
+│   ├── DerivedStatsDisplay.tsx    # Calculated stats display with perk bonuses
+│   ├── DerivedStatsDisplay.css    # Derived stats styling
 │   ├── ClassInfoPreview.tsx       # Layer 1: Inline class summary on selection
 │   ├── ClassInfoPreview.css       # Preview card styling
 │   ├── ClassInfoPanel.tsx         # Layer 2: Detailed class modal
@@ -228,7 +241,9 @@ src/
 │   ├── pdfInspector.ts            # Dev tool for finding PDF coordinates
 │   ├── athiaConstants.ts          # Game data: CLASSES, RACES, HOUSES, FAITHS
 │   ├── classReference.ts          # Class progression with arithmetic formulas
-│   └── raceReference.ts           # Comprehensive race data: traits, health bonuses, perks
+│   ├── raceReference.ts           # Comprehensive race data: traits, health bonuses, perks
+│   ├── derivedStats.ts            # Derived stats calculator (Defense, Daring, Stamina, Mana, Favor)
+│   └── classSpecialties.ts        # Class specialty systems (Bless, Arcane, Rogue, Warrior)
 ├── pages/
 │   ├── CharacterGenerator.tsx     # Main page
 │   └── PDFInspector.tsx           # Coordinate mapping tool
@@ -530,5 +545,5 @@ npm run dev
 
 ---
 
-*Last Updated: 2025-10-13*
-*Current Focus: Implemented formalized racial perk mechanical effects system. All 84 racial perks across 7 races now have typed effect data structures (10 effect types) enabling automatic calculation of bonuses. Created utility functions for calculating derived stats, health tiers, talent points, proficiencies, and more from selected perks. Ready to integrate perk bonuses into character totals.*
+*Last Updated: 2025-10-14*
+*Current Focus: Racial perk bonus integration COMPLETE. All perk effects (talent points, health tiers, derived stats) are now automatically calculated and applied in both UI and PDF generation. Derived stats system (Defense, Daring, Stamina, Mana, Favor) fully implemented with perk bonuses integrated. Character creation system now has complete end-to-end perk bonus flow.*

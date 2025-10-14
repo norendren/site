@@ -2,6 +2,7 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import { TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier, getClassHealthBonuses } from './classReference';
 import type { TalentName } from './classReference';
 import { getRaceHealthBonuses, getRacePerks, calculateHealthTierBonuses } from './raceReference';
+import { calculateDerivedStats } from './derivedStats';
 import type {
   ArcaneAptitudeAllocation,
   RogueSpecialtySelection,
@@ -88,6 +89,15 @@ const RACIAL_PERKS_START_X = 94; // X position for racial perk text (left side)
 const RACIAL_PERKS_START_Y = 462; // Y position for first racial perk
 const RACIAL_PERKS_LINE_HEIGHT = 14; // Space between perk name and description
 const RACIAL_PERKS_PERK_SPACING = 36; // Space between perks
+
+// Derived stats coordinates (placeholders - adjust as needed)
+// These are positioned on the right side of the sheet, below health
+const DERIVED_STATS_X = 530; // X position for derived stat values
+const DEFENSE_Y = 535; // Y position for Defense
+const DARING_Y = 508; // Y position for Daring
+const STAMINA_Y = 481; // Y position for Stamina
+const MANA_Y = 454; // Y position for Mana (Mages only)
+const FAVOR_Y = 427; // Y position for Favor (Acolytes only)
 
 // Define the exact order of talent names
 const TALENT_NAMES = [
@@ -190,6 +200,11 @@ export async function fillCharacterSheet(
     // Draw racial perks if selected
     if (characterData.racialPerks && characterData.racialPerks.length > 0 && characterData.race) {
       drawRacialPerks(firstPage, characterData, font);
+    }
+
+    // Draw derived stats (Defense, Daring, Stamina, Mana, Favor)
+    if (characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0) {
+      drawDerivedStats(firstPage, characterData, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -478,6 +493,90 @@ function drawRacialPerks(
       color: rgb(0.2, 0.2, 0.2),
     });
   });
+}
+
+/**
+ * Draws derived stats (Aspects) on the PDF
+ * Calculates and displays Defense, Daring, Stamina, and class-specific stats (Mana/Favor)
+ *
+ * @param page - PDF page to draw on
+ * @param characterData - Character data including class, race, level, attributes, and perks
+ * @param font - Font to use for rendering
+ */
+function drawDerivedStats(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  // Need attributes to calculate derived stats
+  if (!characterData.attributes || characterData.attributes.length === 0) {
+    return;
+  }
+
+  // Convert attributes array to Map
+  const attributeMap = new Map<string, number>();
+  characterData.attributes.forEach(attr => {
+    attributeMap.set(attr.name, attr.points);
+  });
+
+  // Calculate derived stats
+  const level = parseInt(characterData.level) || 1;
+  const { stats } = calculateDerivedStats(
+    characterData.class,
+    level,
+    characterData.race,
+    characterData.racialPerks || [],
+    attributeMap
+  );
+
+  // Draw Defense
+  page.drawText(stats.defense.toString(), {
+    x: DERIVED_STATS_X,
+    y: DEFENSE_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw Daring
+  page.drawText(stats.daring.toString(), {
+    x: DERIVED_STATS_X,
+    y: DARING_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw Stamina
+  page.drawText(stats.stamina.toString(), {
+    x: DERIVED_STATS_X,
+    y: STAMINA_Y,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw Mana (Mages only)
+  if (characterData.class === 'Mage' && stats.mana > 0) {
+    page.drawText(stats.mana.toString(), {
+      x: DERIVED_STATS_X,
+      y: MANA_Y,
+      size: 12,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+  }
+
+  // Draw Favor (Acolytes only)
+  if (characterData.class === 'Acolyte' && stats.favor > 0) {
+    page.drawText(stats.favor.toString(), {
+      x: DERIVED_STATS_X,
+      y: FAVOR_Y,
+      size: 12,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+  }
 }
 
 /**
