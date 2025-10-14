@@ -5,7 +5,7 @@
  * Each art is modified by a specific attribute
  */
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   calculateMageAptitudePool,
   ARCANE_ARTS,

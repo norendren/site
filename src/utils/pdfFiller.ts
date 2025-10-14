@@ -46,7 +46,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },

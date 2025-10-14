@@ -12,7 +12,6 @@ import {
   ARCANE_ARTS,
   type RogueSpecialtySelection,
   type RogueSpecialtyType,
-  type RogueTalentBonus,
   type ArcaneArt,
 } from '../utils/classSpecialties';
 import './ClassSpecialty.css';

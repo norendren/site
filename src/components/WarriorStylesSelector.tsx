@@ -14,7 +14,6 @@ import {
   getNextStyleTier,
   type WarriorStyleSelection,
   type WarriorCombatStyle,
-  type CombatStyleTier,
 } from '../utils/classSpecialties';
 import './ClassSpecialty.css';
 
