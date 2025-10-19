@@ -18,7 +18,19 @@
       "Read(//boot/loader/entries/**)",
       "Read(//boot/grub2/**)",
       "Bash(sudo cat:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(lspci)",
+      "Bash(dmesg)",
+      "Bash(sudo dmesg -T)",
+      "Bash(cat /proc/sys/kernel/sysrq)",
+      "Read(//etc/sysctl.d/**)",
+      "Read(//etc/**)",
+      "Read(//usr/lib/sysctl.d/**)",
+      "Read(//var/log/**)",
+      "Bash(lscpu)",
+      "Bash([ -d /sys/firmware/efi ])",
+      "Bash(rpm -q memtest86+)",
+      "Read(//boot/**)"
     ],
     "deny": [],
     "ask": []

@@ -3,117 +3,22 @@
  * Includes health tier bonuses, physical traits, and all racial perks with mechanical summaries
  */
 
-// ===== MECHANICAL EFFECT TYPE DEFINITIONS =====
-
-/**
- * Effect that modifies a derived stat (Daring, Stamina, Favor, Mana, etc.)
- */
-export interface DerivedStatEffect {
-  type: 'derivedStat';
-  stat: 'daring' | 'stamina' | 'favor' | 'mana' | 'defense';
-  value: number; // flat bonus
-  perLevel?: boolean; // if true, multiply by character level
-}
-
-/**
- * Effect that grants additional talent points at creation
- */
-export interface TalentPointsEffect {
-  type: 'talentPoints';
-  value: number;
-}
-
-/**
- * Effect that modifies health tier maximums
- */
-export interface HealthTierEffect {
-  type: 'healthTier';
-  tier: 'fatigued' | 'battered' | 'injured';
-  value: number; // bonus per level
-  perLevel: true; // always per level for health tiers
-}
-
-/**
- * Effect that raises the maximum modifier for an attribute
- */
-export interface AttributeMaxModifierEffect {
-  type: 'attributeMaxModifier';
-  attribute: 'STR' | 'DEX' | 'CON' | 'INS' | 'KNO' | 'VAL';
-  maxValue: number; // typically 4 (standard is 3)
-}
-
-/**
- * Effect that changes base movement speed
- */
-export interface MovementEffect {
-  type: 'movement';
-  baseMovement: number; // in feet, typically 30 (standard is 20)
-}
-
-/**
- * Effect that grants advantage on a specific talent check
- */
-export interface TalentAdvantageEffect {
-  type: 'talentAdvantage';
-  talent: string; // talent name (e.g., 'Stealth', 'Athletics')
-}
-
-/**
- * Effect that grants damage reduction
- */
-export interface DamageReductionEffect {
-  type: 'damageReduction';
-  source: 'arcaneSpells' | 'physicalAttacks';
-  value: 'characterLevel' | 'dexModifier'; // formula for DR
-}
-
-/**
- * Effect that grants weapon/armor proficiency
- */
-export interface ProficiencyEffect {
-  type: 'proficiency';
-  category: 'weapon' | 'armor' | 'shield';
-  items: string[]; // e.g., ['All Swords'] or ['Light', 'Medium', 'Heavy']
-}
-
-/**
- * Effect that grants a special ability (non-numeric, descriptive)
- */
-export interface AbilityEffect {
-  type: 'ability';
-  description: string;
-  // Optional: could add subcategories like 'immunity', 'advantage', 'special'
-}
-
-/**
- * Effect that grants advantage on hit checks or damage
- */
-export interface CombatAdvantageEffect {
-  type: 'combatAdvantage';
-  targetType: string; // e.g., 'Savage family creatures', 'engaged targets'
-  effect: 'hitCheck' | 'damage' | 'both';
-  bonus?: number; // optional flat bonus (e.g., +1 to hit checks)
-}
-
-/**
- * Union type for all possible perk effects
- */
-export type PerkEffect =
-  | DerivedStatEffect
-  | TalentPointsEffect
-  | HealthTierEffect
-  | AttributeMaxModifierEffect
-  | MovementEffect
-  | TalentAdvantageEffect
-  | DamageReductionEffect
-  | ProficiencyEffect
-  | AbilityEffect
-  | CombatAdvantageEffect;
+import type { Effect } from './effects';
+import {
+  aggregateDerivedStatBonuses,
+  aggregateHealthTierBonuses,
+  aggregateTalentPointBonus,
+  getTalentsWithAdvantage as getAdvantageTalents,
+  getBaseMovement as getMovementFromEffects,
+  aggregateProficiencies,
+  getAttributeMaxModifiers as getAttrMaxMods,
+  getAbilityDescriptions as getAbilities,
+} from './effects';
 
 export interface RacialPerk {
   name: string;
   mechanicalSummary: string; // Concise description of mechanical effects
-  effects: PerkEffect[]; // Typed mechanical effects for calculations
+  effects: Effect[]; // Typed mechanical effects for calculations
 }
 
 export interface RaceData {
@@ -855,8 +760,8 @@ export function getPerkByName(raceName: string, perkName: string): RacialPerk | 
 /**
  * Gets all effects from a list of selected perk names
  */
-export function getSelectedPerkEffects(raceName: string, selectedPerkNames: string[]): PerkEffect[] {
-  const effects: PerkEffect[] = [];
+export function getSelectedPerkEffects(raceName: string, selectedPerkNames: string[]): Effect[] {
+  const effects: Effect[] = [];
 
   for (const perkName of selectedPerkNames) {
     const perk = getPerkByName(raceName, perkName);
@@ -887,22 +792,7 @@ export function calculateDerivedStatBonuses(
   defense: number;
 } {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const bonuses = {
-    daring: 0,
-    stamina: 0,
-    favor: 0,
-    mana: 0,
-    defense: 0,
-  };
-
-  for (const effect of effects) {
-    if (effect.type === 'derivedStat') {
-      const value = effect.perLevel ? effect.value * characterLevel : effect.value;
-      bonuses[effect.stat] += value;
-    }
-  }
-
-  return bonuses;
+  return aggregateDerivedStatBonuses(effects, characterLevel);
 }
 
 /**
@@ -922,19 +812,7 @@ export function calculateHealthTierBonuses(
   injured: number;
 } {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const bonuses = {
-    fatigued: 0,
-    battered: 0,
-    injured: 0,
-  };
-
-  for (const effect of effects) {
-    if (effect.type === 'healthTier') {
-      bonuses[effect.tier] += effect.value * characterLevel;
-    }
-  }
-
-  return bonuses;
+  return aggregateHealthTierBonuses(effects, characterLevel);
 }
 
 /**
@@ -948,15 +826,7 @@ export function calculateTalentPointBonus(
   selectedPerkNames: string[]
 ): number {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  let bonus = 0;
-
-  for (const effect of effects) {
-    if (effect.type === 'talentPoints') {
-      bonus += effect.value;
-    }
-  }
-
-  return bonus;
+  return aggregateTalentPointBonus(effects);
 }
 
 /**
@@ -970,15 +840,7 @@ export function getTalentsWithAdvantage(
   selectedPerkNames: string[]
 ): string[] {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const talents: string[] = [];
-
-  for (const effect of effects) {
-    if (effect.type === 'talentAdvantage') {
-      talents.push(effect.talent);
-    }
-  }
-
-  return talents;
+  return getAdvantageTalents(effects);
 }
 
 /**
@@ -992,14 +854,7 @@ export function getBaseMovement(
   selectedPerkNames: string[]
 ): number {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-
-  for (const effect of effects) {
-    if (effect.type === 'movement') {
-      return effect.baseMovement;
-    }
-  }
-
-  return 20; // Default base movement
+  return getMovementFromEffects(effects);
 }
 
 /**
@@ -1017,25 +872,7 @@ export function getProficiencies(
   shields: string[];
 } {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const proficiencies = {
-    weapons: [] as string[],
-    armor: [] as string[],
-    shields: [] as string[],
-  };
-
-  for (const effect of effects) {
-    if (effect.type === 'proficiency') {
-      if (effect.category === 'weapon') {
-        proficiencies.weapons.push(...effect.items);
-      } else if (effect.category === 'armor') {
-        proficiencies.armor.push(...effect.items);
-      } else if (effect.category === 'shield') {
-        proficiencies.shields.push(...effect.items);
-      }
-    }
-  }
-
-  return proficiencies;
+  return aggregateProficiencies(effects);
 }
 
 /**
@@ -1049,15 +886,7 @@ export function getAttributeMaxModifiers(
   selectedPerkNames: string[]
 ): Record<string, number> {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const maxModifiers: Record<string, number> = {};
-
-  for (const effect of effects) {
-    if (effect.type === 'attributeMaxModifier') {
-      maxModifiers[effect.attribute] = effect.maxValue;
-    }
-  }
-
-  return maxModifiers;
+  return getAttrMaxMods(effects);
 }
 
 /**
@@ -1071,13 +900,5 @@ export function getAbilityDescriptions(
   selectedPerkNames: string[]
 ): string[] {
   const effects = getSelectedPerkEffects(raceName, selectedPerkNames);
-  const abilities: string[] = [];
-
-  for (const effect of effects) {
-    if (effect.type === 'ability') {
-      abilities.push(effect.description);
-    }
-  }
-
-  return abilities;
+  return getAbilities(effects);
 }

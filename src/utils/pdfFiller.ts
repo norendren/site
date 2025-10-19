@@ -1,13 +1,13 @@
 import { PDFDocument, rgb } from 'pdf-lib';
-import { TALENT_ATTRIBUTES, calculateTalentScore, getTalentAttributeModifier, getClassHealthBonuses } from './classReference';
+import { TALENT_ATTRIBUTES } from './classReference';
 import type { TalentName } from './classReference';
-import { getRaceHealthBonuses, getRacePerks, calculateHealthTierBonuses } from './raceReference';
-import { calculateDerivedStats } from './derivedStats';
+import { getRacePerks } from './raceReference';
 import type {
   ArcaneAptitudeAllocation,
   RogueSpecialtySelection,
   WarriorStyleSelection,
 } from './classSpecialties';
+import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 
 export interface TalentAllocation {
   name: string;
@@ -28,6 +28,7 @@ export interface BasicCharacterData {
   faith: string;
   age: string;
   racialPerks?: string[]; // Array of 2 selected racial perk names
+  abilities?: string[]; // Array of selected ability names
   talents?: TalentAllocation[];
   attributes?: AttributeAllocation[];
   // Class-specific specialties
@@ -47,7 +48,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -150,6 +151,9 @@ export async function fillCharacterSheet(
   pdfUrl: string,
   characterData: BasicCharacterData
 ): Promise<Uint8Array> {
+  // Calculate all character stats once upfront
+  const characterStats = calculateAllCharacterStats(characterData);
+
   // Load the existing PDF
   const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -186,15 +190,15 @@ export async function fillCharacterSheet(
       drawTalentBubbles(firstPage, characterData.talents);
     }
 
-    // Draw talent total scores (always draw for all talents)
-    drawTalentTotals(firstPage, characterData.talents || [], characterData.attributes || [], font);
+    // Draw talent total scores (now uses pre-computed stats)
+    drawTalentTotals(firstPage, characterStats, font);
 
     // Draw attribute values as text (always draw all 6 attributes, defaulting to 0)
     drawAttributeValues(firstPage, characterData.attributes || [], font);
 
-    // Draw health tier maximums (Fatigued, Battered, Injured)
+    // Draw health tier maximums (now uses pre-computed stats)
     if (characterData.class && characterData.race) {
-      drawHealthMaximums(firstPage, characterData, font);
+      drawHealthMaximums(firstPage, characterStats, font);
     }
 
     // Draw racial perks if selected
@@ -202,9 +206,9 @@ export async function fillCharacterSheet(
       drawRacialPerks(firstPage, characterData, font);
     }
 
-    // Draw derived stats (Defense, Daring, Stamina, Mana, Favor)
+    // Draw derived stats (now uses pre-computed stats)
     if (characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0) {
-      drawDerivedStats(firstPage, characterData, font);
+      drawDerivedStats(firstPage, characterData.class, characterStats, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -263,8 +267,7 @@ function drawTalentBubbles(page: any, talents: TalentAllocation[]): void {
 
 /**
  * Draws talent total scores as text on the PDF
- * For each talent, calculates: Talent Points + Attribute Modifier + Abilities + Racial Perks
- * Currently only includes Talent Points + Attribute Modifier (abilities and racial perks not yet implemented)
+ * Uses pre-computed talent scores from CharacterStats
  *
  * The system works as follows:
  * 1. Each talent has a fixed Y position based on its index in TALENT_NAMES
@@ -273,19 +276,13 @@ function drawTalentBubbles(page: any, talents: TalentAllocation[]): void {
  */
 function drawTalentTotals(
   page: any,
-  talents: TalentAllocation[],
-  attributes: AttributeAllocation[],
+  characterStats: CharacterStats,
   font: any
 ): void {
-  // Create maps for quick lookup
-  const talentMap = new Map<string, number>();
-  talents.forEach(talent => {
-    talentMap.set(talent.name, talent.points);
-  });
-
-  const attributeMap = new Map<string, number>();
-  attributes.forEach(attr => {
-    attributeMap.set(attr.name, attr.points);
+  // Create a map of talent scores for quick lookup
+  const talentScoreMap = new Map<string, number>();
+  characterStats.talents.forEach(talent => {
+    talentScoreMap.set(talent.name, talent.total);
   });
 
   // Draw total for each talent in the list
@@ -293,14 +290,8 @@ function drawTalentTotals(
     // Extract talent name (e.g., "Athletics" from "Athletics (STR)")
     const talentName = fullTalentKey.split(' (')[0] as TalentName;
 
-    // Get talent points
-    const talentPoints = talentMap.get(talentName) ?? 0;
-
-    // Get attribute modifier
-    const attributeModifier = getTalentAttributeModifier(talentName, attributeMap);
-
-    // Calculate total score (abilities and racial perks are 0 for now)
-    const totalScore = calculateTalentScore(talentPoints, attributeModifier, 0, 0);
+    // Get the pre-computed total score
+    const totalScore = talentScoreMap.get(talentName) ?? 0;
 
     // Calculate Y position based on talent index, applying the vertical offset
     const y = TALENT_START_Y - (index * TALENT_Y_STEP) + TALENT_TOTAL_Y_OFFSET;
@@ -320,52 +311,19 @@ function drawTalentTotals(
 }
 
 /**
- * Calculates and draws maximum health values for each tier
- * Formula: Health Max = Race Bonus + CON Modifier + Class Bonus + Perk Bonus
+ * Draws maximum health values for each tier using pre-computed stats
  *
  * @param page - PDF page to draw on
- * @param characterData - Character data including class, race, level, and attributes
+ * @param characterStats - Pre-computed character statistics
  * @param font - Font to use for rendering
  */
 function drawHealthMaximums(
   page: any,
-  characterData: BasicCharacterData,
+  characterStats: CharacterStats,
   font: any
 ): void {
-  // Get race bonuses
-  const raceHealthBonuses = getRaceHealthBonuses(characterData.race);
-  if (!raceHealthBonuses) {
-    console.warn(`No health bonuses found for race: ${characterData.race}`);
-    return;
-  }
-
-  // Get class bonuses
-  const level = parseInt(characterData.level) || 1;
-  const classHealthBonuses = getClassHealthBonuses(characterData.class, level);
-  if (!classHealthBonuses) {
-    console.warn(`No health bonuses found for class: ${characterData.class} at level ${level}`);
-    return;
-  }
-
-  // Get CON modifier from attributes
-  const attributeMap = new Map<string, number>();
-  (characterData.attributes || []).forEach(attr => {
-    attributeMap.set(attr.name, attr.points);
-  });
-  const conModifier = attributeMap.get('CON') ?? 0;
-
-  // Get perk bonuses (e.g., Dwarf "Hardy" = +1 Injured per level, Human "Resilient" = +1 Fatigued per level)
-  const perkHealthBonuses = characterData.racialPerks && characterData.racialPerks.length > 0
-    ? calculateHealthTierBonuses(characterData.race, characterData.racialPerks, level)
-    : { fatigued: 0, battered: 0, injured: 0 };
-
-  // Calculate maximums (now includes perk bonuses)
-  const fatigued = raceHealthBonuses.fatigued + conModifier + classHealthBonuses.fatigued + perkHealthBonuses.fatigued;
-  const battered = raceHealthBonuses.battered + conModifier + classHealthBonuses.battered + perkHealthBonuses.battered;
-  const injured = raceHealthBonuses.injured + conModifier + classHealthBonuses.injured + perkHealthBonuses.injured;
-
   // Draw Fatigued max
-  page.drawText(fatigued.toString(), {
+  page.drawText(characterStats.health.fatigued.toString(), {
     x: HEALTH_MAX_X,
     y: HEALTH_FATIGUED_Y,
     size: 12,
@@ -374,7 +332,7 @@ function drawHealthMaximums(
   });
 
   // Draw Battered max
-  page.drawText(battered.toString(), {
+  page.drawText(characterStats.health.battered.toString(), {
     x: HEALTH_MAX_X,
     y: HEALTH_BATTERED_Y,
     size: 12,
@@ -383,7 +341,7 @@ function drawHealthMaximums(
   });
 
   // Draw Injured max
-  page.drawText(injured.toString(), {
+  page.drawText(characterStats.health.injured.toString(), {
     x: HEALTH_MAX_X,
     y: HEALTH_INJURED_Y,
     size: 12,
@@ -496,38 +454,21 @@ function drawRacialPerks(
 }
 
 /**
- * Draws derived stats (Aspects) on the PDF
- * Calculates and displays Defense, Daring, Stamina, and class-specific stats (Mana/Favor)
+ * Draws derived stats (Aspects) on the PDF using pre-computed stats
+ * Displays Defense, Daring, Stamina, and class-specific stats (Mana/Favor)
  *
  * @param page - PDF page to draw on
- * @param characterData - Character data including class, race, level, attributes, and perks
+ * @param className - Character class (for determining which stats to show)
+ * @param characterStats - Pre-computed character statistics
  * @param font - Font to use for rendering
  */
 function drawDerivedStats(
   page: any,
-  characterData: BasicCharacterData,
+  className: string,
+  characterStats: CharacterStats,
   font: any
 ): void {
-  // Need attributes to calculate derived stats
-  if (!characterData.attributes || characterData.attributes.length === 0) {
-    return;
-  }
-
-  // Convert attributes array to Map
-  const attributeMap = new Map<string, number>();
-  characterData.attributes.forEach(attr => {
-    attributeMap.set(attr.name, attr.points);
-  });
-
-  // Calculate derived stats
-  const level = parseInt(characterData.level) || 1;
-  const { stats } = calculateDerivedStats(
-    characterData.class,
-    level,
-    characterData.race,
-    characterData.racialPerks || [],
-    attributeMap
-  );
+  const stats = characterStats.derivedStats;
 
   // Draw Defense
   page.drawText(stats.defense.toString(), {
@@ -557,7 +498,7 @@ function drawDerivedStats(
   });
 
   // Draw Mana (Mages only)
-  if (characterData.class === 'Mage' && stats.mana > 0) {
+  if (className === 'Mage' && stats.mana > 0) {
     page.drawText(stats.mana.toString(), {
       x: DERIVED_STATS_X,
       y: MANA_Y,
@@ -568,7 +509,7 @@ function drawDerivedStats(
   }
 
   // Draw Favor (Acolytes only)
-  if (characterData.class === 'Acolyte' && stats.favor > 0) {
+  if (className === 'Acolyte' && stats.favor > 0) {
     page.drawText(stats.favor.toString(), {
       x: DERIVED_STATS_X,
       y: FAVOR_Y,
