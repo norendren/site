@@ -93,12 +93,13 @@ const RACIAL_PERKS_PERK_SPACING = 36; // Space between perks
 
 // Derived stats coordinates (placeholders - adjust as needed)
 // These are positioned on the right side of the sheet, below health
-const DERIVED_STATS_X = 530; // X position for derived stat values
-const DEFENSE_Y = 535; // Y position for Defense
-const DARING_Y = 508; // Y position for Daring
-const STAMINA_Y = 481; // Y position for Stamina
-const MANA_Y = 454; // Y position for Mana (Mages only)
-const FAVOR_Y = 427; // Y position for Favor (Acolytes only)
+const DERIVED_STATS_X = 355; // X position for derived stat values
+const DARING_Y = 645; // Y position for Daring
+const DEFENSE_Y = 615; // Y position for Defense
+const FAVOR_Y = 594; // Y position for Favor (Acolytes only)
+const MANA_Y = 565; // Y position for Mana (Mages only)
+const SPEED_Y = 541; // Y position for Mana (Mages only)
+const STAMINA_Y = 507; // Y position for Stamina
 
 // Define the exact order of talent names
 const TALENT_NAMES = [
@@ -474,7 +475,7 @@ function drawDerivedStats(
   page.drawText(stats.defense.toString(), {
     x: DERIVED_STATS_X,
     y: DEFENSE_Y,
-    size: 12,
+    size: 14,
     font: font,
     color: rgb(0, 0, 0),
   });
@@ -483,7 +484,7 @@ function drawDerivedStats(
   page.drawText(stats.daring.toString(), {
     x: DERIVED_STATS_X,
     y: DARING_Y,
-    size: 12,
+    size: 14,
     font: font,
     color: rgb(0, 0, 0),
   });

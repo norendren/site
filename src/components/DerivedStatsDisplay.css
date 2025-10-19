@@ -70,32 +70,3 @@
   margin: 0;
   text-align: center;
 }
-
-/* Dark mode support (if implemented) */
-@media (prefers-color-scheme: dark) {
-  .derived-stats-display {
-    background: var(--bg-card-dark, #2a2a2a);
-    border-color: var(--bg-border-dark, #404040);
-  }
-
-  .stat-item {
-    background: var(--bg-base-dark, #1e1e1e);
-    border-color: var(--bg-border-dark, #404040);
-  }
-
-  .stat-item:hover {
-    background: var(--bg-hover-dark, #333333);
-  }
-
-  .stat-label {
-    color: var(--text-secondary-dark, #f5f5f5);
-  }
-
-  .stat-value {
-    color: var(--primary-300, #7986cb);
-  }
-
-  .stats-hint {
-    color: var(--text-muted-dark, #bdbdbd);
-  }
-}
