@@ -1,0 +1,1202 @@
+[
+  {
+    "codeName": "Accurate I",
+    "pdfName": "Accurate I"
+  },
+  {
+    "codeName": "Accurate II",
+    "pdfName": "Accurate II"
+  },
+  {
+    "codeName": "Active Caster",
+    "pdfName": "Active Caster"
+  },
+  {
+    "codeName": "Amalgamate I",
+    "pdfName": "Amalgamate I"
+  },
+  {
+    "codeName": "Amalgamate II",
+    "pdfName": "Amalgamate II"
+  },
+  {
+    "codeName": "Ambidextrous",
+    "pdfName": "Ambidextrous"
+  },
+  {
+    "codeName": "Ambusher",
+    "pdfName": "Ambusher"
+  },
+  {
+    "codeName": "Anoint",
+    "pdfName": "Anoint"
+  },
+  {
+    "codeName": "Arcane Conduit",
+    "pdfName": "Arcane Conduit"
+  },
+  {
+    "codeName": "Arcane Mark",
+    "pdfName": "Arcane Mark"
+  },
+  {
+    "codeName": "Arcane Prowess",
+    "pdfName": "Arcane Prowess"
+  },
+  {
+    "codeName": "Arcane Sensitive",
+    "pdfName": "Arcane Sensitive"
+  },
+  {
+    "codeName": "Armor Adept",
+    "pdfName": "Armor Adept"
+  },
+  {
+    "codeName": "Artificer",
+    "pdfName": "Artificer"
+  },
+  {
+    "codeName": "Assassin I",
+    "pdfName": "Assassin I"
+  },
+  {
+    "codeName": "Assassin II",
+    "pdfName": "Assassin II"
+  },
+  {
+    "codeName": "Augment Summoning",
+    "pdfName": "Augment Summoning"
+  },
+  {
+    "codeName": "Auto-Arcana",
+    "pdfName": "Auto-Arcana"
+  },
+  {
+    "codeName": "Avatar of Air",
+    "pdfName": "Avatar Of Air"
+  },
+  {
+    "codeName": "Avatar of Cosmos",
+    "pdfName": "Avatar Of Cosmos"
+  },
+  {
+    "codeName": "Avatar of Earth",
+    "pdfName": "Avatar Of Earth"
+  },
+  {
+    "codeName": "Avatar of Fire",
+    "pdfName": "Avatar Of Fire"
+  },
+  {
+    "codeName": "Avatar of Water",
+    "pdfName": "Avatar of Water"
+  },
+  {
+    "codeName": "Back-Strike",
+    "pdfName": "Back-Strike"
+  },
+  {
+    "codeName": "Backstabber I",
+    "pdfName": "Backstabber I"
+  },
+  {
+    "codeName": "Backstabber II",
+    "pdfName": "Backstabber II"
+  },
+  {
+    "codeName": "Battle Mage I",
+    "pdfName": "Battle Mage"
+  },
+  {
+    "codeName": "Battle Mage II",
+    "pdfName": "Battle Mage II"
+  },
+  {
+    "codeName": "Battle Tested",
+    "pdfName": "Battle Tested"
+  },
+  {
+    "codeName": "Battle Thrall",
+    "pdfName": "Battle Thrall"
+  },
+  {
+    "codeName": "Beneficent God",
+    "pdfName": "Beneficent God"
+  },
+  {
+    "codeName": "Blades Of Death",
+    "pdfName": "Blades Of Death"
+  },
+  {
+    "codeName": "Bladesman I",
+    "pdfName": "Bladesman I"
+  },
+  {
+    "codeName": "Bladesman II",
+    "pdfName": "Bladesman II"
+  },
+  {
+    "codeName": "Blessed I",
+    "pdfName": "Blessed I"
+  },
+  {
+    "codeName": "Blessed II",
+    "pdfName": "Blessed II"
+  },
+  {
+    "codeName": "Blessed III",
+    "pdfName": "Blessed III"
+  },
+  {
+    "codeName": "Blind Fighting",
+    "pdfName": "Blind Fighting"
+  },
+  {
+    "codeName": "Block",
+    "pdfName": "Block"
+  },
+  {
+    "codeName": "Blood Magic",
+    "pdfName": "Blood Magic"
+  },
+  {
+    "codeName": "Bolstered Magic",
+    "pdfName": "Bolstered Magic"
+  },
+  {
+    "codeName": "Bonecrusher",
+    "pdfName": "Bonecrusher"
+  },
+  {
+    "codeName": "Born In Armor",
+    "pdfName": "Born in Armor"
+  },
+  {
+    "codeName": "Bounce Back",
+    "pdfName": "Bounce Back"
+  },
+  {
+    "codeName": "Bred For Battle",
+    "pdfName": "Bred For Battle"
+  },
+  {
+    "codeName": "Brutal I",
+    "pdfName": "Brutal I"
+  },
+  {
+    "codeName": "Brutal II",
+    "pdfName": "Brutal II"
+  },
+  {
+    "codeName": "Calculated Attack",
+    "pdfName": "Calculated Attack"
+  },
+  {
+    "codeName": "Calculated Exposure I",
+    "pdfName": "Calculated Exposure I"
+  },
+  {
+    "codeName": "Calculated Exposure II",
+    "pdfName": "Calculated Exposure II"
+  },
+  {
+    "codeName": "Charmed",
+    "pdfName": "Charmed"
+  },
+  {
+    "codeName": "Cheat Death",
+    "pdfName": "Cheat Death"
+  },
+  {
+    "codeName": "Child of the Moon",
+    "pdfName": "Child of the Moon"
+  },
+  {
+    "codeName": "Child of the Night",
+    "pdfName": "Child of the Night"
+  },
+  {
+    "codeName": "Child of the Sun",
+    "pdfName": "Child of the Sun"
+  },
+  {
+    "codeName": "Child of the Triad",
+    "pdfName": "Child of the Triad"
+  },
+  {
+    "codeName": "Chosen Enemy I",
+    "pdfName": "Chosen Enemy I"
+  },
+  {
+    "codeName": "Chosen Enemy II",
+    "pdfName": "Chosen Enemy II"
+  },
+  {
+    "codeName": "Chosen Vessel I",
+    "pdfName": "Chosen Vessel I"
+  },
+  {
+    "codeName": "Chosen Vessel II",
+    "pdfName": "Chosen Vessel II"
+  },
+  {
+    "codeName": "Coalesce",
+    "pdfName": "Coalesce"
+  },
+  {
+    "codeName": "Combat Casting",
+    "pdfName": "Combat Casting"
+  },
+  {
+    "codeName": "Combat Conduit",
+    "pdfName": "Combat Conduit"
+  },
+  {
+    "codeName": "Combat Facing",
+    "pdfName": "Combat Facing"
+  },
+  {
+    "codeName": "Combat Prowess",
+    "pdfName": "Combat Prowess"
+  },
+  {
+    "codeName": "Common Weapon Training",
+    "pdfName": "Common Weapons Training"
+  },
+  {
+    "codeName": "Communal Casting",
+    "pdfName": "Communal Casting"
+  },
+  {
+    "codeName": "Companion I",
+    "pdfName": "Companion I"
+  },
+  {
+    "codeName": "Companion II",
+    "pdfName": "Companion II"
+  },
+  {
+    "codeName": "Companion III",
+    "pdfName": "Companion III"
+  },
+  {
+    "codeName": "Composed",
+    "pdfName": "Composed"
+  },
+  {
+    "codeName": "Conditioned",
+    "pdfName": "Conditioned"
+  },
+  {
+    "codeName": "Connections",
+    "pdfName": "Connections"
+  },
+  {
+    "codeName": "Continuance I",
+    "pdfName": "Continuance I"
+  },
+  {
+    "codeName": "Continuance II",
+    "pdfName": "Continuance II"
+  },
+  {
+    "codeName": "Controlled Fall I",
+    "pdfName": "Controlled Fall I"
+  },
+  {
+    "codeName": "Controlled Fall II",
+    "pdfName": "Controlled Fall II"
+  },
+  {
+    "codeName": "Conviction",
+    "pdfName": "Conviction"
+  },
+  {
+    "codeName": "Counter Strike I",
+    "pdfName": "Counter Strike I"
+  },
+  {
+    "codeName": "Counter Strike II",
+    "pdfName": "Counter Strike II"
+  },
+  {
+    "codeName": "Covert Magic",
+    "pdfName": "Covert Magic"
+  },
+  {
+    "codeName": "Create Relic",
+    "pdfName": "Create Relic"
+  },
+  {
+    "codeName": "Cross-Trained",
+    "pdfName": "Cross-Trained"
+  },
+  {
+    "codeName": "Crowning Blow",
+    "pdfName": "Crowning Blow"
+  },
+  {
+    "codeName": "Crusader",
+    "pdfName": "Crusader"
+  },
+  {
+    "codeName": "Curse",
+    "pdfName": "Curse"
+  },
+  {
+    "codeName": "Dangerous",
+    "pdfName": "Dangerous"
+  },
+  {
+    "codeName": "Death Devotee",
+    "pdfName": "Death Devotee"
+  },
+  {
+    "codeName": "Deathblow",
+    "pdfName": "Deathblow"
+  },
+  {
+    "codeName": "Defensive Mobility",
+    "pdfName": "Defensive Mobility"
+  },
+  {
+    "codeName": "Deflect Incoming",
+    "pdfName": "Deflect Incoming"
+  },
+  {
+    "codeName": "Determined",
+    "pdfName": "Determined"
+  },
+  {
+    "codeName": "Devastating Critical I",
+    "pdfName": "Devastating Critical I"
+  },
+  {
+    "codeName": "Devastating Critical II",
+    "pdfName": "Devastating Critical II"
+  },
+  {
+    "codeName": "Disciple of Erebos",
+    "pdfName": "Disciple of Erebos"
+  },
+  {
+    "codeName": "Disciple of Ilios",
+    "pdfName": "Disciple of Ilios"
+  },
+  {
+    "codeName": "Disciple of Selene",
+    "pdfName": "Disciple of Selene"
+  },
+  {
+    "codeName": "Disciple of the Triad",
+    "pdfName": "Disciple of the Triad"
+  },
+  {
+    "codeName": "Disease Resistant",
+    "pdfName": "Disease Resistant"
+  },
+  {
+    "codeName": "Distill Resonance",
+    "pdfName": "Distill Resonance"
+  },
+  {
+    "codeName": "Divination Devotee",
+    "pdfName": "Divination Devotee"
+  },
+  {
+    "codeName": "Divine Grace",
+    "pdfName": "Divine Grace"
+  },
+  {
+    "codeName": "Divine Luck",
+    "pdfName": "Divine Luck"
+  },
+  {
+    "codeName": "Divine Protection I",
+    "pdfName": "Divine Protection I"
+  },
+  {
+    "codeName": "Divine Protection II",
+    "pdfName": "Divine Protection II"
+  },
+  {
+    "codeName": "Dodge I",
+    "pdfName": "Dodge I"
+  },
+  {
+    "codeName": "Dodge II",
+    "pdfName": "Dodge II"
+  },
+  {
+    "codeName": "Dynamism",
+    "pdfName": "Dynamism"
+  },
+  {
+    "codeName": "Ear Of The Gods",
+    "pdfName": "Ear Of The Gods"
+  },
+  {
+    "codeName": "Eidetic Memory",
+    "pdfName": "Eidetic Memory"
+  },
+  {
+    "codeName": "Eldritch Arcana",
+    "pdfName": "Eldritch Arcana"
+  },
+  {
+    "codeName": "Embolden I",
+    "pdfName": "Embolden I"
+  },
+  {
+    "codeName": "Embolden II",
+    "pdfName": "Embolden II"
+  },
+  {
+    "codeName": "Enchanter",
+    "pdfName": "Enchanter"
+  },
+  {
+    "codeName": "Enemy Observance",
+    "pdfName": "Enemy Observance"
+  },
+  {
+    "codeName": "Enliven",
+    "pdfName": "Enliven"
+  },
+  {
+    "codeName": "Evade Arcane",
+    "pdfName": "Evade Arcane"
+  },
+  {
+    "codeName": "Exalt",
+    "pdfName": "Exalt"
+  },
+  {
+    "codeName": "Exact Magic I",
+    "pdfName": "Exact Magic I"
+  },
+  {
+    "codeName": "Exact Magic II",
+    "pdfName": "Exact Magic II"
+  },
+  {
+    "codeName": "Extension I",
+    "pdfName": "Extension I"
+  },
+  {
+    "codeName": "Extension II",
+    "pdfName": "Extension II"
+  },
+  {
+    "codeName": "Faith Abounding",
+    "pdfName": "Faith Abounding"
+  },
+  {
+    "codeName": "Fast Cast",
+    "pdfName": "Fast Cast"
+  },
+  {
+    "codeName": "Fated",
+    "pdfName": "Fated"
+  },
+  {
+    "codeName": "Favorite Weapon I",
+    "pdfName": "Favorite Weapon I"
+  },
+  {
+    "codeName": "Favorite Weapon II",
+    "pdfName": "Favorite Weapon II"
+  },
+  {
+    "codeName": "Favorite Weapon III",
+    "pdfName": "Favorite Weapon III"
+  },
+  {
+    "codeName": "Fend Off",
+    "pdfName": "Fend Off"
+  },
+  {
+    "codeName": "Fleet",
+    "pdfName": "Fleet"
+  },
+  {
+    "codeName": "Focused Fighting",
+    "pdfName": "Focused Fighting"
+  },
+  {
+    "codeName": "Force Strike I",
+    "pdfName": "Force Strike I"
+  },
+  {
+    "codeName": "Force Strike II",
+    "pdfName": "Force Strike II"
+  },
+  {
+    "codeName": "Fortuitous I",
+    "pdfName": "Fortuitous I"
+  },
+  {
+    "codeName": "Fortuitous II",
+    "pdfName": "Fortuitous II"
+  },
+  {
+    "codeName": "Fortunate",
+    "pdfName": "Fortunate"
+  },
+  {
+    "codeName": "Full Defense",
+    "pdfName": "Full Defense"
+  },
+  {
+    "codeName": "Gallant",
+    "pdfName": "Gallant"
+  },
+  {
+    "codeName": "Gather Energy",
+    "pdfName": "Gather Energy"
+  },
+  {
+    "codeName": "Glorious Finish",
+    "pdfName": "Glorious Finish"
+  },
+  {
+    "codeName": "Glyphs",
+    "pdfName": "Glyphs"
+  },
+  {
+    "codeName": "Graced",
+    "pdfName": "Graced"
+  },
+  {
+    "codeName": "Grandmaster",
+    "pdfName": "Grandmaster"
+  },
+  {
+    "codeName": "Greater God",
+    "pdfName": "Greater God"
+  },
+  {
+    "codeName": "Guardsmanship I",
+    "pdfName": "Guardsmanship I"
+  },
+  {
+    "codeName": "Guardsmanship II",
+    "pdfName": "Guardsmanship II"
+  },
+  {
+    "codeName": "Hamstring",
+    "pdfName": "Hamstring"
+  },
+  {
+    "codeName": "Hard Target I",
+    "pdfName": "Hard Target I"
+  },
+  {
+    "codeName": "Hard Target II",
+    "pdfName": "Hard Target II"
+  },
+  {
+    "codeName": "Hardened",
+    "pdfName": "Hardened"
+  },
+  {
+    "codeName": "Harm",
+    "pdfName": "Harm"
+  },
+  {
+    "codeName": "Harrier I",
+    "pdfName": "Harrier I"
+  },
+  {
+    "codeName": "Harrier II",
+    "pdfName": "Harrier II"
+  },
+  {
+    "codeName": "Hasty Recharge",
+    "pdfName": "Hasty Recharge"
+  },
+  {
+    "codeName": "Heavy Armor Training",
+    "pdfName": "Heavy Armor Training"
+  },
+  {
+    "codeName": "Heirloom",
+    "pdfName": "Heirloom"
+  },
+  {
+    "codeName": "Here and Gone",
+    "pdfName": "Here and Gone"
+  },
+  {
+    "codeName": "High Tolerance",
+    "pdfName": "High Tolerance"
+  },
+  {
+    "codeName": "Hold the Line I",
+    "pdfName": "Hold The Line I"
+  },
+  {
+    "codeName": "Hold the Line II",
+    "pdfName": "Hold The Line II"
+  },
+  {
+    "codeName": "Holy Emanation I",
+    "pdfName": "Holy Emanation I"
+  },
+  {
+    "codeName": "Holy Emanation II",
+    "pdfName": "Holy Emanation II"
+  },
+  {
+    "codeName": "Hospitaller",
+    "pdfName": "Hospitaller"
+  },
+  {
+    "codeName": "Improved Critical I",
+    "pdfName": "Improved Critical I"
+  },
+  {
+    "codeName": "Improved Critical II",
+    "pdfName": "Improved Critical II"
+  },
+  {
+    "codeName": "Improved Holy Aura",
+    "pdfName": "Improved Holy Aura"
+  },
+  {
+    "codeName": "Indulgence",
+    "pdfName": "Indulgence"
+  },
+  {
+    "codeName": "Inspiration",
+    "pdfName": "Inspiration"
+  },
+  {
+    "codeName": "Inspire Success",
+    "pdfName": "Inspire Success"
+  },
+  {
+    "codeName": "Intuitive Aim",
+    "pdfName": "Intuitive Aim"
+  },
+  {
+    "codeName": "Jack of All Trades",
+    "pdfName": "Jack of All Trades"
+  },
+  {
+    "codeName": "King's Code",
+    "pdfName": "King’s Code"
+  },
+  {
+    "codeName": "Knockout Artist",
+    "pdfName": "Knockout Artist"
+  },
+  {
+    "codeName": "Learn From Mistakes",
+    "pdfName": "Learn From Mistakes"
+  },
+  {
+    "codeName": "Life Devotee",
+    "pdfName": "Life Devotee"
+  },
+  {
+    "codeName": "Light Armor Training",
+    "pdfName": "Light Armor Training"
+  },
+  {
+    "codeName": "Light-Footed",
+    "pdfName": "Light-Foot"
+  },
+  {
+    "codeName": "Maniacal",
+    "pdfName": "Maniacal"
+  },
+  {
+    "codeName": "Marksman",
+    "pdfName": "Marksman"
+  },
+  {
+    "codeName": "Martial Weapon Training",
+    "pdfName": "Martial Weapons Training"
+  },
+  {
+    "codeName": "Martyr I",
+    "pdfName": "Martyr I"
+  },
+  {
+    "codeName": "Martyr II",
+    "pdfName": "Martyr II"
+  },
+  {
+    "codeName": "Master of Air",
+    "pdfName": "Master of Air"
+  },
+  {
+    "codeName": "Master of Cosmos",
+    "pdfName": "Master of Cosmos"
+  },
+  {
+    "codeName": "Master of Earth",
+    "pdfName": "Master of Earth"
+  },
+  {
+    "codeName": "Master of Fire",
+    "pdfName": "Master of Fire"
+  },
+  {
+    "codeName": "Master of Water",
+    "pdfName": "Master of Water"
+  },
+  {
+    "codeName": "Medium Armor Training",
+    "pdfName": "Medium Armor Training"
+  },
+  {
+    "codeName": "Memorized Spell",
+    "pdfName": "Memorized Spell"
+  },
+  {
+    "codeName": "Merciless",
+    "pdfName": "Merciless"
+  },
+  {
+    "codeName": "Mercurial",
+    "pdfName": "Mercurial"
+  },
+  {
+    "codeName": "Mighty",
+    "pdfName": "Mighty"
+  },
+  {
+    "codeName": "Miracle",
+    "pdfName": "Miracle"
+  },
+  {
+    "codeName": "Mounted Archer",
+    "pdfName": "Mounted Archer"
+  },
+  {
+    "codeName": "Mounted Assault",
+    "pdfName": "Mounted Assault"
+  },
+  {
+    "codeName": "Mounted Combatant",
+    "pdfName": "Mounted Combatant"
+  },
+  {
+    "codeName": "Multitasker",
+    "pdfName": "Multitasker"
+  },
+  {
+    "codeName": "My Weapon",
+    "pdfName": "My Weapon"
+  },
+  {
+    "codeName": "Mystic Leverage I",
+    "pdfName": "Mystic Leverage I"
+  },
+  {
+    "codeName": "Mystic Leverage II",
+    "pdfName": "Mystic Leverage II"
+  },
+  {
+    "codeName": "Mystical I",
+    "pdfName": "Mystical I"
+  },
+  {
+    "codeName": "Mystical II",
+    "pdfName": "Mystical II"
+  },
+  {
+    "codeName": "Mystical III",
+    "pdfName": "Mystical III"
+  },
+  {
+    "codeName": "Nature Devotee",
+    "pdfName": "Nature Devotee"
+  },
+  {
+    "codeName": "Nature's Blessing",
+    "pdfName": "Nature’s Blessing"
+  },
+  {
+    "codeName": "Oathbinder",
+    "pdfName": "Oathbinder"
+  },
+  {
+    "codeName": "Obscure Knowledge",
+    "pdfName": "Obscure Knowledge"
+  },
+  {
+    "codeName": "Opportunist",
+    "pdfName": "Opportunist"
+  },
+  {
+    "codeName": "Pelter",
+    "pdfName": "Pelter"
+  },
+  {
+    "codeName": "Performer",
+    "pdfName": "Performer"
+  },
+  {
+    "codeName": "Personal Immunity",
+    "pdfName": "Personal Immunity"
+  },
+  {
+    "codeName": "Pious",
+    "pdfName": "Pious"
+  },
+  {
+    "codeName": "Poison Master",
+    "pdfName": "Poison Master"
+  },
+  {
+    "codeName": "Poison Immunity",
+    "pdfName": "Poison Immunity"
+  },
+  {
+    "codeName": "Powerful Magic",
+    "pdfName": "Powerful Magic"
+  },
+  {
+    "codeName": "Precise I",
+    "pdfName": "Precise I"
+  },
+  {
+    "codeName": "Precise II",
+    "pdfName": "Precise II"
+  },
+  {
+    "codeName": "Predisposed",
+    "pdfName": "Predisposed"
+  },
+  {
+    "codeName": "Protection Devotee",
+    "pdfName": "Protection Devotee"
+  },
+  {
+    "codeName": "Pugilist I",
+    "pdfName": "Pugilist I"
+  },
+  {
+    "codeName": "Pugilist II",
+    "pdfName": "Pugilist II"
+  },
+  {
+    "codeName": "Purebred",
+    "pdfName": "Purebred"
+  },
+  {
+    "codeName": "Purposeful",
+    "pdfName": "Purposeful"
+  },
+  {
+    "codeName": "Qualified",
+    "pdfName": "Qualified"
+  },
+  {
+    "codeName": "Quick Draw",
+    "pdfName": "Quick Draw"
+  },
+  {
+    "codeName": "Quick Healer",
+    "pdfName": "Quick Healer"
+  },
+  {
+    "codeName": "Rapture Devotee",
+    "pdfName": "Rapture Devotee"
+  },
+  {
+    "codeName": "Ravage I",
+    "pdfName": "Ravage I"
+  },
+  {
+    "codeName": "Ravage II",
+    "pdfName": "Ravage II"
+  },
+  {
+    "codeName": "Ready And Waiting",
+    "pdfName": "Ready And Waiting"
+  },
+  {
+    "codeName": "Redirection I",
+    "pdfName": "Redirection I"
+  },
+  {
+    "codeName": "Redirection II",
+    "pdfName": "Redirection II"
+  },
+  {
+    "codeName": "Reduced Sleep",
+    "pdfName": "Reduced Sleep"
+  },
+  {
+    "codeName": "Relic Antiquarian",
+    "pdfName": "Relic Antiquarian"
+  },
+  {
+    "codeName": "Renowned",
+    "pdfName": "Renowned"
+  },
+  {
+    "codeName": "Repeat Spell I",
+    "pdfName": "Repeat Spell I"
+  },
+  {
+    "codeName": "Repeat Spell II",
+    "pdfName": "Repeat Spell II"
+  },
+  {
+    "codeName": "Reprisal",
+    "pdfName": "Reprisal"
+  },
+  {
+    "codeName": "Ritual Magic",
+    "pdfName": "Ritual Magic"
+  },
+  {
+    "codeName": "Roar",
+    "pdfName": "Roar"
+  },
+  {
+    "codeName": "Robust",
+    "pdfName": "Robust"
+  },
+  {
+    "codeName": "Rouse",
+    "pdfName": "Rouse"
+  },
+  {
+    "codeName": "Rune Release",
+    "pdfName": "Rune Release"
+  },
+  {
+    "codeName": "Runecrafter",
+    "pdfName": "Runecrafter"
+  },
+  {
+    "codeName": "Runemaster I",
+    "pdfName": "Runemaster I"
+  },
+  {
+    "codeName": "Runemaster II",
+    "pdfName": "Runemaster II"
+  },
+  {
+    "codeName": "Ruthless I",
+    "pdfName": "Ruthless I"
+  },
+  {
+    "codeName": "Ruthless II",
+    "pdfName": "Ruthless II"
+  },
+  {
+    "codeName": "Sacrifice",
+    "pdfName": "Sacrifice"
+  },
+  {
+    "codeName": "Selfish God",
+    "pdfName": "Selfish God"
+  },
+  {
+    "codeName": "Sense Enemy",
+    "pdfName": "Sense Enemy"
+  },
+  {
+    "codeName": "Shared Favor",
+    "pdfName": "Shared Favor"
+  },
+  {
+    "codeName": "Shield Fighter",
+    "pdfName": "Shield Fighter"
+  },
+  {
+    "codeName": "Shield Guard I",
+    "pdfName": "Shield Guard I"
+  },
+  {
+    "codeName": "Shield Guard II",
+    "pdfName": "Shield Guard II"
+  },
+  {
+    "codeName": "Shield Mastery",
+    "pdfName": "Shield Mastery"
+  },
+  {
+    "codeName": "Shield Training",
+    "pdfName": "Shield Training"
+  },
+  {
+    "codeName": "Shorthand",
+    "pdfName": "Shorthand"
+  },
+  {
+    "codeName": "Sharpshooter I",
+    "pdfName": "Sharpshooter I"
+  },
+  {
+    "codeName": "Sharpshooter II",
+    "pdfName": "Sharpshooter II"
+  },
+  {
+    "codeName": "Sincere",
+    "pdfName": "Sincere"
+  },
+  {
+    "codeName": "Skilled",
+    "pdfName": "Skilled"
+  },
+  {
+    "codeName": "Slam",
+    "pdfName": "Slam"
+  },
+  {
+    "codeName": "Smite I",
+    "pdfName": "Smite I"
+  },
+  {
+    "codeName": "Smite II",
+    "pdfName": "Smite II"
+  },
+  {
+    "codeName": "Soul Steal",
+    "pdfName": "Soul Steal"
+  },
+  {
+    "codeName": "Specialty Weapon Training",
+    "pdfName": "Specialty Weapon Training"
+  },
+  {
+    "codeName": "Stalwart",
+    "pdfName": "Stalwart"
+  },
+  {
+    "codeName": "Steady Aim I",
+    "pdfName": "Steady Aim I"
+  },
+  {
+    "codeName": "Steady Aim II",
+    "pdfName": "Steady Aim II"
+  },
+  {
+    "codeName": "Steady Runework",
+    "pdfName": "Steady Runework"
+  },
+  {
+    "codeName": "Stunning Strike",
+    "pdfName": "Stunning Strike"
+  },
+  {
+    "codeName": "Sure-Footed",
+    "pdfName": "Sure-Footed"
+  },
+  {
+    "codeName": "Sustained Arcana",
+    "pdfName": "Sustained Arcana"
+  },
+  {
+    "codeName": "Swift Reload",
+    "pdfName": "Swift Reload"
+  },
+  {
+    "codeName": "Switch",
+    "pdfName": "Switch"
+  },
+  {
+    "codeName": "Taunt",
+    "pdfName": "Taunt"
+  },
+  {
+    "codeName": "Thaumaturge",
+    "pdfName": "Thaumaturge"
+  },
+  {
+    "codeName": "Thick Skull",
+    "pdfName": "Thick Skull"
+  },
+  {
+    "codeName": "Thrill of Victory I",
+    "pdfName": "Thrill Of Victory I"
+  },
+  {
+    "codeName": "Thrill of Victory II",
+    "pdfName": "Thrill Of Victory II"
+  },
+  {
+    "codeName": "Tireless",
+    "pdfName": "Tireless"
+  },
+  {
+    "codeName": "Tough",
+    "pdfName": "Tough"
+  },
+  {
+    "codeName": "Trample",
+    "pdfName": "Trample"
+  },
+  {
+    "codeName": "Tumbler",
+    "pdfName": "Tumbler"
+  },
+  {
+    "codeName": "Unbreakable",
+    "pdfName": "Unbreakable"
+  },
+  {
+    "codeName": "Undying",
+    "pdfName": "Undying"
+  },
+  {
+    "codeName": "Unremarkable",
+    "pdfName": "Unremarkable"
+  },
+  {
+    "codeName": "Untouchable",
+    "pdfName": "Untouchable"
+  },
+  {
+    "codeName": "Utilitarian",
+    "pdfName": "Utilitarian"
+  },
+  {
+    "codeName": "Valiant",
+    "pdfName": "Valiant"
+  },
+  {
+    "codeName": "Venerable Spirit",
+    "pdfName": "Venerable Spirit"
+  },
+  {
+    "codeName": "Vesting Faith",
+    "pdfName": "Vesting Faith"
+  },
+  {
+    "codeName": "Weapon Master I",
+    "pdfName": "Weapon Master I"
+  },
+  {
+    "codeName": "Weapon Master II",
+    "pdfName": "Weapon Master II"
+  },
+  {
+    "codeName": "Wild Mage",
+    "pdfName": "Wild Mage"
+  },
+  {
+    "codeName": "Willful Focus",
+    "pdfName": "Willful Focus"
+  },
+  {
+    "codeName": "Wizened",
+    "pdfName": "Wizened"
+  },
+  {
+    "codeName": "Zealot I",
+    "pdfName": "Zealot I"
+  },
+  {
+    "codeName": "Zealot II",
+    "pdfName": "Zealot II"
+  }
+]

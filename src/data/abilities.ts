@@ -20,7 +20,7 @@ export const abilities: AbilitiesByClass = {
   acolyte: {
     "Anoint": {
       prerequisiteClass: "Acolyte",
-      description: "Your Blessings are not confined to the living. With this Ability the Acolyte may bestow their Bless upon an object, allowing its wielder to gain Advantage on their next Check with the item. This Ability could be used on a weapon to grant Advantage on its next Hit check, or on a healer's kit to grant Advantage on the user's next Hermetics Check.",
+      description: "Your Blessings are not confined to the living. With this Ability the Acolyte may bestow their Bless upon an object, allowing its wielder to gain Advantage on their next Check with the item. This Ability could be used on a weapon to grant Advantage on its next Hit check, or on a healer’s kit to grant Advantage on the user’s next Hermetics Check.",
       effect: "Can use Bless on objects to grant Advantage to the wielder's next Check with that item",
     },
     "Beneficent God": {
@@ -31,30 +31,30 @@ export const abilities: AbilitiesByClass = {
     },
     "Bred For Battle": {
       prerequisiteClass: "Acolyte",
-      description: "Selecting this Ability allows you to immediately select an Ability from the Warrior's list of Abilities. For example, selecting the Bred For Battle Ability and choosing the Warrior's Born In Armor Ability would give you the Ability: Bred for Battle: Born in Armor as a single Ability choice.",
+      description: "Selecting this Ability allows you to immediately select an Ability from the Warrior’s list of Abilities. For example, selecting the Bred For Battle Ability and choosing the Warrior’s Born In Armor Ability would give you the Ability: Bred for Battle: Born in Armor as a single Ability choice.",
       effect: "Gain one Warrior Ability of your choice",
     },
     "Child of the Moon": {
       prerequisiteClass: "Acolyte",
-      description: "Your connection to the Divine is as much to the Moon as to Selene herself. With proper prayer and veneration, Lady Moon can bestow her boons upon the Acolyte:\n• Admonition: With but an hour of prayer the Acolyte becomes aware of anyone seeking to do them harm while they rest. This watch lasts throughout the Acolyte's rest and will stir them from slumber should they be asleep.\n• Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte.\n• Quiet: For every hour of prayer the Acolyte gains four hours of absolute silence. Nothing the Acolyte does makes a sound unless they choose to make a sound.",
+      description: "Your connection to the Divine is as much to the Moon as to Selene herself. With proper prayer and veneration, Lady Moon can bestow her boons upon the Acolyte: • 176 Admonition: With but an hour of prayer the Acolyte becomes aware of anyone seeking to do them harm while they rest. This watch lasts Abilities throughout the Acolyte’s rest and will stir them from slumber should they be asleep. • Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte. • Quiet: For every hour of prayer the Acolyte gains four hours of absolute silence. Nothing the Acolyte does makes a sound unless they choose to make a sound. Note: Only one “Child of…” Ability may be taken at a time.",
       effect: "Prayer grants: Admonition (sense harm during rest), Inner Peace (4hr Rest), Quiet (silent for 4hrs per 1hr prayer)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Night": {
       prerequisiteClass: "Acolyte",
-      description: "Your connection to the Divine is as much to the Night as to Erebos himself. With proper prayer and veneration, the High Night can bestow his boons upon the Acolyte:\n• Adumbration: For every hour of prayer the Acolyte gains four hours of shadowed obscurity. The Acolyte appears as if engulfed in wispy shadows and is considered in hiding unless they make noise or otherwise make their presence known. All Stealth Talent Checks to hide are made at Advantage.\n• Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area.\n• Omen: Following an hour of prayer to the High Night, the Acolyte can peer up into the stars above to see omens of events, people, or places as determined by the GM.",
+      description: "Your connection to the Divine is as much to the Night as to Erebos himself. With proper prayer and veneration, the High Night can bestow his boons upon the Acolyte: • Adumbration: For every hour of prayer the Acolyte gains four hours of shadowed obscurity. The Acolyte appears as if engulfed in wispy shadows and is considered in hiding unless they make noise or otherwise make their presence known. All Stealth Talent Checks to hide are made at Advantage. • Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area. • Omen: Following an hour of prayer to the High Night, the Acolyte can peer up into the stars above to see omens of events, people, or places as determined by the GM. Note: Only one “Child of…” Ability may be taken at a time.",
       effect: "Prayer grants: Adumbration (shadowy hiding w/ Advantage for 4hrs), Spiritglow (see spirits for 4hrs), Omen (divine visions)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Sun": {
       prerequisiteClass: "Acolyte",
-      description: "Your connection to the Divine is as much to the Sun as to Illios himself. With proper prayer and veneration, Lord Sun can bestow his boons upon the Acolyte:\n• Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte's Holy Aura, as far off as the light of the sun may reach.\n• Clement: With an hour of prayer the Acolyte can cause the immediate area of his Holy Aura to become mild and pleasant. Snow will melt, dampness will evaporate, winds will calm, and heat waves will cool - but only in the area where the prayer was conducted. This Clemency lasts until the Acolyte steps out of the Clement area.\n• Purify: With dedicated and uninterrupted eight hours of prayer, the Acolyte can purge impurities from their system. When the Acolyte begins their prayer, the effects of toxins, poisons, and disease immediately cease. Should they complete their prayer undisturbed, any toxins, poisons, or disease within their system is immediately cleansed. Otherwise, if interrupted or disturbed, the effects of the toxins, poisons, or disease continue from that point forward.",
+      description: "Your connection to the Divine is as much to the Sun as to Illios himself. With proper prayer and veneration, Lord Sun can bestow his boons upon the Acolyte: • • Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte’s Holy Aura, as far off as the light of the sun may reach. Clement: With an hour of prayer the Acolyte can cause the immediate area of his Holy Aura to become mild and pleasant. Snow will melt, dampness will evaporate, winds will calm, and heat waves will cool - but only in the area where the prayer was conducted. This Clemency lasts until the Acolyte steps out of the Clement area. 177 ATHIA – • Purify: With dedicated and uninterrupted eight hours of prayer, the Acolyte can purge impurities from their system. When the Acolyte begins their prayer, the effects of toxins, poisons, and disease immediately cease. Should they complete their prayer undisturbed, any toxins, poisons, or disease within their system is immediately cleansed. Otherwise, if interrupted or disturbed, the effects of the toxins, poisons, or disease continue from that point forward. Note: Only one “Child of…” Ability may be taken at a time.",
       effect: "Prayer grants: Beacon (cast sunlight), Clement (mild weather in Holy Aura), Purify (8hr prayer cleanses toxins/disease)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Triad": {
       prerequisiteClass: "Acolyte",
-      description: "Your connection to the Divine is a connection to each of the gods. With proper prayer and veneration, the Triad can bestow their boons upon the Acolyte:\n• Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte's Holy Aura, as far off as the light of the sun may reach.\n• Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte.\n• Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area.",
+      description: "Your connection to the Divine is a connection to each of the gods. With proper prayer and veneration, the Triad can bestow their boons upon the Acolyte: • Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte’s Holy Aura, as far off as the light of the sun may reach. • Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte. • Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area. Note: Only one “Child of…” Ability may be taken at a time.",
       effect: "Prayer grants: Beacon (cast sunlight), Inner Peace (4hr Rest), Spiritglow (see spirits for 4hrs)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
@@ -66,7 +66,7 @@ export const abilities: AbilitiesByClass = {
     "Chosen Vessel II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Chosen Vessel I"],
-      description: "As Chosen Vessel I, but your Chosen Vessel may be any individual you know. Note: It is up to the GM as to whether an individual is considered known to the Acolyte.",
+      description: "As Chosen Vessel I, but your Chosen Vessel may be any individual you know. Note: It is up to the GM as to whether an individual is considered known to the Acolyte. 178 Abilities",
       effect: "1/Day: Choose any known individual as center of Holy Aura (no line of sight required)",
     },
     "Coalesce": {
@@ -96,7 +96,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Death Devotee": {
       prerequisiteClass: "Acolyte",
-      description: "As a devoted adherent to the Divine Influence of Death you have found yourself granted with extraordinary powers. The following powers are granted to a Death Devotee:\n• Once per day a Death Devotee may automatically succeed on any one Strength-related Check.\n• Once per day a Death Devotee may double (x2) the range of their Holy Aura for a Death Influence-related Divine Intervention.\n• Once per day a Death Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Death with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Death you have found yourself granted with extraordinary powers. The following powers are granted to a Death Devotee: • Once per day a Death Devotee may automatically succeed on any one Strength-related Check. • Once per day a Death Devotee may double (x2) the range of their Holy Aura for a Death Influence-related Divine Intervention. • Once per day a Death Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Death with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
       effect: "1/Day each: Auto-succeed Strength Check; Double Holy Aura range for Death Intervention; Free 1-Favor Death Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
@@ -127,7 +127,7 @@ export const abilities: AbilitiesByClass = {
     "Divination Devotee": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Access to the Divine Influence of Divination"],
-      description: "As a devoted adherent to the Divine Influence of Divination you have found yourself granted with extraordinary powers. The following powers are granted to a Divination Devotee:\n• Once per day a Divination Devotee may automatically succeed on any one Knowledge-related Check.\n• Once per day a Divination Devotee may double (x2) the range of their Holy Aura for a Divination Influence-related Divine Intervention.\n• Once per day a Divination Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Divination with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Divination you have found yourself granted with extraordinary powers. The following powers are granted to a Divination Devotee: • Once per day a Divination Devotee may automatically succeed on any one Knowledge-related Check. • Once per day a Divination Devotee may double (x2) the range of their Holy Aura for a Divination Influence-related Divine Intervention. • Once per day a Divination Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Divination with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
       effect: "1/Day each: Auto-succeed Knowledge Check; Double Holy Aura range for Divination Intervention; Free 1-Favor Divination Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
@@ -144,7 +144,7 @@ export const abilities: AbilitiesByClass = {
     "Divine Protection II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Divine Protection I"],
-      description: "As Divine Protection I, but rather than bestowing a +1 Defense to your allies you now bestow a Defense bonus of +2. This ability may be used one time per day.",
+      description: "As Divine Protection I, but rather than bestowing a +1 Defense to your allies you now bestow a Defense bonus of +2. This ability may be used one time per day. 185 ATHIA –",
       effect: "1/Day: Grant +2 Defense to Level allies for the Encounter (Action)",
     },
     "Ear Of The Gods": {
@@ -154,7 +154,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Enliven": {
       prerequisiteClass: "Acolyte",
-      description: "Your faith is invigorating. You can cause those within your Holy Aura to regain Stamina during an Encounter. This Ability is activated with a single Action, then continues throughout the remainder of the Encounter. Recipients regain Stamina at a rate based upon your level (see the Enliven Table).",
+      description: "Acolyte Stamina Regained Level Your faith is invigorating. You can per Round cause those within your Holy Aura 1-2 1 to regain Stamina during an 3-4 2 Encounter. This Ability is activated 5-6 3 with a single Action, then continues 7+ 4 throughout the remainder of the Encounter. Recipients regain Stamina at a rate based upon your level (see the Enliven Table).",
       effect: "Action: Allies in Holy Aura regain Stamina each Round for rest of Encounter (rate based on Level)",
     },
     "Exalt": {
@@ -164,12 +164,12 @@ export const abilities: AbilitiesByClass = {
     },
     "Faith Abounding": {
       prerequisiteClass: "Acolyte",
-      description: "When brimming with their god's favor, some Acolytes become empowered. An Acolyte with this Ability gains one of the following powers as associated with their faith, so long as their Favor is at or within one-half their Level (round up) of maximum. For example, a 5th level Acolyte with a maximum Favor of 16, must posess 13 or more Favor to gain one of the benefits below:\n\nFaith Abounding Table\n\nFaith | Power\nErebos | Gain Advantage on all Talent Checks\nIllios | No Disadvantage as a result of Reactions in combat\nSelene | Gain Damage Reduction equal to their Level\nTriad | Are Immune to all States",
+      description: "When brimming with their god’s favor, some Acolytes become empowered. An Acolyte with this Ability gains one of the following powers as associated with their faith, so long as their Favor is at or within one-half their Level (round up) of maximum. For example, a 5th level Acolyte with a maximum Favor of 16, must posess 13 or more Favor to gain one of the benefits below: Faith Abounding Table Faith Erebos Illios Selene Triad Power Gain Advantage on all Talent Checks No Disadvantage as a result of Reactions in combat Gain Damage Reduction equal to their Level Are Immune to all States",
       effect: "When Favor is high: Erebos (Advantage on Talents), Ilios (No combat Reaction Disadvantage), Selene (DR = Level), Triad (Immune to States)",
     },
     "Glorious Finish": {
       prerequisiteClass: "Acolyte",
-      description: "Unbeknownst to your enemies, the ire of your God becomes evident in your most desperate hour. When Downed, all allies within your Holy Aura receive an immediate Bless (this is a free Bless and does not come from the number of Bless the Acolyte has available to them), and have all negative States removed (as decided by the GM).",
+      description: "Unbeknownst to your enemies, the ire of your God becomes evident in your most desperate hour. When Downed, all allies within your Holy Aura receive an immediate Bless (this is a free Bless and does not come from the number of Bless the Acolyte has available to them), and have all negative States removed (as decided by the GM). 191 ATHIA –",
       effect: "When Downed: All allies in Holy Aura get free Bless and negative States removed",
     },
     "Greater God": {
@@ -180,146 +180,146 @@ export const abilities: AbilitiesByClass = {
     },
     "Holy Emanation I": {
       prerequisiteClass: "Acolyte",
-      description: "Your deity's power emanates from you, healing those in your Holy Aura. All allies within your Holy Aura recover one (1) point of Stamina at the beginning of each Round (before Initiative is rolled). This Ability may be used once per Encounter and lasts for a number of Rounds equal to your level.",
+      description: "Your god makes you fearsome in battle. The first Hit Check attempted by an enemy against you in an Encounter is done so at Disadvantage.",
       effect: "1/Encounter: Allies in Holy Aura recover 1 Stamina per Round for Level Rounds",
     },
     "Holy Emanation II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Holy Emanation I"],
-      description: "As Holy Emanation I, but allies now recover two (2) points of Stamina per Round.",
+      description: "Fear of lashing out against a representative of the Divine cowers your opponent's blows. In addition to your enemies having Disadvantage on their first attempts at a Hit Check against you, all their Damage rolls against you are done so at Disadvantage.",
       effect: "1/Encounter: Allies in Holy Aura recover 2 Stamina per Round for Level Rounds",
     },
     "Hospitaller": {
       prerequisiteClass: "Acolyte",
-      description: "All of your healing efforts are far more effective. Your Patient regains twice the Stamina when you use an Action to help them Recuperate.",
+      description: "Your powers are always at their best when aiding others. You roll any healing die at Advantage.",
       effect: "Patient regains 2× Stamina when you help them Recuperate",
       hasMechanicalEffect: true,
     },
     "Improved Holy Aura": {
       prerequisiteClass: "Acolyte",
-      description: "The range of your Divine connection has expanded. Your Holy Aura's range is twice its normal range.",
+      description: "Your god has made your powers far reaching. The radius of your Holy Aura is increased by 50%. Therefore, a Fifth Level Acolyte would have a Holy Aura of 75’ instead of 50’.",
       effect: "Holy Aura range × 2",
       hasMechanicalEffect: true,
     },
     "Indulgence": {
       prerequisiteClass: "Acolyte",
-      description: "When their god is pleased with them, an Acolyte with this Ability finds their Maximum Favor increasing. For every three (3) points of Favor the Acolyte is below their maximum, they gain one (+1) Favor. This additional Favor is removed after a single enactment of a Divine Intervention. For example, an Acolyte with a maximum of 17 Favor and a current Favor of 16 would find their maximum temporarily increased to 18.",
+      description: "Your greatest moments make the heavens proud, earning you great boons in times of need. When you score a Critical Success add a point to this Ability. Spend this point to automatically succeed (though not a Critical success) on any one Check. Only one point may be banked with this Ability at a time. This Ability may be taken multiple times to increase the number of successes one may bank by one.",
       effect: "Gain +1 temporary max Favor for every 3 Favor below maximum (removed after one Divine Intervention)",
       hasMechanicalEffect: true,
       canTakeMultiple: true,
     },
     "Inspiration": {
       prerequisiteClass: "Acolyte",
-      description: "The blessings of your god are truly beneficial to those that receive them. Your Blessings may be used to bestow a Bonus of one (+1) to any Check made by the recipient. This Bonus lasts for a number of Checks equal to your Level.",
+      description: "No one is better at encouraging those around them to fight on than you. By spending an Action, you can remove any negative Combat Reactions due to Fear from those within your Holy Aura for the Round. 195 ATHIA –",
       effect: "Bless grants +1 to recipient's next Level Checks",
     },
     "Life Devotee": {
       prerequisiteClass: "Acolyte",
-      description: "As a devoted adherent to the Divine Influence of Life you have found yourself granted with extraordinary powers. The following powers are granted to a Life Devotee:\n• Once per day a Life Devotee may automatically succeed on any one Constitution-related Check.\n• Once per day a Life Devotee may double (x2) the range of their Holy Aura for a Life Influence-related Divine Intervention.\n• Once per day a Life Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Life with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Life you have found yourself granted with extraordinary powers. The following powers are granted to a Life Devotee: 197 ATHIA – • Once per day a Life Devotee may automatically succeed on any one Constitution-related Check. • Once per day a Life Devotee may double (x2) the range of their Holy Aura for a Life Influence-related Divine Intervention. • Once per day a Life Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Life with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
       effect: "1/Day each: Auto-succeed Constitution Check; Double Holy Aura range for Life Intervention; Free 1-Favor Life Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Martyr I": {
       prerequisiteClass: "Acolyte",
-      description: "Your loyalty to your cause knows no bounds. Once per Encounter you may choose to take the Damage in place of another in your Holy Aura. You take one-half (+1/2) of the Damage that would have been bestowed on the original Target.",
+      description: "Sometimes you must sacrifice yourself for others. When an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. Martyr may be used once per encounter. 198 Abilities",
       effect: "1/Encounter: Take half Damage for ally in Holy Aura",
     },
     "Martyr II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Martyr I"],
-      description: "As Martyr I, but you now take the same amount of Damage that your Target was to receive, rather than one-half (+1/2).",
+      description: "As Martyr I, but any time an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. You are no longer limited in the number of times you may use this Ability in an encounter.",
       effect: "1/Encounter: Take full Damage for ally in Holy Aura",
     },
     "Miracle": {
       prerequisiteClass: "Acolyte",
-      description: "Your god is truly generous and allows you a veritable cornucopia of power to draw from. Choose an additional Divine Influence. You may now enact Divine Interventions from that Influence. For each time you select this Ability, you may select a new Influence.",
+      description: "You can enact a divine miracle. This may be anything conceivable devised by you with the consent of the GM, such as turning an entire land fertile or returning a character to life. This Ability once used is lost, but when called upon the god(s) will attempt to do all the character asks of them. Note: This Ability may be taken multiple times.",
       effect: "+1 Divine Influence access (repeatable)",
       hasMechanicalEffect: true,
       canTakeMultiple: true,
     },
     "Nature Devotee": {
       prerequisiteClass: "Acolyte",
-      description: "As a devoted adherent to the Divine Influence of Nature you have found yourself granted with extraordinary powers. The following powers are granted to a Nature Devotee:\n• Once per day a Nature Devotee may automatically succeed on any one Dexterity-related Check.\n• Once per day a Nature Devotee may double (x2) the range of their Holy Aura for a Nature Influence-related Divine Intervention.\n• Once per day a Nature Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Nature with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Nature you have found yourself granted with extraordinary powers. The following powers are granted to a Nature Devotee: • Once per day a Nature Devotee may automatically succeed on any one Instincts-related Check. • Once per day a Nature Devotee may double (x2) the range of their Holy Aura for a Nature Influence-related Divine Intervention. • Once per day a Nature Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Nature with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
       effect: "1/Day each: Auto-succeed Dexterity Check; Double Holy Aura range for Nature Intervention; Free 1-Favor Nature Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Oathbinder": {
       prerequisiteClass: "Acolyte",
-      description: "Your god's powers can be used to bind others in contracts that cannot be broken. You may enact a binding between individuals swearing an oath to one another. The specifics of the oath should be written down and signed by both parties. In signing the oath both parties are bound to it, and should one break the oath the offending party suffers consequences brought on by the GM. Note: Should the offending party complete the terms of the oath following its breaking, the consequences brought upon the oath breaker are removed. The GM should be consulted as to what can or cannot be asked for in an oath, ensuring the Oathbinder Ability does not become abused.",
+      description: "You can bind people to sworn oaths. Oaths are agreed upon terms between two or more people and may include the Acolyte themselves. Once the terms have been agreed upon, a punishment must also be agreed upon. The Acolyte can then bind the oath, obligating everyone to their word. Should any party fail in delivering upon the oath’s terms, they then suffer the penalties agreed upon, delivered by the hands of the gods themselves. Note: Oath punishments will be settled by the GM and should be as close to the agreed upon punishments as possible.",
       effect: "Can bind divine oaths between individuals (oath-breakers suffer GM-determined consequences)",
     },
     "Pious": {
       prerequisiteClass: "Acolyte",
-      description: "Your faith in your god makes you an inspiration to those who would fight alongside you. Once per Encounter you can use a Bless as a Free Action on every ally in your Holy Aura. This Free Action takes place at the same time as one's Free Maneuver.",
+      description: "Your heartfelt appeal to the Gods is exceedingly compelling. You gain one (+1) additional Favor with each successful Prayer.",
       effect: "1/Encounter: Bless all allies in Holy Aura as Free Action",
     },
     "Protection Devotee": {
       prerequisiteClass: "Acolyte",
-      description: "As a devoted adherent to the Divine Influence of Protection you have found yourself granted with extraordinary powers. The following powers are granted to a Protection Devotee:\n• Once per day a Protection Devotee may automatically succeed on any one Valor-related Check.\n• Once per day a Protection Devotee may double (x2) the range of their Holy Aura for a Protection Influence-related Divine Intervention.\n• Once per day a Protection Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Protection with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Protection you have found yourself granted with extraordinary powers. The following powers are granted to a Protection Devotee: • Once per day a Protection Devotee may automatically succeed on any one Valor-related Check. • Once per day a Protection Devotee may double (x2) the range of their Holy Aura for a Protection Influence-related Divine Intervention. • Once per day a Protection Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Protection with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
       effect: "1/Day each: Auto-succeed Valor Check; Double Holy Aura range for Protection Intervention; Free 1-Favor Protection Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Rapture Devotee": {
       prerequisiteClass: "Acolyte",
-      description: "As a devoted adherent to the Divine Influence of Rapture you have found yourself granted with extraordinary powers. The following powers are granted to a Rapture Devotee:\n• Once per day a Rapture Devotee may automatically succeed on any one Instincts-related Check.\n• Once per day a Rapture Devotee may double (x2) the range of their Holy Aura for a Rapture Influence-related Divine Intervention.\n• Once per day a Rapture Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Rapture with a cost of 1 Favor for free.",
+      description: "As a devoted adherent to the Divine Influence of Rapture you have found yourself granted with extraordinary powers. The following powers are granted to a Rapture Devotee: • Once per day a Rapture Devotee may automatically succeed on any one Dexterity-related Check. • Once per day a Rapture Devotee may double (x2) the range of their Holy Aura for a Rapture Influence-related Divine Intervention. • Once per day a Rapture Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Rapture with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time. 205 ATHIA –",
       effect: "1/Day each: Auto-succeed Instincts Check; Double Holy Aura range for Rapture Intervention; Free 1-Favor Rapture Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Relic Antiquarian": {
       prerequisiteClass: "Acolyte",
-      description: "You are a collector of the Sacred Relics of old and of your time. You begin the game with a Minor Sacred Relic (see the Magic Items section for further details on Sacred Relics). Should you lose this Relic it takes 1d6 weeks to acquire a new one. Note: A Relic Antiquarian can only possess a single Sacred Relic at a time unless they possess the Create Relic Ability.",
+      description: "You have always had a metaphysical connection to the Relics of the Divine. You can detect the presence and the faith of a Sacred Relic while it is within your Holy Aura. Having done so, should the Relic be of an Old Faith, you can convert a Sacred Relic to your faith (see Magic Items for more details) and therefore be able to use it yourself. Finally, having successfully converted a Sacred Relic, or found a relic of your faith, you can then use that icon as a font of Favor. Sacred Relics have a pool of Favor to draw from equal to the following breakdown: 206 Abilities • Minute – 5 Favor • Minor Relic – 10 Favor • Moderate Relic – 20 Favor • Major Relic – 30 Favor • Epic Relic – 50 Favor Note: Once a Sacred Relic is drained of its Favor it reverts to an otherwise mundane (although possibly valuable) object.",
       effect: "Start with Minor Sacred Relic (1d6 weeks to replace if lost)",
     },
     "Reprisal": {
       prerequisiteClass: "Acolyte",
-      description: "Your god is wrathful towards those who would defy you or your companions. Once per Encounter, when an ally within your Holy Aura is successfully Hit you may use a Bless to cause the attacker to take Damage equal to the Damage the attacker inflicted upon your ally.",
+      description: "Not all Acolytes resort to violence, but those who act in the name of their gods bring with them a divine vengeance. This Ability allows an Acolyte to add their Valor Score to their Hit Checks and Damage results.",
       effect: "1/Encounter: Use Bless to reflect Damage back to attacker when ally in Holy Aura is hit",
     },
     "Rouse": {
       prerequisiteClass: "Acolyte",
-      description: "The power of your god can bring the recently fallen back to consciousness. You can bring someone who has recently become Downed back to consciousness with 1 point of Stamina. You may bring Downed individuals back to consciousness once per Encounter.",
+      description: "Through prayer, motivational cheers, or encouraging words you can spur those around you to fight through their wounds. By spending your Action during your turn to Rouse those around you, all those within your Holy Aura can fight without suffering from their wound penalties for that Round. This Ability may be used again and again so long as the Acolyte spends their Action Rousing their comrades.",
       effect: "1/Encounter: Revive Downed ally to 1 Stamina",
     },
     "Selfish God": {
       prerequisiteClass: "Acolyte",
-      description: "Your god expects your full devotion, and in return you are granted exceptional boons. You lose access to one Influence your god has offered you (this Influence cannot be Divination). However, in return, the maximum Favor you may possess is doubled.",
+      description: "Your God looks out for you as well. You may bestow your Blessings upon yourself.",
       effect: "Lose 1 Influence (not Divination); Maximum Favor × 2",
       hasMechanicalEffect: true,
     },
     "Sense Enemy": {
       prerequisiteClass: "Acolyte",
-      description: "Your god reveals the malicious and dangerous to you. You can sense the presence of those who would wish to do you or your companions harm. This works much like sensing magic, in that you can sense direction but not specifics. For example, the Acolyte could sense the presence of an enemy in a building or in a direction but not which individual is the enemy, nor could you sense an enemy from miles away. This Ability is limited to roughly your line of sight.",
+      description: "You can detect the presence of those who would seek to do you harm if they are within your Holy Aura. Note: Knowing of the presence of these individuals does not mean you know precisely where they are located (should your target be hidden or invisible).",
       effect: "Sense direction of hostile creatures within line of sight",
     },
     "Shared Favor": {
       prerequisiteClass: "Acolyte",
-      description: "When you share the blessings of your god it can be transformative. You can bestow one (+1) Favor to another individual. This exchange of power can be initiated once per day.",
+      description: "You can gift your Favor to others. As an Action, you can grant up to your Level in Favor to any single individual within your Holy Aura. This gifted Favor is still counted as yours, and thus cannot be recouped until expended. If gifted to an Acolyte, they can expend it as if it were their own. Additionally, it can take their maximum Favor above its normal limit. If gifted to a non-Acolyte, it can be cast as 209 ATHIA – though they were a Rogue (Caster level is considered one less, and their Holy Aura is 5’ radius per Level).",
       effect: "1/Day: Give +1 Favor to another individual",
     },
     "Sincere": {
       prerequisiteClass: "Acolyte",
-      description: "Your prayers are meaningful and heartfelt, which your god recognizes. The time for prayer to regain your Favor is halved. Note: You do not regain more Favor, you simply regain it in half the time.",
+      description: "Even the Gods themselves cannot deny your genuine appeals. You gain one Favor following any failed Prayer attempt.",
       effect: "Prayer time to regain Favor is halved",
     },
     "Smite I": {
       prerequisiteClass: "Acolyte",
-      description: "Your strikes are empowered by your god. Your weapon is wreathed in Divine power. You may add your level to any Damage roll you make once per Encounter.",
+      description: "Your god guides your hand in combat against your enemies. Once per Encounter you may add your current Favor to a Hit Check. If this Hit is successful, you may then add your current Favor to your Damage. Note: This Ability does not cost you your Favor to use.",
       effect: "1/Encounter: Add Level to one Damage roll",
     },
     "Smite II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Smite I"],
-      description: "As Smite I, but rather than adding your level to your Damage once per Encounter you can now add your level to your Damage once per Round for the duration of the Encounter.",
+      description: "As Smite I, but you may now add your maximum Favor to your Hit once per Encounter, regardless of your current Favor. If the Hit is successful, you may then add your maximum Favor to your Damage. 211 ATHIA –",
       effect: "1/Round: Add Level to one Damage roll (for entire Encounter)",
     },
     "Soul Steal": {
       prerequisiteClass: "Acolyte",
-      description: "Your god has shown you a way to steal the very essence of those you strike down. When you deliver a killing blow to a sentient being you steal a portion of their soul's essence and immediately gain a point (+1) of Favor.",
+      description: "When passing from one world to the next there is an energy that exists. Although this energy is usually missed, you can tap into it with great effect. Following the Round in which something dies, you may, as a Free Action, select one soul to steal. Regardless of the number of individuals slain in a Round, the Soul Stealer may only choose one soul to steal. Select one power from the list below to define what type of Soul Steal power you possess: • Fortify: You steal the energy from the release of the departed’s soul to grant all you select within your Holy Aura an amount of Fatigue equal to one-half the Challenge Level or Level of the deceased (round up). This gained Fatigue cannot take a Character beyond their normal Fatigue maximum. • Glorify: You steal the energy from the release of the departed’s soul to grant any one individual within your Holy Aura one point (+1) of Favor. This gained Favor cannot take a Character beyond their normal Favor maximum. • Vivify: You steal the energy from the release of the departed’s soul to grant any one individual within your Holy Aura an amount of temporary Stamina equal to the Challenge Level or Level of the deceased. These temporary Stamina dissipate at the end of the Encounter. In selecting this Ability, the specific capability of the Soul Steal should be noted with the Ability. For example, Soul Steal: Glorify. Despite the number of capabilities within this Ability, Soul Steal may only be taken as an Ability once.",
       effect: "Gain +1 Favor when delivering killing blow to sentient beings",
     },
     "Stalwart": {
       prerequisiteClass: "Acolyte",
-      description: "Your faith is your shield. While maintaining at least half your Favor, you possess Damage Reduction against all physical Damage equal to your Level.",
+      description: "You have a dedicated sense of will when it comes to enacting Divine Interventions in combat. You may spend your Stamina to improve upon your Faith Checks. This is done in the same manner as spending Stamina to improve a Hit Check, by spending one Stamina point to improve a Faith Check result by one point.",
       effect: "DR = Level against physical Damage when Favor ≥ half maximum",
       hasMechanicalEffect: true,
     },
@@ -330,24 +330,24 @@ export const abilities: AbilitiesByClass = {
     },
     "Venerable Spirit": {
       prerequisiteClass: "Acolyte",
-      description: "Your god protects you from those who would seek to do you harm with magic. Once per Encounter you can cancel, dodge, or otherwise nullify a single Divine Intervention from affecting you.",
+      description: "Your very essence is nearly otherworldly, leaving you with an almost supernatural spirit. As a result, you will not rise as a member of the Sick when you pass from this world to the next. Likewise, you are impervious to having another spirit Reincarnated into your body. In fact, your spirit is so different from those of the people around you that you can walk among the Sick with a Successful Faith Check at Average (12) Difficulty (treating it much like a successful Stealth Check).",
       effect: "1/Encounter: Nullify one Divine Intervention targeting you",
     },
     "Vesting Faith": {
       prerequisiteClass: "Acolyte",
-      description: "Your faith protects you. When you have at least half of your Favor, your Defense receives a +1 bonus.",
+      description: "Turning to their faith in times of need, an Acolyte can grant hidden reserves of strength. Vesting Faith allows the Acolyte to spend their Blessings to bestow Stamina. Stamina is granted at a rate of 2 plus the Acolyte’s Level points per Blessing. This Stamina remains with the Target until used.",
       effect: "+1 Defense when Favor ≥ half maximum",
       hasMechanicalEffect: true,
     },
     "Zealot I": {
       prerequisiteClass: "Acolyte",
-      description: "Your fanatical belief in your god can be utterly terrifying. On a successful Valor Check you Frighten your Target for a number of Rounds equal to your level. This Ability may be used once per Day.",
+      description: "Your conviction to the will of the Gods is unwavering. You always succeed on your initial Faith Checks for your Divine Interventions. All subsequent Faith Checks are made normally.",
       effect: "1/Day: Frighten target for Level Rounds (requires successful Valor Check)",
     },
     "Zealot II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Zealot I"],
-      description: "As Zealot I, but you no longer need to succeed on a Valor Check to Frighten your Target.",
+      description: "As Zealot I, but now you succeed on your first two Faith Checks for your Divine Interventions. Again, all subsequent Faith Checks are made normally. 217",
       effect: "1/Day: Frighten target for Level Rounds (no Check required)",
     },
   },
@@ -368,7 +368,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Arcane Sensitive": {
       prerequisiteClass: "Mage",
-      description: "You've always had a knack for sensing Arcane powers. You automatically (no roll necessary) know when you are in the presence of Arcane Magic and what the Focus of another Arcane Caster's Spell is. You also make your Scholar Checks at Advantage to determine how to activate a Runework item (see Runework in the Magic section for further details). Additionally, you automatically know the Art any Caster is using when casting Arcane magic. Finally, you can instantly identify Enchanted Items just by touching them.",
+      description: "You’ve always had a knack for sensing Arcane powers. You automatically (no roll necessary) know when you are in the presence of Arcane Magic and what the Focus of another Arcane Caster’s Spell is. You also make your Scholar Checks at Advantage to determine how to activate a Runework item (see Runework in the Magic section for further details). Additionally, you automatically know the Art any Caster is using when casting Arcane magic. Finally, you can instantly identify Enchanted Items just by touching them.",
     },
     "Artificer": {
       prerequisiteClass: "Mage",
@@ -384,27 +384,27 @@ export const abilities: AbilitiesByClass = {
     },
     "Avatar of Air": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of Air you have been empowered with the following capabilities:\n• You can move at your normal rate of speed hovering just inches over the ground. This does not preclude you from falling, nor taking damage from a fall, but does mean you can traverse uneven ground (water, lava, etc.) simply by gliding over it.\n• You gain a bonus to your Defense of +1 versus any ranged missile attack (arrows, bolts, spears, sing stones, etc.).\n• You are impervious to the winds or magically created wind attacks.",
+      description: "As an exemplar of the Arcane powers of Air you have been empowered with the following capabilities: • You can move at your normal rate of speed hovering just inches over the ground. This does not preclude you from falling, nor taking damage from a fall, but does mean you can traverse uneven ground (water, lava, etc.) simply by gliding over it. • You gain a bonus to your Defense of +1 versus any ranged missile attack (arrows, bolts, spears, sing stones, etc.). • You are impervious to the winds or magically created wind attacks. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a Character. 170 Abilities",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a Character.",
     },
     "Avatar of Cosmos": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of the Cosmos you have been empowered with the following capabilities:\n• With a connection to an incredible Arcane power, you no longer find yourself needing to sleep.\n• By meditating you can connect your physical self with the infinity of the universe, allowing you to better recover from wounds faster. Once per day you may heal two points (2) of Injuries with four hours of meditation.\n• You can make a cosmic connection to one of your material items, allowing them to slip through space and time. Only one connection may exist at a time, but once it is made you can summon that item to you at any time, instantly, as a Free Action.",
+      description: "As an exemplar of the Arcane powers of the Cosmos you have been empowered with the following capabilities: • With a connection to an incredible Arcane power, you no longer find yourself needing to sleep. • By meditating you can connect your physical self with the infinity of the universe, allowing you to better recover from wounds faster. Once per day you may heal two points (2) of Injuries with four hours of meditation. • You can make a cosmic connection to one of your material items, allowing them to slip through space and time. Only one connection may exist at a time, but once it is made you can summon that item to you at any time, instantly, as a Free Action. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
     },
     "Avatar of Earth": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of Earth you have been empowered with the following capabilities:\n• Like the ageless rock of the land, you no longer age yourself. You are not immortal, just no longer able to age.\n• You gain a bonus to your Defense of +1 versus any melee attack (weapons, fists, etc.).\n• So long as your feet are on land you are impervious to being moved or given the Prone State (see States for further information).",
+      description: "As an exemplar of the Arcane powers of Earth you have been empowered with the following capabilities: • Like the ageless rock of the land, you no longer age yourself. You are not immortal, just no longer able to age. • You gain a bonus to your Defense of +1 versus any melee attack (weapons, fists, etc.). • So long as your feet are on land you are impervious to being moved or given the Prone State (see States for further information). Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
     },
     "Avatar of Fire": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of Fire you have been empowered with the following capabilities:\n• You can see the heat in all things, and as such gain a sort of thermal vision that can allow you to see heat signatures at any time of day. You therefore no longer suffer Disadvantage in the dark when confronting a creature who generates their own body heat.\n• You gain a bonus to any Hit check of +1.\n• You are impervious to any extremes of heat or cold.",
+      description: "As an exemplar of the Arcane powers of Fire you have been empowered with the following capabilities: • You can see the heat in all things, and as such gain a sort of thermal vision that can allow you to see heat signatures at any time of day. You therefore no longer suffer Disadvantage in the dark when confronting a creature who generates their own body heat. • You gain a bonus to any Hit check of +1. • You are impervious to any extremes of heat or cold. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character. 171 ATHIA –",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
     },
     "Avatar of Water": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of Water you have been empowered with the following capabilities:\n• You can move at your normal Speed through water, and are unaffected by currents, pressure, or other aspects of water. Water no longer obstructs your vision, and you can see clearly underwater, penetrate the thickest of fogs, or pierce the driving rain.\n• You no longer suffer from hunger or thirst, sated by the endless Arcane powers of water's life.\n• You can breathe water and remain indefinitely underwater.",
+      description: "As an exemplar of the Arcane powers of Water you have been empowered with the following capabilities: • You can move at your normal Speed through water, and are unaffected by currents, pressure, or other aspects of water. Water no longer obstructs your vision, and you can see clearly underwater, penetrate the thickest of fogs, or pierce the driving rain. • You no longer suffer from hunger or thirst, sated by the endless Arcane powers of water’s life. • You can breathe water and remain indefinitely underwater. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a character.",
     },
     "Battle Mage I": {
@@ -422,7 +422,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Bolstered Magic": {
       prerequisiteClass: "Mage",
-      description: "By tying up additional Mana during an Encounter, the Caster can create more powerful Effects from their Spells. Only one Bolster can be applied per Encounter, and once chosen, lasts for the duration of the Encounter. By tying up one (1) Mana the Caster may choose one the following benefits to their Spell Effects for the duration of the Encounter:\n• Chances of Spells spreading (Acid, Electricity, Flame, Geyser, etc.) are increased by one (+1). For example, a one in four chance would become a two in four chance.\n• Increase any Damage Resistance bonus by ½ Caster Level.\n• Increase any Defense bonus by one (+1).\n• Increase any movement bonus by +25%.\n• Increase any size bonus by +25%.\n• Reroll any 1's when determining a Spell's Damage.\n• Transfer a Concentration Duration Spell to another Focus in range as an Action.",
+      description: "By tying up additional Mana during an Encounter, the Caster can create more powerful Effects from their Spells. Only one Bolster can be applied per Encounter, and once chosen, lasts for the duration of the Encounter. By tying up one (1) Mana the Caster may choose one the following benefits to their Spell Effects for the duration of the Encounter: • • • 174 Chances of Spells spreading (Acid, Electricity, Flame, Geyser, etc.) are increased by one (+1). For example, a one in four chance would become a two in four chance. Increase any Damage Resistance bonus by ½ Caster Level. Increase any Defense bonus by one (+1). Abilities • • • • Increase any movement bonus by +25%. Increase any size bonus by +25%. Reroll any 1’s when determining a Spell’s Damage. Transfer a Concentration Duration Spell to another Focus in range as an Action.",
     },
     "Combat Casting": {
       prerequisiteClass: "Mage",
@@ -434,11 +434,11 @@ export const abilities: AbilitiesByClass = {
     },
     "Communal Casting": {
       prerequisiteClass: "Mage",
-      description: "You may Cooperate (as per Cooperation for Talent Checks) with another Arcane Caster on any Spell they are attempting to Cast, provided you have at least one point of Aptitude in the Art or Arts contained in their Spell. You are limited to the maximum Spell difficulty of the lower Caster Level between you and whomever you are assisting and use their Spell Difficulty for your Aptitude Check. If the Spell requires more than one Mana to maintain, you may split the Mana cost with them, with an odd amount of Mana going to whomever you're assisting. The maximum Spell difficulty for whomever you are assisting is raised by one (+1) for each character with Communal Casting assisting the initial Caster.",
+      description: "You may Cooperate (as per Cooperation for Talent Checks) with another Arcane Caster on any Spell they are attempting to Cast, provided you have at least one 179 ATHIA – point of Aptitude in the Art or Arts contained in their Spell. You are limited to the maximum Spell difficulty of the lower Caster Level between you and whomever you are assisting and use their Spell Difficulty for your Aptitude Check. If the Spell requires more than one Mana to maintain, you may split the Mana cost with them, with an odd amount of Mana going to whomever you’re assisting. The maximum Spell difficulty for whomever you are assisting is raised by one (+1) for each character with Communal Casting assisting the initial Caster.",
     },
     "Continuance I": {
       prerequisiteClass: "Mage",
-      description: "Your ability to keep your magic going comes easier to you. Reduce the cost of your Spell's Duration by two (-2).",
+      description: "Your ability to keep your magic going comes easier to you. Reduce the cost of your Spell’s Duration by two (-2).",
     },
     "Continuance II": {
       prerequisiteClass: "Mage",
@@ -451,19 +451,19 @@ export const abilities: AbilitiesByClass = {
     },
     "Determined": {
       prerequisiteClass: "Mage",
-      description: "You are firmly resolved to succeed at a given spell, and do not let your first failure dissuade you from trying the same spell again. When casting a Spell, if you miss your Aptitude Check by one or two, you may attempt to cast that same Spell again without needing to change your circumstances (refer to the Failure and Additional Attempts section of the Core Mechanics). For example, if you need to roll a 12 or better on your Aptitude Check and roll a 10 or 11, you may try again without changing your circumstances using this Ability.",
+      description: "You are firmly resolved to succeed at a given spell, and do not let your first failure dissuade you from trying the same spell again. When casting a Spell, if you miss your Aptitude Check by one or two, you may attempt to cast that same Spell again without needing to change your circumstances (refer to the Failure and Additional Attempts section of the Core Mechanics). For example, if you need to roll a 12 or better on your Aptitude Check and roll a 10 or 11, you may try again without changing your circumstances using this Ability. 183 ATHIA –",
     },
     "Distill Resonance": {
       prerequisiteClass: "Mage",
-      description: "You are capable of drawing raw power out of the Resonance Crystals you find. You may syphon the Power Points out of a Resonance Crystal as a Free Action to lower the Difficulty of an Aptitude Check by a value equal to your Level. Thus, a 3rd Level Mage could syphon 3 Power Points (their maximum, by Level) from a Minute Resonance Crystal to lower the Difficulty of their Aptitude Check by 3 (thus leaving 13 Power Points remaining in the Resonance Crystal).",
+      description: "You are capable of drawing raw power out of the Resonance Crystals you find. You may syphon the Power Points out of a Resonance Crystal as a Free Action to 184 Abilities lower the Difficulty of an Aptitude Check by a value equal to your Level. Thus, a 3rd Level Mage could syphon 3 Power Points (their maximum, by Level) from a Minute Resonance Crystal to lower the Difficulty of their Aptitude Check by 3 (thus leaving 13 Power Points remaining in the Resonance Crystal).",
     },
     "Dynamism": {
       prerequisiteClass: "Mage",
-      description: "For some Mages, when all goes well, it goes very well. Dynamic Mages gain added benefits from their critically successful castings. When selecting this Ability, choose one of the Dynamic Types from the Dynamism Table. The type chosen should be noted with the Ability. For example, Dynamism: Incendiary. When a Critical result is rolled on an Aptitude Check, the Mage with this Ability may choose to ignore the bonus given by Dynamism.\n\nDynamism Table\n\nDynamism Type | Added Bonus on Critical\nFar-Reaching | Affect one additional Focus per level of the Mage\nIncendiary | Add 1d4 Damage to the result per Level of the Mage\nLongstanding | Duration (Rounds) extended by the Level of the Mage\nVitalized | Automatically successful on their next Check",
+      description: "For some Mages, when all goes well, it goes very well. Dynamic Mages gain added benefits from their critically successful castings. When selecting this Ability, choose one of the Dynamic Types from the Dynamism Table. The type chosen should be noted with the Ability. For example, Dynamism: Incendiary. When a Critical result is rolled on an Aptitude Check, the Mage with this Ability may choose to ignore the bonus given by Dynamism. Dynamism Table Dynamism Type Far-Reaching Incendiary Longstanding Vitalized Added Bonus on Critical Affect one additional Focus per level of the Mage Add 1d4 Damage to the result per Level of the Mage Duration (Rounds) extended by the Level of the Mage Automatically successful on their next Check",
     },
     "Eldritch Arcana": {
       prerequisiteClass: "Mage",
-      description: "You can tap into the most puissant powers by opening conduits into the Arcane forces of Athia. In selecting this Ability, you may choose to tie one or more Mana points, at will, into the mightiest of Arcane forces. This Mana is invested and cannot be used for any other purpose (for example, casting Spells) unless the Mage takes an Action to reclaim their invested Mana. Choose one of the following capabilities:\n• Adamant: By dedicating a point (1) of Mana the Mage gains a point of Damage Resistance against all physical attacks equal to one-half their Level (round up). By dedicating four (4) points of Mana the Mage increases that Damage Resistance against all physical attacks (i.e., non-Arcane and non-Divine attacks) equal to their Level.\n• Adroit: By dedicating two points (2) of Mana the Mage may lower the Difficulty of any Spell they attempt to cast by one (-1 Spell Difficulty). By dedicating five points (5) the mage may lower the Difficulty of any Spell they attempt to cast by two (-2 Spell Difficulty).\n• Ensconced: By dedicating a point (1) of Mana the Mage gains a point of Damage Resistance against all Arcane attacks equal to one-half their Level (round up). By dedicating three (3) points of Mana the Mage increases that Damage Resistance against all Arcane attacks equal to their Level.\n• Magnitude: By dedicating three points (3) of Mana the Mage gains +1 to any Attribute they select. By dedicating four points (4) the mage gains +1 to any Attribute they select and may take that Attribute beyond their maximum. It takes an Action for the Mage to apply this bonus to a different Attribute.\n• Portend: By dedicating a point (1) of Mana the Mage no longer suffers Disadvantage on any Talent Checks. By dedicating three points (3) of Mana, the Mage is considered to have an Apprentice level of Expertise in each Talent.\n• Retaliative: By dedicating two points (2) of Mana the Mage may add an additional 1d4 Damage to any Spell they cast. By dedicating five points (5) of Mana the Mage may increase their Damage die used in any spell by one (D6's become D8's, D8's become D10's, etc.).\nNote: In selecting this Ability, the specific capability of the Eldritch Arcana should be noted with the Ability. For example, Eldritch Arcana: Intrepid, or Intrepid Eldritch Arcana. Despite the number of capabilities of this Ability, Eldritch Arcana may only be taken as an Ability once. Additionally, the effects of the Eldritch Arcana do not stack. For Example, a Mage who spends 4 Mana on their Magnitude Eldritch Arcana power gains a +1 to their Attribute (even beyond its maximum), not a +2.",
+      description: "You can tap into the most puissant powers by opening conduits into the Arcane forces of Athia. In selecting this Ability, you may choose to tie one or more Mana points, at will, into the mightiest of Arcane forces. This Mana is invested and cannot be used for any other purpose (for example, casting Spells) unless the Mage takes an Action to reclaim their invested Mana. Choose one of the following capabilities: 186 Abilities • Adamant: By dedicating a point (1) of Mana the Mage gains a point of Damage Resistance against all physical attacks equal to one-half their Level (round up). By dedicating four (4) points of Mana the Mage increases that Damage Resistance against all physical attacks (i.e., nonArcane and non-Divine attacks) equal to their Level. • Adroit: By dedicating two points (2) of Mana the Mage may lower the Difficulty of any Spell they attempt to cast by one (-1 Spell Difficulty). By dedicating five points (5) the mage may lower the Difficulty of any Spell they attempt to cast by two (-2 Spell Difficulty). • Ensconced: By dedicating a point (1) of Mana the Mage gains a point of Damage Resistance against all Arcane attacks equal to one-half their Level (round up). By dedicating three (3) points of Mana the Mage increases that Damage Resistance against all Arcane attacks equal to their Level. • Magnitude: By dedicating three points (3) of Mana the Mage gains +1 to any Attribute they select. By dedicating four points (4) the mage gains +1 to any Attribute they select and may take that Attribute beyond their maximum. It takes an Action for the Mage to apply this bonus to a different Attribute. • Portend: By dedicating a point (1) of Mana the Mage no longer suffers Disadvantage on any Talent Checks. By dedicating three points (3) of Mana, the Mage is considered to have an Apprentice level of Expertise in each Talent. • Retaliative: By dedicating two points (2) of Mana the Mage may add an additional 1d4 Damage to any Spell they cast. By dedicating five points (5) of Mana the Mage may increase their Damage die used in any spell by one (D6’s become D8’s, D8’s become D10’s, etc.). Note: In selecting this Ability, the specific capability of the Eldritch Arcana should be noted with the Ability. For example, Eldritch Arcana: Intrepid, or Intrepid Eldritch Arcana. Despite the number of capabilities of this Ability, Eldritch Arcana may only be taken as an Ability once. Additionally, the effects of the Eldritch Arcana do not stack. For Example, a Mage who spends 4 Mana on their Magnitude Eldritch Arcana power gains a +1 to their Attribute (even beyond its maximum), not a +2.",
     },
     "Enchanter": {
       prerequisiteClass: "Mage",
@@ -471,16 +471,16 @@ export const abilities: AbilitiesByClass = {
     },
     "Exact Magic I": {
       prerequisiteClass: "Mage",
-      description: "Your ability to strike your foes with your magic comes easier to you. Reduce the cost of your Spell's Each Additional Focuses by one (-1), thus reducing Each Additional Focus' Difficulty Increase from +3 to +2.",
+      description: "Your ability to strike your foes with your magic comes easier to you. Reduce the cost of your Spell’s Each Additional Focuses by one (-1), thus reducing Each Additional Focus’ Difficulty Increase from +3 to +2.",
     },
     "Exact Magic II": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Exact Magic I"],
-      description: "As Exact Magic I, but you may now freely adjust the Focus of the Spells in your Grimoire (less or more Focuses, or less or more Focus Radius) without it becoming a Spontaneous Spell. Spell Focuses altered require a corresponding adjustment to the difficulty of the Spell.",
+      description: "As Exact Magic I, but you may now freely adjust the Focus of the Spells in your Grimoire (less or more Focuses, or less or more Focus Radius) without it 188 Abilities becoming a Spontaneous Spell. Spell Focuses altered require a corresponding adjustment to the difficulty of the Spell.",
     },
     "Extension I": {
       prerequisiteClass: "Mage",
-      description: "Your ability to reach out with your magic is easier. Reduce the cost of your Spell's Range by two (-2).",
+      description: "Your ability to reach out with your magic is easier. Reduce the cost of your Spell’s Range by two (-2).",
     },
     "Extension II": {
       prerequisiteClass: "Mage",
@@ -497,11 +497,11 @@ export const abilities: AbilitiesByClass = {
     },
     "Glyphs": {
       prerequisiteClass: "Mage",
-      description: "You can set magical traps to kill your enemies. By tracing arcane symbols onto a floor, wall, door, or object you can empower it to go off the moment the Glyph is disturbed. The Mage spends one Round per Mana they wish to invest into their Glyph. Mana can be invested into a Glyph in the following ways:\n• Focus: The Glyph will only affect the first sentient being that triggers it. By empowering it with additional Mana the Focus can be doubled (as per the Focus Spell Element).\n• Damage: Each point of Mana invested does 1D8 per Caster Level.\nThe Glyph remains until either triggered by someone, or the Mage takes an Action to retrieve their invested Mana, thus destroying the Glyph. Note: The Glyph is virtually invisible, only noticeable with a successful Notice Check at Extreme (18) Difficulty. As an Example, a 2nd Level Mage looking to invest 3 Mana can create a Glyph that will do 4D8 Damage with a doubled Focus radius.",
+      description: "You can set magical traps to kill your enemies. By tracing arcane symbols onto a floor, wall, door, or object you can empower it to go off the moment the Glyph is disturbed. The Mage spends one Round per Mana they wish to invest into their Glyph. Mana can be invested into a Glyph in the following ways: • Focus: The Glyph will only affect the first sentient being that triggers it. By empowering it with additional Mana the Focus can be doubled (as per the Focus Spell Element). • Damage: Each point of Mana invested does 1D8 per Caster Level. The Glyph remains until either triggered by someone, or the Mage takes an Action to retrieve their invested Mana, thus destroying the Glyph. Note: The Glyph is virtually invisible, only noticeable with a successful Notice Check at Extreme (18) Difficulty. As an Example, a 2nd Level Mage looking to invest 3 Mana can create a Glyph that will do 4D8 Damage with a doubled Focus radius.",
     },
     "Harm": {
       prerequisiteClass: "Mage",
-      description: "You've a knack for adding a bit of damage to your magic. You can choose to add or remove Damage when casting a Spell from your Grimoire without it being a Spontaneous Spell. Damage added or removed requires a corresponding adjustment to the difficulty of the Spell.",
+      description: "You’ve a knack for adding a bit of damage to your magic. You can choose to add or remove Damage when casting a Spell from your Grimoire without it being a Spontaneous Spell. Damage added or removed requires a corresponding adjustment to the difficulty of the Spell.",
     },
     "Hasty Recharge": {
       prerequisiteClass: "Mage",
@@ -510,107 +510,107 @@ export const abilities: AbilitiesByClass = {
     },
     "Master of Air": {
       prerequisiteClass: "Mage",
-      description: "Air is your preferred Art. You gain two (+2) Arcane Aptitude towards all Spells utilizing the Art of Air.",
+      description: "You are adept at the Arcane Art of Air. Any Spell you design that is composed exclusively with Air Effects has its Difficulty to cast reduced by one (-1).",
     },
     "Master of Cosmos": {
       prerequisiteClass: "Mage",
-      description: "Cosmos is your preferred Art. You gain two (+2) Arcane Aptitude towards all Spells utilizing the Art of Cosmos.",
+      description: "You are adept at the Arcane Art of Cosmos. Any Spell you design that is composed exclusively with Cosmos Effects has its Difficulty to cast reduced by one (-1).",
     },
     "Master of Earth": {
       prerequisiteClass: "Mage",
-      description: "Earth is your preferred Art. You gain two (+2) Arcane Aptitude towards all Spells utilizing the Art of Earth.",
+      description: "You are adept at the Arcane Art of Earth. Any Spell you design that is composed exclusively with Earth Effects has its Difficulty to cast reduced by one (-1).",
     },
     "Master of Fire": {
       prerequisiteClass: "Mage",
-      description: "Fire is your preferred Art. You gain two (+2) Arcane Aptitude towards all Spells utilizing the Art of Fire.",
+      description: "You are adept at the Arcane Art of Fire. Any Spell you design that is composed exclusively with Fire Effects has its Difficulty to cast reduced by one (-1).",
     },
     "Master of Water": {
       prerequisiteClass: "Mage",
-      description: "Water is your preferred Art. You gain two (+2) Arcane Aptitude towards all Spells utilizing the Art of Water.",
+      description: "You are adept at the Arcane Art of Water. Any Spell you design that is composed exclusively with Water Effects has its Difficulty to cast reduced by one (-1).",
     },
     "Memorized Spell": {
       prerequisiteClass: "Mage",
-      description: "Through repeated use and study, you have committed a Spell to memory. Choose any Spell from your Grimoire. You no longer need to reference your Grimoire to cast this Spell, and you may do so from memory. Note: You may have up to three Memorized Spells at any given time. Every time you gain a level you may remove one Spell from your memory and add another in its place.",
+      description: "You have one Spell per positive Knowledge Modifier etched in your Memory. For example, a Mage with a Knowledge Modifier of +2 would have 2 Spells memorized. Mages with a zero or negative Knowledge Modifier gain no benefit from this Ability. You do not need your Grimoire to cast these memorized spells, and do not consider them as being Spontaneous Spells. 199 ATHIA –",
     },
     "Multitasker": {
       prerequisiteClass: "Mage",
-      description: "Your ability to maintain multiple active Spells at once is laudable. You may maintain an additional Spell's Duration beyond your normal limit (Caster Level divided by 2). Each time you take this Ability it increases the number of Spells you can maintain by one (+1).",
+      description: "You have a flair for maintaining numerous magical spells at once. You have one additional point (+1) of Mana. Note: This Ability may be taken multiple times.",
       canTakeMultiple: true,
     },
     "Mystic Leverage I": {
       prerequisiteClass: "Mage",
-      description: "When casting magic you are capable of calling upon even deeper reserves of Arcane energy to ensure you succeed. You can spend one (1) Favor to roll your Aptitude Check at Advantage. This Ability may only be used once per day.",
+      description: "Tapping into Arcane energy grants measurable power, but at a cost. Mystic Leverage allows the mage to invest a portion of their Mana to gain advantage on a given task. By temporarily investing a point of the Mage’s available Mana they may gain Advantage on any single roll. This Mana will remain invested until the Mage rolls a Critical Success on any Check. Any number of Mana may be invested in this manner however a Critical Success on any Check only returns a single point at a time.",
     },
     "Mystic Leverage II": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Mystic Leverage I"],
-      description: "As Mystic Leverage I, but rather than rolling at Advantage when spending Favor, you can spend two (2) Favor to automatically succeed on your Aptitude Check. This Ability may only be used once per day.",
+      description: "As Mystic Leverage I, but you may now also regain your invested Mana at a rate of 1 point per Worthwhile Rest.",
     },
     "Personal Immunity": {
       prerequisiteClass: "Mage",
-      description: "As a side effect of working with your magic you have become immune to your own Arcane powers. Your Spells never affect you unless you explicitly choose to be affected by them.",
+      description: "You have always been able to resist your own magic. At any time, you can choose to be immune to your own Arcane Spells.",
     },
     "Powerful Magic": {
       prerequisiteClass: "Mage",
-      description: "You've a knack for adding a bit more power to your magic. When casting a Spell from your Grimoire you may increase your Spell Difficulty by three (+3) to have the Spell treated as if your Caster Level was one higher (+1). This Ability will affect the Damage dice and any other Level-based bonuses pertaining to the Spell.",
+      description: "Your magic seems to affect even the hardiest of beings with ease. Your magic ignores all Damage Reduction, as well as Arcane Immunities the Target of your Spell may possess. 203 ATHIA –",
     },
     "Ravage I": {
       prerequisiteClass: "Mage",
-      description: "Once per Encounter you can tap into incredible reserves of Arcane power. By dedicating two (2) Mana to a Spell as you cast it, you can reroll any 1's and 2's on the Spell's Damage dice. This can only be done on Spells that do Damage.",
+      description: "Your Spells are particularly brutal. You add your Level to any Damage your Spell inflicts.",
     },
     "Ravage II": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Ravage I"],
-      description: "As Ravage I, but you can now reroll any 1's, 2's, or 3's on the Spell's Damage dice.",
+      description: "You have an uncanny lethality with your magic. You roll any spell Damage at Advantage. Note: Ravage I and Ravage II’s Abilities stack, allowing a Mage to roll their Damage at Advantage and add their Level to their Spell’s Damage.",
     },
     "Repeat Spell I": {
       prerequisiteClass: "Mage",
-      description: "When you succeed on an Aptitude Check to cast a Spell, you can forgo the Effects of that Spell to instead \"hold\" the Spell for the next Round. This allows you to cast the same Spell again in the next Round without needing to make another Aptitude Check. The Spell is automatically cast successfully in the next Round, and you dedicate the normal cost of Mana to maintain it. This Ability may only be used once per Encounter.",
+      description: "You are quick to adjust your magic to increase the probabilities of its success. Any time you cast a Spell successfully, if you attempt to cast that same spell again in the following Round the Difficulty to Cast that Spell is lowered by one (-1). Note: The effects of this Ability are cumulative with each successful casting. Once the Mage fails to cast the spell, the Difficulty for that Spell returns to normal. Likewise, should it be more than a Round between castings of the Spell the Difficulty for the Spell also returns to normal.",
     },
     "Repeat Spell II": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Repeat Spell I"],
-      description: "As Repeat Spell I, but you can now \"hold\" the Spell for up to three (3) additional Rounds. Each Round the Spell is held, you must dedicate the normal cost of Mana to maintain it. If at any point you do not have enough Mana to maintain the Spell, it is lost.",
+      description: "As Repeat Spell I, but the Mage no longer must be successful in casting the Spell to gain the benefits of its Difficulty decreasing by one (-1). Note: Should it be more than a Round between castings of the Spell the Difficulty for the Spell still returns to normal.",
     },
     "Rune Release": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Runecrafter"],
-      description: "Your knowledge of runework is such that you can forcefully discharge the Arcane energy from a piece of Runework, causing the Runework to explode in a concussive blast. This causes all those in a 10' radius to take 1d6 Damage per Power Point remaining in the Runework. The Runework item is destroyed in the process.",
+      description: "As a Free Action you can release your allocated Mana in a Runework without activating the Runework itself. The Runework is then considered to be no longer powered by Mana.",
     },
     "Runemaster I": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Runecrafter"],
-      description: "Your skill with Runework is exceptional. You can create Runework items as if you were one level higher than your current level.",
+      description: "You are adept at empowering your Runework. All efforts to imbue your Runework have their Difficulties reduced by one (-1).",
     },
     "Runemaster II": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Runemaster I"],
-      description: "As Runemaster I, but you can now create Runework items as if you were two levels higher than your current level.",
+      description: "As Runemaster I, but rather than reducing the Difficulties to imbue Runework by one (-1), you now reduce that Difficulty by two (-2). Additionally, when investing 208 Abilities Mana into Runework for additional uses, each point of Mana provides two additional uses.",
     },
     "Shorthand": {
       prerequisiteClass: "Mage",
-      description: "You have developed a unique shorthand for your Grimoire, allowing you to record Spells in far less space than normal. Your Grimoire can hold twice as many Spells as it normally would.",
+      description: "You have a very condensed cypher all your own and can make a record that only you can decipher. Anyone else reading your Shorthand must make a Difficult Scholar Check to read it. Your Spells take up two less pages (each) to a minimum of one page in your Grimoire, and it takes you half the time to write a Spell. 210 Abilities",
     },
     "Steady Runework": {
       prerequisiteClass: "Mage",
       prerequisiteAbilities: ["Runecrafter"],
-      description: "Your Runework is more resilient than most. All Runework you create has double the normal number of uses before needing to be recharged.",
+      description: "Your Runework is exceedingly noteworthy, lasting, and capable. Any Runework you create that contains a Spell with a Concentration Duration succeeds on any Easy or Average Concentration Check (rather than just Easy Concentration Checks).",
     },
     "Sustained Arcana": {
       prerequisiteClass: "Mage",
-      description: "You have mastered the art of maintaining your magic. You can maintain the Duration of your Spells with only half the normal Mana cost (round up).",
+      description: "Instead of sleeping, you can enter a meditative state, allowing you to maintain a Spell requiring one Mana while you gain a Worthwhile Rest.",
     },
     "Switch": {
       prerequisiteClass: "Mage",
-      description: "You can switch the Focus of one of your active Spells as a Free Action once per Round. The new Focus must be within Range of the original Focus.",
+      description: "With a bit of effort, you can change the focal point of your Spells. While maintaining a Concentration Duration Spell, as an Action, you can switch the Focus of that maintained Spell. Since this is an Action, this will elicit a Concentration Check at the next appropriate Difficulty (for this and any other maintained Spells the caster is concentrating on).",
     },
     "Ritual Magic": {
       prerequisiteClass: "Mage",
-      description: "You have studied the ancient art of Ritual Magic, allowing you to cast Spells beyond your normal capabilities. You may cast any Spell from your Grimoire as a Ritual, taking one hour per Spell Difficulty. During this hour you must be relatively undisturbed and focused on the Ritual. At the end of the Ritual, you automatically succeed in casting the Spell without needing to make an Aptitude Check and without expending any Mana. Note: Ritual Magic cannot be used for Spells with an Instant Duration.",
+      description: "By drawing out Arcane circles of power, drawing runes on people or objects, burning incense, collecting blood of the sacrificed, or any number of other solemn and ceremonious acts, you can tie the ley lines of Arcane power to your ritual 207 ATHIA – rather than yourself. The Mage begins by casting a Spell of their choosing, and for every point of Mana invested in that Spell, the Caster must conduct their rite for four hours. Once complete, the Mana for the Spell no longer needs to be maintained by the Mage. Only one Spell can be cast with a Ritual at a time.",
     },
     "Wild Mage": {
       prerequisiteClass: "Mage",
-      description: "You have an innate connection to the chaotic nature of Arcane magic. When you roll a natural 20 on an Aptitude Check, you may choose to have the Spell's Effect doubled (duration, damage, range, etc., as appropriate). However, when you roll a natural 1 on an Aptitude Check, the GM may introduce a chaotic magical effect as appropriate to the situation.",
+      description: "You were born to create magic on a whim. Your Spontaneous Magic costs are reduced by two (-2). 216 Abilities",
     },
   },
 
@@ -626,11 +626,11 @@ export const abilities: AbilitiesByClass = {
     },
     "Ambusher": {
       prerequisiteClass: "Rogue",
-      description: "As a guerrilla fighter you know the sorts of places your enemies may hide. You may take two Actions in any Round in which you have Surprised your enemies (instead of the usual one Action). Any Checks stemming from these two Actions are made at Advantage, as per the Surprise rules described in the Combat section.",
+      description: "As a guerrilla fighter you know the sorts of places your enemies may hide. You may take two Actions in any Round in which you have Surprised your enemies (instead of the usual one Action). Any Checks stemming from these two Actions are made at Advantage, as per the Surprise rules described in the Combat section. 168 Abilities",
     },
     "Arcane Mark": {
       prerequisiteClass: "Rogue",
-      description: "You've discovered a cunning use for your Mana. By investing one (1) point of your available Mana you can place an Arcane Mark upon a Target. This mark must be created by touching your Target, but once done you always have a sense of the Target's direction and distance from you. You can remove this Arcane Mark at any time, as a Free Action, and return that invested Mana to your pool.",
+      description: "You’ve discovered a cunning use for your Mana. By investing one (1) point of your available Mana you can place an Arcane Mark upon a Target. This mark must be created by touching your Target, but once done you always have a sense of the Target’s direction and distance from you. You can remove this Arcane Mark at any time, as a Free Action, and return that invested Mana to your pool.",
     },
     "Assassin I": {
       prerequisiteClass: "Rogue",
@@ -657,11 +657,11 @@ export const abilities: AbilitiesByClass = {
     "Bladesman II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Bladesman I"],
-      description: "As Bladesman I, but rather than doing 1 point of Bleeding to the Target the degree of the Bleeding State bestowed is based upon the Level of the Character possessing this Ability as shown in the Bladesman Bleed Table. This effect will stack with each subsequent hit on any Target you have previously hit. Therefore, a 5th Level Character would bestow Bleed: 3 on a successful Hit against a Target. If that same Target is hit again, their Bleeding State would increase to Bleed: 6.",
+      description: "Bladesman Bleed Table As Bladesman I, but rather than Level Bleed Damage doing 1 point of Bleeding to the 1-4 2 Target the degree of the Bleeding State bestowed is based upon the 5-7 3 Level of the Character possessing 8-10 4 this Ability as shown in the Bladesman Bleed Table. This effect will stack with each subsequent hit on any Target you have previously hit. Therefore, a 5th Level Character would bestow Bleed: 3 on a successful Hit against a Target. If that same Target is hit again, their Bleeding State would increase to Bleed: 6.",
     },
     "Block": {
       prerequisiteClass: "Rogue",
-      description: "You have the skill to use your weapon against incoming attacks. As a Maneuver you can block an incoming attack, offering you Damage Reduction equal to one-half your Level (Round up).",
+      description: "You have the skill to use your weapon against incoming attacks. As a Maneuver you can block an incoming attack, offering you Damage Reduction equal to onehalf your Level (Round up).",
     },
     "Bonecrusher": {
       prerequisiteClass: "Rogue",
@@ -695,11 +695,11 @@ export const abilities: AbilitiesByClass = {
     },
     "Dangerous": {
       prerequisiteClass: "Rogue",
-      description: "When you are good, you are dangerous. Any time you score a Critical on a Hit Check you automatically do the maximum amount of Damage you possibly can.",
+      description: "When you are good, you are dangerous. Any time you score a Critical on a Hit Check you automatically do the maximum amount of Damage you possibly can. 182 Abilities",
     },
     "Divine Luck": {
       prerequisiteClass: "Rogue",
-      description: "Not only do you possess the Gods' favor, but they are proactively looking out for you. You may spend one (1) Favor to reroll any one die. You must accept the result of the second roll.",
+      description: "Not only do you possess the Gods’ favor, but they are proactively looking out for you. You may spend one (1) Favor to reroll any one die. You must accept the result of the second roll.",
     },
     "Dodge I": {
       prerequisiteClass: "Rogue",
@@ -717,7 +717,7 @@ export const abilities: AbilitiesByClass = {
     "Embolden II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Embolden I"],
-      description: "As Embolden I, but you can now grant your Hit bonus to all allies within earshot.",
+      description: "As Embolden I, but you can now grant your Hit bonus to all allies within earshot. 187 ATHIA –",
     },
     "Enemy Observance": {
       prerequisiteClass: "Rogue",
@@ -729,15 +729,15 @@ export const abilities: AbilitiesByClass = {
     },
     "Fleet": {
       prerequisiteClass: "Rogue",
-      description: "You are exceptionally fast. Increase your Base Move by +10' per turn.",
+      description: "You are exceptionally fast. Increase your Base Move by +10’ per turn.",
     },
     "Focused Fighting": {
       prerequisiteClass: "Rogue",
-      description: "The longer you square off with your opponent the more you become aware of how to counter their fighting style. If all your Attacks are made against the same Target, each subsequent Round you find it easier to connect with them. Beginning with the second Round their Defense lowers by one (-1). Each following Round that you remain solely focused on this Target their Defense continues to lower by one. For example, if focused on the same Target for a fourth Round, their Defense would be lowered by three (-3). The Target's Defense is only lowered for you.",
+      description: "The longer you square off with your opponent the more you become aware of how to counter their fighting style. If all your Attacks are made against the same Target, each subsequent Round you find it easier to connect with them. Beginning with the second Round their Defense lowers by one (-1). Each following Round that you remain solely focused on this Target their Defense continues to lower by one. For example, if focused on the same Target for a fourth Round, their Defense would be lowered by three (-3). The Target’s Defense is only lowered for you.",
     },
     "Force Strike I": {
       prerequisiteClass: "Rogue",
-      description: "You can focus and release your inner energy as a ranged attack on your enemies. Force Strike does Damage equal to your Base Strength Damage and has a Range of 10' per level. Your Force Strike is considered a weapon for the purposes of applying other Abilities.",
+      description: "You can focus and release your inner energy as a ranged attack on your enemies. Force Strike does Damage equal to your Base Strength Damage and has a Range of 10’ per level. Your Force Strike is considered a weapon for the purposes of applying other Abilities. 190 Abilities",
     },
     "Force Strike II": {
       prerequisiteClass: "Rogue",
@@ -751,15 +751,15 @@ export const abilities: AbilitiesByClass = {
     "Fortuitous II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Fortuitous I"],
-      description: "Sometimes it is better to be lucky than good. Your natural 1's on any Check are also considered Critical Successes.",
+      description: "Sometimes it is better to be lucky than good. Your natural 1’s on any Check are also considered Critical Successes.",
     },
     "Hamstring": {
       prerequisiteClass: "Rogue",
-      description: "Once per Encounter you can make an attack focused on impeding, slowing, or otherwise forcing your opponent to become less effective in their defense. Your Target's Defense is reduced by half your level following your successful attack (round up). This penalty lasts until the target is healed but does not stack with each successful attack.",
+      description: "Once per Encounter you can make an attack focused on impeding, slowing, or otherwise forcing your opponent to become less effective in their defense. Your Target’s Defense is reduced by half your level following your successful attack (round up). This penalty lasts until the target is healed but does not stack with each successful attack.",
     },
     "Hard Target I": {
       prerequisiteClass: "Rogue",
-      description: "You've always been a difficult opponent. As a Free Action you can choose to avoid any one Attack made against you in a Round. This Ability may be used once per Encounter.",
+      description: "You’ve always been a difficult opponent. As a Free Action you can choose to avoid any one Attack made against you in a Round. This Ability may be used once per Encounter.",
     },
     "Hard Target II": {
       prerequisiteClass: "Rogue",
@@ -773,111 +773,111 @@ export const abilities: AbilitiesByClass = {
     "Harrier II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Harrier I"],
-      description: "As Harrier I, but rather than gaining Advantage on your second Round of Checks you now gain Advantage on your Checks against your surprised enemy for the remainder of the Encounter.",
+      description: "As Harrier I, but rather than gaining Advantage on your second Round of Checks you now gain Advantage on your Checks against your surprised enemy for the remainder of the Encounter. 193 ATHIA –",
     },
     "Inspire Success": {
       prerequisiteClass: "Rogue",
-      description: "Your success in battle inspires your allies. Whenever you score a Critical Hit, all allies within 30' gain a bonus of one (+1) to their next Hit Check.",
+      description: "Encouraging words are your specialty. As a Free Action you can inspire a nearby ally to grant them Advantage on their next Talent Check, once per Day.",
     },
     "Jack of All Trades": {
       prerequisiteClass: "Rogue",
-      description: "You've dabbled in all manner of Talents. For any Talent Check you are asked to make where you possess no Expertise, you are considered to have Novice Expertise.",
+      description: "It is true, you do know a little about everything. You can make any Untrained Talent Check without suffering Disadvantage.",
     },
     "Knockout Artist": {
       prerequisiteClass: "Rogue",
-      description: "You are exceptionally skilled at rendering your enemies unconscious. Once per Encounter you may make a Called Shot to render your Target unconscious rather than kill them. This Called Shot is at a -4 to Hit. If successful, your Target is knocked unconscious and will remain so for a number of hours equal to the Damage you would have inflicted.",
+      description: "You have become rather skilled at landing blows in just the right places to take your opponents down. You consider yourself two Levels higher than you are when expending Stamina to attempt to bestow the Unconscious State to an opponent. For Example, a Level 4 Rogue attempting to spend Stamina to bestow the Unconscious State to a Fomor (Challenge Level 5) would pay 10 Stamina instead of 11, as they would consider themselves Level 6 with the Knockout Artist Ability.",
     },
     "Learn From Mistakes": {
       prerequisiteClass: "Rogue",
-      description: "Every failure is a lesson learned. When you fail a Talent Check, you gain Advantage on the next Talent Check you make using the same Talent.",
+      description: "Sometimes failures can provide a great deal of insight. Once per Day you may make a second attempt immediately following any Failed Check without needing to await changes to the situation, environment, or the passing of adequate time. In addition, you gain a bonus of +2 on your second attempt.",
     },
     "My Weapon": {
       prerequisiteClass: "Rogue",
-      description: "You have a signature weapon that you have used for years. Choose one specific weapon (not a weapon type). You gain a Hit bonus of two (+2) when using that specific weapon. Should you lose this weapon, it takes 1d6 weeks to find a suitable replacement.",
+      description: "When wielding a chosen weapon your character possesses, Stamina costs are reduced by one (-1), to a minimum of 1. Thus, if a Rogue needed a result of 18 to hit a creature and has a score of 15, the Rogue would only need to expend 2 Stamina to succeed in hitting their target (when it would have otherwise cost the Rogue 3 Stamina to increase their Hit check by 3 points). Should your character lose their weapon of choice, they will need two weeks with a replacement to regain the use of this ability for their new weapon.",
     },
     "Obscure Knowledge": {
       prerequisiteClass: "Rogue",
-      description: "You have picked up all manner of esoteric knowledge in your travels. Once per Session you may automatically succeed on any single Knowledge Talent Check.",
+      description: "You have an uncanny knack for pulling information out of the blue. You can make a Knowledge Check (Difficulty to be determined by the GM) to recall a worthwhile, and perhaps surprising piece of information that pertains to your character’s current situation. 202 Abilities",
     },
     "Performer": {
       prerequisiteClass: "Rogue",
-      description: "You are an exceptional performer. You gain Expertise in the Performance Talent at the Apprentice level. If you already possess Apprentice Expertise, you instead gain Journeyman Expertise. If you already possess Journeyman Expertise, you instead gain Expert Expertise.",
+      description: "If you have an opportunity to play or act before others, you gain Advantage on any Charisma, Discipline, or Faith Checks for the duration of the scene/encounter. Additionally, while performing, you have drawn the attention of those around you such that anyone else in the scene/encounter gains Advantage on any Stealth or Thievery Checks.",
     },
     "Poison Master": {
       prerequisiteClass: "Rogue",
-      description: "You are well-versed in the use of poisons. You can identify any poison by taste, smell, or sight. Additionally, you can apply poison to a weapon as a Free Action, and you are immune to accidental poisoning from your own poisons.",
+      description: "Your use of toxins is unmatched. Your poisons do twice (x2) as much Damage per round to your Targets.",
     },
     "Purposeful": {
       prerequisiteClass: "Rogue",
-      description: "When you set your mind to something, you see it through. Once per Session you may reroll any failed Check.",
+      description: "You have always stuck to your goals in life, and that focus has granted you wonderful benefits. You gain one additional Rogue Specialty.",
     },
     "Precise I": {
       prerequisiteClass: "Rogue",
-      description: "Your strikes are exceptionally accurate. Once per Encounter you may make an attack that automatically hits your Target (no Hit Check required). You still roll for Damage as normal.",
+      description: "Your most precise attacks are your most deadly. If you are successful with a Hit Check against your target and beat their Defense by five (5) or more (before any Stamina expenditures), you deal maximum Damage for the weapon (no need to roll Damage, for example a medium weapon would do 6 instead of 1d6) against the Target.",
     },
     "Precise II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Precise I"],
-      description: "As Precise I, but your attack now automatically hits and does maximum Damage.",
+      description: "As Precise I, but you also gain Advantage in the next Round on your next Hit Check made against the same target.",
     },
     "Pugilist I": {
       prerequisiteClass: "Rogue",
-      description: "Your unarmed strikes are devastating. Your unarmed Damage is increased to 1d6 + Strength Modifier.",
+      description: "You can use your body as a weapon. Your limbs are considered light weapons and gain weapon Damage of +1d4.",
     },
     "Pugilist II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Pugilist I"],
-      description: "As Pugilist I, but your unarmed Damage is now increased to 1d8 + Strength Modifier.",
+      description: "As Pugilist I, but Damage from your limbs is now +1d6 instead of the previous +1d4. 204 Abilities",
     },
     "Ready And Waiting": {
       prerequisiteClass: "Rogue",
-      description: "You are always prepared for danger. You automatically succeed on all Surprise Checks and can never be Surprised.",
+      description: "With a little head’s up and preparation, you can have a surprise ready. You may perform any single Action as a Free Action once per Day.",
     },
     "Redirection I": {
       prerequisiteClass: "Rogue",
-      description: "Once per Encounter, when an opponent misses you with a melee attack, you can redirect their attack to another Target within reach of the attacker. The attacker must reroll their Hit Check against the new Target.",
+      description: "By using your enemy's strength, power, and momentum against them you can see that their efforts to harm you come at a cost. Once per Round, when successfully attacked, impart your Level in Damage to your opponent. This Redirection does not reduce the amount of Damage you take.",
     },
     "Redirection II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Redirection I"],
-      description: "As Redirection I, but rather than once per Encounter you may now use this Ability once per Round.",
+      description: "As Redirection I, but you may either impart your Level in Damage to your Opponent or do half the Damage you take from their attack back to them, whichever is greater. This Redirection does not reduce the amount of Damage you take.",
     },
     "Sharpshooter I": {
       prerequisiteClass: "Rogue",
-      description: "You are exceptionally skilled with ranged weapons. You ignore the first Range increment penalty when using ranged weapons. For example, if using a weapon with a Range of 30', you can fire at Targets up to 60' away without penalty.",
+      description: "Under the right circumstances, you can place your shots preciously where you want them. Your Hit Checks with a Ranged or Hurled weapon against stationary Targets are made at Advantage.",
     },
     "Sharpshooter II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Sharpshooter I"],
-      description: "As Sharpshooter I, but you now ignore the first two Range increment penalties when using ranged weapons.",
+      description: "Your shots with any Ranged or Hurled weapon automatically hit any object (not living Targets) within Range. For example, you can shoot the rope your friend is hanging from, shoot a lantern on a table to burst it into flame, or shoot the rigging on a boat to drop the sail.",
     },
     "Steady Aim I": {
       prerequisiteClass: "Rogue",
-      description: "You have mastered the art of taking your time with ranged attacks. If you do not move in a Round, you gain a bonus of two (+2) to your Hit Check with ranged weapons.",
+      description: "You aim small and miss small. You no longer suffer Disadvantage with Ranged or Hurled weapons when firing at a Target engaged in melee. 212 Abilities",
     },
     "Steady Aim II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Steady Aim I"],
-      description: "As Steady Aim I, but rather than a +2 bonus you now gain Advantage on your Hit Check with ranged weapons when you do not move.",
+      description: "Each Round you spend aiming with a Ranged weapon you increase your Critical range by 2. For example, with a round of aiming you would roll a Critical result on a roll of 18, 19, or 20. With two rounds of aiming, your threshold for a Critical would be 16+ (16, 17, 18, 19, & 20). You can aim for a number of rounds equal to your level.",
     },
     "Stunning Strike": {
       prerequisiteClass: "Rogue",
-      description: "Once per Encounter you can make an attack designed to stun your opponent. On a successful Hit, your Target must make an Average (12) Endurance Check or be Stunned for one Round. While Stunned, the Target cannot take any Actions or Maneuvers.",
+      description: "You can make a melee attack to Stun your opponent. Once per Encounter, if you make a successful attack against an opponent, you give them the Stunned State (see States in the Combat section for further information).",
     },
     "Tumbler": {
       prerequisiteClass: "Rogue",
-      description: "You are exceptionally skilled at acrobatic maneuvers. You gain Expertise in the Acrobatics Talent at the Apprentice level. If you already possess Apprentice Expertise, you instead gain Journeyman Expertise. If you already possess Journeyman Expertise, you instead gain Expert Expertise.",
+      description: "You have developed a skill for getting around your enemies. As a Maneuver you may attempt an Athletics Check against a Difficulty equal to the Defense of your Target. This Athletics Check is considered a Free Action, and part of your Maneuver. If successful, you dive, roll, or dash around them. If you use your subsequent Action to perform an Attack against the Target, you make your Hit Check at Advantage.",
     },
     "Willful Focus": {
       prerequisiteClass: "Rogue",
-      description: "You can push yourself beyond your normal limits through sheer force of will. Once per Day you may spend Favor to increase the result of any single Check by the amount of Favor spent.",
+      description: "When the chips are down you have always been able to come through. Once per day you can spend any Stamina you possess to increase the result of a Talent Check by the number of Stamina spent.",
     },
   },
 
   warrior: {
     "Armor Adept": {
       prerequisiteClass: "Warrior",
-      description: "You know how to get the most out of your armor. Your armor's Defense Value is increased by one (+1).",
+      description: "You know how to get the most out of your armor. Your armor’s Defense Value is increased by one (+1). 169 ATHIA –",
     },
     "Back-Strike": {
       prerequisiteClass: "Warrior",
@@ -901,16 +901,16 @@ export const abilities: AbilitiesByClass = {
     },
     "Bounce Back": {
       prerequisiteClass: "Warrior",
-      description: "If given just a moment, you're able to rebound in combat. Once per encounter, if you have not been targeted in a Round (no attacks attempted upon you), you recover 1d4 plus your Level in Stamina.",
+      description: "If given just a moment, you’re able to rebound in combat. Once per encounter, if you have not been targeted in a Round (no attacks attempted upon you), you recover 1d4 plus your Level in Stamina.",
     },
     "Brutal I": {
       prerequisiteClass: "Warrior",
-      description: "You are a vicious opponent. You add your Level to all Damage rolls made. Note: This bonus is applied in addition to a Warrior's normal Damage bonus for his Class and is not applied to Arcane or Divine Damage.",
+      description: "You are a vicious opponent. You add your Level to all Damage rolls made. Note: This bonus is applied in addition to a Warrior’s normal Damage bonus for his Class and is not applied to Arcane or Divine Damage.",
     },
     "Brutal II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Brutal I"],
-      description: "In your hands, weapons are far deadlier. You gain additional abilities depending on the Size of the weapon you are using. See the Brutal II Table for details.",
+      description: "In your hands, weapons are far deadlier. You gain additional abilities depending on the Size of the weapon you are using. See the Brutal II Table for details. 175 ATHIA – Brutal II Table Weapon Size Light Medium Heavy Brutal II Advantage Gain one additional attack with your Light weapon per Round Your weapon does +3d6 Damage instead of the usual +1d6 Your Targets must make an Easy (9) Endurance Check or be knocked Prone with each attack.",
     },
     "Calculated Attack": {
       prerequisiteClass: "Warrior",
@@ -935,16 +935,16 @@ export const abilities: AbilitiesByClass = {
     },
     "Conditioned": {
       prerequisiteClass: "Warrior",
-      description: "You recover in battle faster than most. On a successful Recuperation Check you gain an additional number of Stamina equal to your Level (not to exceed your maximum Stamina). On a failed Recuperation Check you regain ½ your Level (rounded down).",
+      description: "You recover in battle faster than most. On a successful Recuperation Check you gain an additional number of Stamina equal to your Level (not to exceed your 180 Abilities maximum Stamina). On a failed Recuperation Check you regain ½ your Level (rounded down).",
     },
     "Counter Strike I": {
       prerequisiteClass: "Warrior",
-      description: "You capitalize on your opponent's mistakes. When an opponent misses you on a Hit Check, they take one (1) point of Damage as you make them pay for their error.",
+      description: "You capitalize on your opponent’s mistakes. When an opponent misses you on a Hit Check, they take one (1) point of Damage as you make them pay for their error.",
     },
     "Counter Strike II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Counter Strike I"],
-      description: "As Counter Strike I, but now your opponent takes Damage equal to your Level.",
+      description: "As Counter Strike I, but now your opponent takes Damage equal to your Level. 181 ATHIA –",
     },
     "Crowning Blow": {
       prerequisiteClass: "Warrior",
@@ -996,7 +996,7 @@ export const abilities: AbilitiesByClass = {
     "Guardsmanship II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Guardsmanship I"],
-      description: "As Guardsmanship I, but all Hit Checks and Damage rolls against your designated ally are at Disadvantage from all enemies.",
+      description: "As Guardsmanship I, but all Hit Checks and Damage rolls against your designated ally are at Disadvantage from all enemies. 192 Abilities",
     },
     "Here and Gone": {
       prerequisiteClass: "Warrior",
@@ -1004,128 +1004,128 @@ export const abilities: AbilitiesByClass = {
     },
     "Hold the Line I": {
       prerequisiteClass: "Warrior",
-      description: "You are harder to deal with when you've planted yourself. As a maneuver you may increase your Defense by one (+1) so long as you do not move. Should you move your Defense returns to its normal Score.",
+      description: "You are harder to deal with when you’ve planted yourself. As a maneuver you may increase your Defense by one (+1) so long as you do not move. Should you move your Defense returns to its normal Score.",
     },
     "Hold the Line II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Hold the Line I"],
-      description: "As Hold the Line I, but rather than your Defense increasing by one (+1) your Defense now increases by three (+3) until you move.",
+      description: "As Hold the Line I, but rather than your Defense increasing by one (+1) your Defense now increases by three (+3) until you move. 194 Abilities",
     },
     "Improved Critical I": {
       prerequisiteClass: "Warrior",
-      description: "You score a Critical Hit on a natural roll of 19 or 20.",
+      description: "Your skill at precision is legendary. You score a Critical Hit on a 19 and 20.",
     },
     "Improved Critical II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Improved Critical I"],
-      description: "As Improved Critical I, but you now score a Critical Hit on a natural roll of 18, 19, or 20.",
+      description: "As Improved Critical I, but you score a Critical Hit on an 18, 19 or 20.",
     },
     "King's Code": {
       prerequisiteClass: "Warrior",
-      description: "You live by a strict code of honor and conduct. When following your code, you gain a bonus of one (+1) to all Checks. When you violate your code, you suffer Disadvantage on all Checks until you atone for your transgression (as determined by the GM).",
+      description: "You strive to hold yourself to the ideals of your land's Great King. Each of the progenitors of the Great Houses had defining characteristics that have since become a code of Four Great Pillars. Those codes for each of the Great King’s are listed below. Any Warrior that takes the King’s Code endeavors to hold to their Great King’s Four Great Pillars. In doing so, they gain two distinct benefits. First, they gain the benefit of Advantage on all Checks during social interactions with members of their Code’s corresponding House. Additionally, once per Encounter, as a Free Action, the Warrior can negate or otherwise ignore the effects of an Enemy’s Special Ability for that Round. The following is a list of the King’s Code for each of the Great Kings: King’s Code Table House (King) 196 Code Asos • Knowledge is power • Be vigilant • Help those seeking to help themselves • Pass on what you have learned Cerrak • Your word is your worth • Never tolerate failures and cheats • Reveal your assets last • Respect those above you Blayth • Serve the True Gods • Maintain integrity • Exercise compassion Abilities House (King) Code • Always preserve your loyalties Draur • Reason over emotion • Always have a plan • Protect those you serve • Pleasure only when void of responsibility Lloar • Victory above all • Be underestimated • Own your responsibility • Never give in to apathy Thercer • Serve • Aid those in need • Do your duty • Speak the truth Onin • Foremost is family • Don’t let words get in the way of action • Survive to fight on • Strength in war, wisdom in peace",
     },
     "Maniacal": {
       prerequisiteClass: "Warrior",
-      description: "When you are Injured you become a terrifying force on the battlefield. While at half Stamina or less, you gain Advantage on all Hit Checks.",
+      description: "You are fueled by the taste of battle; the worse things get the greater your capability. The first time you take Damage in an Encounter you immediately gain two bonus Stamina (+2). When you first enter your Battered Tier, you gain five bonus Stamina (+5). When you first enter the Injured Tier, you gain ten bonus Stamina (+10). If unspent, this bonus Stamina is lost at the end of the Encounter. Additionally, if healed in battle you cannot regain these bonuses as they are only applied the first time you enter a Health Tier.",
     },
     "Marksman": {
       prerequisiteClass: "Warrior",
-      description: "You are exceptionally skilled with ranged weapons. You gain a Hit bonus of two (+2) with all ranged weapons.",
+      description: "You always hit your target. Each round you spend aiming, you gain a bonus of one (+1) to your next Hit Check (up to a three turn/+3 maximum).",
     },
     "Mounted Archer": {
       prerequisiteClass: "Warrior",
-      description: "You have trained extensively to use ranged weapons while mounted. You no longer suffer Disadvantage when making ranged attacks while mounted.",
+      description: "Firing from the back of a moving beast is something you have trained extensively at. You suffer no penalties for making ranged attacks from the back of a mount.",
     },
     "Mounted Assault": {
       prerequisiteClass: "Warrior",
-      description: "You add your mount's Strength Modifier to your Damage when making a mounted charge attack.",
+      description: "You have the knack of using your mount’s momentum to deliver the most devastating of blows. You do double (x2) Damage from your mount.",
     },
     "Mounted Combatant": {
       prerequisiteClass: "Warrior",
-      description: "You and your mount fight as one. While mounted, you gain a bonus of one (+1) to your Defense and your mount gains a bonus of two (+2) to its Defense.",
+      description: "You can always position your mount out of harm’s way. With a successful Difficult (15) Taming Talent Check you can negate any successful attack against your mount. This Check is made as a Free Action. 200 Abilities",
     },
     "Opportunist": {
       prerequisiteClass: "Warrior",
-      description: "You are always looking for an opening in combat. When an enemy within reach moves, you may make a single attack against them as a Free Action. This Ability may only be used once per Round.",
+      description: "You are skilled at turning anything into a weapon. Your Improvised Weapons do full Damage rather than reduced Damage, and any Ability that applies to an unspecified weapon applies to your Improvised Weapon.",
     },
     "Pelter": {
       prerequisiteClass: "Warrior",
-      description: "You are skilled at using thrown weapons. You gain a Hit bonus of two (+2) with all hurled weapons.",
+      description: "Your throws are incredible, and always on target. Weapons with the Hurled Designation have a base range of 100’ in your hands. Additionally, you gain Advantage on Hit Checks when throwing any Hurled weapon at Targets within 20’.",
     },
     "Quick Draw": {
       prerequisiteClass: "Warrior",
-      description: "You can draw and attack with a weapon as a single Action. Additionally, you gain Advantage on all Initiative Checks.",
+      description: "You are fast on the draw. You can draw and ready a weapon as a Free Action, and if armed when Surprised, may act in any Surprise Round.",
     },
     "Roar": {
       prerequisiteClass: "Warrior",
-      description: "Your battle cry is terrifying to behold. Once per Encounter, as a Free Action, you can let out a mighty roar. All enemies within 30' must make a Difficult (15) Valor Check or suffer Disadvantage on their next Check.",
+      description: "With a harrowing scream you cower or surprise your opponent just long enough for you and your Allies to gain Advantage on their Hit Checks for the round. Roar is considered a Free Action. This Ability may only be used once per Encounter.",
     },
     "Ruthless I": {
       prerequisiteClass: "Warrior",
-      description: "You show no mercy to wounded foes. You gain a Hit bonus of two (+2) against any Target that is at half Stamina or less.",
+      description: "Your consecutive hits on a Target become more and more lethal. When you successfully Hit a Target for a consecutive time you add half your Level (round up) to your Damage. This Ability stacks upon itself, for example, a 5th level Warrior with this Ability hitting a Target for the second time would do +3 Damage. Hitting the target for a third time would do +6 Damage, etc. Should at any time you miss your Target, you must start the process over.",
     },
     "Ruthless II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Ruthless I"],
-      description: "As Ruthless I, but rather than a +2 Hit bonus you now gain Advantage on all Hit Checks against Targets at half Stamina or less.",
+      description: "As Ruthless I, but rather than doing half your Level in additional Damage, you now do your Level in additional Damage. This Ability stacks upon itself, for example, a 5th level Warrior with this Ability hitting a Target for the second time would do +5 Damage. Hitting the target for a third time would do +10 Damage, etc. Should at any point you miss your Target, you must start the process over.",
     },
     "Sacrifice": {
       prerequisiteClass: "Warrior",
-      description: "You would lay down your life for your companions. Once per Day you may take the Damage in place of an ally within 10'. You take the full amount of Damage that would have been dealt to your ally.",
+      description: "By spending less effort looking after your own welfare you can better expend that energy on your enemies. You may lower your Defense for an Encounter to gain additional Stamina. Each point of Defense you lower grants you 3 temporary Stamina. Note: This temporary Stamina may increase your overall Stamina beyond its maximum. This Ability may be used multiple times in an Encounter.",
     },
     "Shield Fighter": {
       prerequisiteClass: "Warrior",
-      description: "You have mastered using your shield as a weapon. Your shield does 1d6 + Strength Modifier Damage when used as a weapon, and you can make shield attacks without suffering any penalties.",
+      description: "You have always trained that a shield is as much a weapon as it is a means to stop them. Your shield has a base Damage of +1d6 and is considered a Light weapon for your off-hand.",
     },
     "Shield Mastery": {
       prerequisiteClass: "Warrior",
-      description: "You are exceptionally skilled with shields. The Defense bonus granted by your shield is increased by one (+1).",
+      description: "No one knows how to better use a shield than you. Rather than a shield offering a Damage Reduction (DR) equal to the level of the wielder, a shield in your hand offers a Damage Reduction score of 2+ your level.",
     },
     "Slam": {
       prerequisiteClass: "Warrior",
-      description: "Once per Encounter you can make a powerful charging attack. If you move at least 20' in a straight line before attacking, you may make a Strength Check opposed by your Target's Strength or Dexterity (Target's choice). If you succeed, your Target is knocked Prone and takes your normal Damage. If you fail, your attack misses.",
+      description: "With a concussive strike on the ceiling, floor, or even one’s shield you can stun your opponents. Once per Encounter you may take an Action to slam a weapon with the Crush Designation into the ground, wall, etc. to bestow the Stunned State to all within a 10’ radius. Note: This Ability affects all within the 10’ radius save for the character enacting this Ability.",
     },
     "Swift Reload": {
       prerequisiteClass: "Warrior",
-      description: "You can reload any weapon as a Free Action rather than as an Action.",
+      description: "You have a talent for keeping your crossbow bolts flying. You can expend a Maneuver in place of one of your Actions to reload a crossbow. The following is a breakdown of the Swift Reload Ability as it pertains to each crossbow type: Swift Reload Table Crossbow Type Crossbow Heavy Crossbow Regular Reload 1 Action 2 Actions With Swift Reload 1 Maneuver 1 Action & 1 Maneuver 213 ATHIA –",
     },
     "Taunt": {
       prerequisiteClass: "Warrior",
-      description: "You can goad your enemies into attacking you. As a Free Action, make a Valor Check opposed by your Target's Valor. If you succeed, your Target must attack you on their next turn. This Ability may be used once per Encounter.",
+      description: "You have a knack for getting attention in battle. Once per Encounter, as a Free Action, you force your Target to face off against you for the remainder of the Encounter. This Ability works so long as your Target can engage you.",
     },
     "Thrill of Victory I": {
       prerequisiteClass: "Warrior",
-      description: "Victory in battle invigorates you. When you reduce an enemy to 0 Stamina or less, you regain Stamina equal to your Level.",
+      description: "You feel a rush every time one of your enemies is slain. You regain expended Stamina equal to one-half your Level (round down) every time you kill an enemy. Note: you cannot gain more than your maximum Stamina with this Ability.",
     },
     "Thrill of Victory II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Thrill of Victory I"],
-      description: "As Thrill of Victory I, but you now regain Stamina equal to twice your Level.",
+      description: "As Thrill Of Victory I, but rather than regaining Stamina equal to one-half your Level, you now regain Stamina equal to your Level every time you kill an enemy. Note: You cannot gain more than your maximum Stamina with this Ability.",
     },
     "Trample": {
       prerequisiteClass: "Warrior",
-      description: "While mounted, you can ride down your enemies. When you successfully hit with a mounted charge attack, your Target must make a Difficult (15) Strength or Dexterity Check (Target's choice) or be knocked Prone.",
+      description: "You use your mount as a weapon. If you make a successful attack against an opponent while mounted you do Damage as normal, but your mount rolls for Damage to the Target as well. The Target is also knocked Prone.",
     },
     "Undying": {
       prerequisiteClass: "Warrior",
-      description: "You refuse to give up, even in the face of death. When you would be reduced to 0 Stamina or less, you may make a Difficult (15) Endurance Check. If you succeed, you are instead reduced to 1 Stamina. This Ability may be used once per Day.",
+      description: "You are nearly impossible to put down. Whenever successful on a Fighting On When Down (see the Endurance Talent) Check, you immediately recover one (1) point of Injury. Additionally, for the first Round you are back on your feet, you do not suffer Disadvantage for being Injured. With the Undying Ability it is possible, each time you are knocked into Down, to make this Fighting On When Down Check to keep going and going.",
     },
     "Utilitarian": {
       prerequisiteClass: "Warrior",
-      description: "You can use any weapon effectively. You are considered trained in all weapons, even those outside your normal training.",
+      description: "Some weapons provide you more to work with than others. Any weapon you use with the lengthy Designation is considered to have the Wieldy Designation as well.",
     },
     "Valiant": {
       prerequisiteClass: "Warrior",
-      description: "Your courage inspires those around you. All allies within 30' of you gain a bonus of one (+1) to their Valor Checks.",
+      description: "Your courage in combat is your greatest shield. As a Free Action, you can reduce the damage you take from a single attack by half. You can do this a number of times per day equal to your Daring.",
     },
     "Weapon Master I": {
       prerequisiteClass: "Warrior",
-      description: "You have mastered the use of all weapons. You gain a Hit bonus of one (+1) with all weapons.",
+      description: "Your preference has led you to mastery over a collection of weapons. Choose a type of weapon (blades, axes, bows, etc.). You now reroll any natural 1 result on all Damage with that weapon type.",
     },
     "Weapon Master II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Weapon Master I"],
-      description: "As Weapon Master I, but your Hit bonus with all weapons is now increased to two (+2).",
+      description: "As Weapon Master I, but you now reroll any natural 1 or 2 results on all Damage with that weapon type.",
     },
   },
 
@@ -1134,16 +1134,16 @@ export const abilities: AbilitiesByClass = {
       description: "You can use either hand equally. What you can do with one, you can do with the other. Additionally, your Stamina costs to make Off-Hand Attacks with Light or Medium weapons are reduced by one (-1).",
     },
     "Arcane Conduit": {
-      description: "You have a great knack for tapping into the Arcane aether. You gain one (+1) additional Mana. Note: This Ability does not grant any benefits to one's Arcane Aptitude.",
+      description: "You have a great knack for tapping into the Arcane aether. You gain one (+1) additional Mana. Note: This Ability does not grant any benefits to one’s Arcane Aptitude.",
     },
     "Arcane Prowess": {
-      description: "Your understanding of Arcane magic is better than most. You gain two (+2) additional Arcane Aptitude. Note: This Ability does not grant any benefit to a Character's Mana.",
+      description: "Your understanding of Arcane magic is better than most. You gain two (+2) additional Arcane Aptitude. Note: This Ability does not grant any benefit to a Character’s Mana.",
     },
     "Battle Tested": {
-      description: "You have faced death on more occasions than you can count. You gain one (+1) additional Daring.",
+      description: "You have faced death on more occasions than you can count. You gain one (+1) additional Daring. 172 Abilities",
     },
     "Blessed I": {
-      description: "You possess the ability to enact Divine Interventions. You gain two (2) Favor plus any Instincts Modifier you may possess. You may pick any Divine Intervention Effect from any Divine Influence. You are limited in enacting only that one Divine Intervention Effect. Your Holy Aura is 5' radius per level as opposed to the normal 10' radius per level for an Acolyte. Additionally, your Caster Level is considered 1 level less than your character level (to a minimum of 1). Finally, you recover your Favor through Prayer just as any Character with Favor would (see Prayer for further information).",
+      description: "You possess the ability to enact Divine Interventions. You gain two (2) Favor plus any Instincts Modifier you may possess. You may pick any Divine Intervention Effect from any Divine Influence. You are limited in enacting only that one Divine Intervention Effect. Your Holy Aura is 5’ radius per level as opposed to the normal 10’ radius per level for an Acolyte. Additionally, your Caster Level is considered 1 173 ATHIA – level less than your character level (to a minimum of 1). Finally, you recover your Favor through Prayer just as any Character with Favor would (see Prayer for further information).",
       restrictions: "Non-Acolyte, Non-Rogue",
     },
     "Blessed II": {
@@ -1169,22 +1169,22 @@ export const abilities: AbilitiesByClass = {
       description: "You are always calm, cool, and collected. When you are Surprised attackers do not gain Advantage on their Checks against you, and you can take an Action or a Maneuver in a Surprise Round.",
     },
     "Common Weapon Training": {
-      description: "You've managed to get some hands-on time with the most basic of weapons. You are now considered trained in all Common weapons. Note: All Acolytes, Rogues, and Warriors already possess this level of Training.",
+      description: "You’ve managed to get some hands-on time with the most basic of weapons. You are now considered trained in all Common weapons. Note: All Acolytes, Rogues, and Warriors already possess this level of Training.",
     },
     "Connections": {
-      description: "You've made a great number of friends and acquaintances, and always seem to know just who to ask to get what you need. Finding someone that can sell stolen goods or arrange travel, finding a place to stay, or finding unique equipment always seems well within your capability.",
+      description: "You’ve made a great number of friends and acquaintances, and always seem to know just who to ask to get what you need. Finding someone that can sell stolen goods or arrange travel, finding a place to stay, or finding unique equipment always seems well within your capability.",
     },
     "Cross-Trained": {
-      description: "Selecting this Ability allows you to immediately select an Ability from any other Class's list of Abilities. For example, selecting the Cross-Trained Ability and choosing the Warrior's Born In Armor Ability would give you the Ability: Cross-Trained: Born in Armor as a single Ability choice.",
+      description: "Selecting this Ability allows you to immediately select an Ability from any other Class’s list of Abilities. For example, selecting the Cross-Trained Ability and choosing the Warrior’s Born In Armor Ability would give you the Ability: CrossTrained: Born in Armor as a single Ability choice.",
     },
     "Disease Resistant": {
       description: "You have a highly developed immune system. You are immune to all forms of disease.",
     },
     "Eidetic Memory": {
-      description: "You have always possessed a powerful memory. You can recall everything you have personally experienced in life. Books you've read, conversations you've had, or even things you've seen can all be summoned forth from your memory.",
+      description: "You have always possessed a powerful memory. You can recall everything you have personally experienced in life. Books you’ve read, conversations you’ve had, or even things you’ve seen can all be summoned forth from your memory.",
     },
     "Fated": {
-      description: "Characters with this Ability roll three d20's. These dice are set aside and kept through a session. Each die may be used in place of rolling a Check, and each die must be used through the course of the session. If a die is unused by the end of the session, this Ability may not be used in the next game session (though it may again in the session following).",
+      description: "Characters with this Ability roll three d20’s. These dice are set aside and kept through a session. Each die may be used in place of rolling a Check, and each die must be used through the course of the session. If a die is unused by the end of the session, this Ability may not be used in the next game session (though it may again in the session following). 189 ATHIA –",
     },
     "Fortunate": {
       description: "You live a very charmed life. Rather than roll, one time per Session, you may automatically succeed at any one single Check.",
@@ -1196,7 +1196,7 @@ export const abilities: AbilitiesByClass = {
       description: "You have always been able to captivate, motivate, or impress others. You gain a bonus of +1 to your Valor Attribute. This bonus cannot raise your Attribute beyond its maximum.",
     },
     "Graced": {
-      description: "You possess your god's divine sanction. Gain two (+2) additional Favor.",
+      description: "You possess your god’s divine sanction. Gain two (+2) additional Favor.",
     },
     "Grandmaster": {
       prerequisiteAbilities: ["a Talent at Mastery Expertise"],
@@ -1216,115 +1216,115 @@ export const abilities: AbilitiesByClass = {
       description: "You can drink anyone under the table. With this Ability your character never suffers any adverse effects from consuming alcohol or other narcotics. You do not suffer Disadvantage on Hit Checks, do not have your Speed reduced by half, and do not suffer Disadvantage on Physical Talent Checks due to the Inebriated State. However, you do retain any positive effects of the Inebriated State (immune to Fear, enemies at Disadvantage for Damage).",
     },
     "Intuitive Aim": {
-      description: "You have an uncanny ability to hit Targets without relying on sight. You do not suffer Disadvantage when making ranged attacks against Targets you cannot see clearly (due to darkness, fog, etc.).",
+      description: "Rather than relying on raw motor skills to put arrows or bolts on target, you instead rely on instinct to place your shots. Choose any one Ranged weapon. You may substitute your Instincts Modifier for your Dexterity Modifier when making a Hit Check with that weapon.",
     },
     "Light Armor Training": {
-      description: "You have had training in light armor. You are considered trained in Light Armor. Note: All Acolytes, Rogues, and Warriors already possess this level of training.",
+      description: "You have trained in the simplest of armors. You are considered trained in Light Armor. Note: All Acolytes, Rogues, and Warriors already possess this level of training.",
     },
     "Light-Footed": {
-      description: "You are exceptionally nimble on your feet. Increase your Base Move by +5' per turn.",
+      description: "You have a very light step. By chance or skill, you do not set off traps simply by stepping or passing over them.",
     },
     "Martial Weapon Training": {
       prerequisiteAbilities: ["Common Weapon Training"],
-      description: "You have trained with more advanced weapons. You are considered trained in all Martial weapons. Note: All Warriors already possess this level of training.",
+      description: "You are trained in the weapons of war. You are now considered trained in all Martial weapons. Note: All Warriors already possess this level of training.",
     },
     "Medium Armor Training": {
       prerequisiteAbilities: ["Light Armor Training"],
-      description: "You have had training in medium armor. You are considered trained in Medium Armor. Note: All Warriors already possess this level of training.",
+      description: "You have had training in some of the more capable armors. You are considered trained in Medium Armor. Note: All Acolytes and Warriors already possess this level of training.",
     },
     "Merciless": {
-      description: "You show no mercy when delivering the killing blow. When you reduce an enemy to 0 Stamina or less, you may immediately make a single attack against another enemy within reach or range as a Free Action.",
+      description: "When you catch your enemies off guard it is to devastating effect. When you score a Critical Hit, you do an additional 1D20 Damage.",
     },
     "Mercurial": {
-      description: "You are exceptionally quick and light on your feet. You gain a bonus of +1 to your Dexterity Attribute. This bonus cannot raise your Attribute beyond its maximum.",
+      description: "You have a light touch, a light foot, and fine motor skills. You have always been able to keep your legs under you and your hands steady. You gain a bonus of +1 to your Dexterity Attribute. This bonus cannot raise your Attribute beyond its maximum.",
     },
     "Mighty": {
-      description: "You are exceptionally strong. You gain a bonus of +1 to your Strength Attribute. This bonus cannot raise your Attribute beyond its maximum.",
+      description: "You are powerful, capable, and have pulled through the toughest of circumstances on raw strength alone. Your might has always made right. You gain a bonus of +1 to your Strength Attribute. This bonus cannot raise your Attribute beyond its maximum.",
     },
     "Mystical I": {
-      description: "You possess the ability to cast Arcane magic. You gain Mana equal to a 1st Level Mage and may learn and cast Spells (using Arcane Aptitude, the same as a Mage). Choose a single Arcane Art. You may only learn Spells from this Art. Your Caster Level is equal to your character Level. Note: You must possess this Ability before you can take Mystical II.",
+      description: "You possess the ability to cast Arcane Spells. You gain one (1) Mana, and one (1) point of Arcane Aptitude. You may pick any Arcane Effect from any Arcane Art. You are limited in casting only that one Arcane Art Effect. The first time this Ability is selected you gain a bonus to your Mana equal to your Strength Modifier. Lastly, your Caster Level is considered 1 level less than your character level (to a minimum of 1).",
       restrictions: "Non-Mage, Non-Rogue",
     },
     "Mystical II": {
       prerequisiteAbilities: ["Mystical I"],
-      description: "As Mystical I, but you now gain additional Mana equal to a 1st Level Mage and may choose a second Arcane Art from which to learn Spells. Note: You must possess this Ability before you can take Mystical III.",
+      description: "As Mystical I, but you now gain two (+2) additional Arcane Effects from the same Arcane Art as Mystical I (for a total of 3). You also gain an additional one (+1) Arcane Aptitude. 201 ATHIA –",
     },
     "Mystical III": {
       prerequisiteAbilities: ["Mystical II"],
-      description: "As Mystical II, but you now gain additional Mana equal to a 1st Level Mage and may choose a third Arcane Art from which to learn Spells.",
+      description: "As Mystical II, but you now have access to all the Effects from your chosen Arcane Art. You also gain an additional one (+1) Arcane Aptitude, and one (+1) additional Mana.",
     },
     "Nature's Blessing": {
-      description: "You have a natural affinity with animals and plants. You gain Advantage on all Checks related to interacting with animals or navigating natural environments.",
+      description: "The animals of Athia see you as one of their own. All creatures of the Beast Family consider you non-threatening but if otherwise provoked will still defend themselves, their families, and their territories.",
     },
     "Poison Immunity": {
-      description: "You are immune to all forms of poison. Poisons have no effect on you whatsoever.",
+      description: "Your system can break down venoms and toxins at an alarming rate. You automatically succeed on any Endurance Checks to overcome poison.",
     },
     "Predisposed": {
-      description: "You have a natural aptitude for learning. You gain an additional Skill Point to spend on Talents at character creation and each time you gain a level.",
+      description: "You are always aware of the things going on around you and have always trusted your gut. Your inclinations have been honed over many years and experiences. You gain a bonus of +1 to your Instincts Attribute. This bonus cannot raise your Attribute beyond its maximum.",
     },
     "Purebred": {
-      description: "Your bloodline is pure and strong. Choose one of your racial Attributes (Strength, Dexterity, Constitution, Instincts, or Valor). That Attribute's maximum is increased by one (+1).",
+      description: "Selecting this Ability allows you to immediately select an additional Racial Perk from your Character’s Race. For example, selecting the Purebred Ability and choosing the Dwarf’s Dark-Born Perk would give you the Ability Purebred: DarkBorn as a single Ability choice.",
     },
     "Qualified": {
-      description: "You are exceptionally well-educated. You gain a bonus of +1 to your Instincts Attribute. This bonus cannot raise your Attribute beyond its maximum.",
+      description: "You have had a rather exclusive bit of weapons training. You may pick any one weapon from any weapon category. You are considered trained with that one weapon.",
     },
     "Quick Healer": {
-      description: "Your body heals remarkably quickly. You regain an additional point of Stamina whenever you successfully Recuperate or Rest.",
+      description: "You have always recovered quickly from your wounds. You heal an additional +1d4 Injuries with each Worthwhile Rest, and you gain twice the healing effect from any magical means of healing.",
     },
     "Reduced Sleep": {
-      description: "You require less sleep than most. You only need four hours of sleep to gain the benefits of a full Rest.",
+      description: "You have always been able to get a good night’s sleep faster than average. You only need four (4) hours of sleep for a Worthwhile Rest rather than the usual eight (8) hours sleep.",
     },
     "Renowned": {
-      description: "You have built a reputation that precedes you. You gain Advantage on all Checks related to your reputation (Persuasion, Intimidation, etc.). The GM has final say on which Checks qualify.",
+      description: "You are one of station, have descended from a heroic or noble line, or perhaps simply hail from money. By name or position those around you seek to aid you in whatever fashion they can. Food and lodging, supplies, information, aid and assistance, and even finances equal to ten (10) silver septems per Level are unobjectionable. You begin the game with 50 extra silver septems and have a stipend of 1 silver septem per day.",
     },
     "Robust": {
-      description: "You have incredible endurance and stamina. You gain additional maximum Stamina equal to your Level. Note: This bonus increases as you gain levels.",
+      description: "You have far more in the tank than most. Gain one (+1) Stamina per Level.",
     },
     "Runecrafter": {
-      description: "You have learned the ancient art of Runecrafting. You can create Runework items as described in the Magic Items section.",
+      description: "You know the ancient art of runecarving. You may create Runework to imbue your magic into various items. See Runework in the Magic section for further details.",
     },
     "Shield Training": {
-      description: "You have trained with shields. You are considered trained in using shields. Note: All Warriors already possess this training.",
+      description: "You have spent some time behind a shield. You are considered trained with shields. Note: All Acolytes and Warriors already possess this level of training.",
     },
     "Shield Guard I": {
       prerequisiteAbilities: ["Shield Training"],
-      description: "You can use your shield to protect those around you. As a Maneuver, you can grant an adjacent ally a Defense bonus equal to your shield's Defense bonus until the start of your next turn.",
+      description: "With effort you can bury the better part of your exposed body behind your shield to withstand nearly any attack. You may cancel your Action to cancel any one successful Attack made against you in a Round.",
     },
     "Shield Guard II": {
       prerequisiteAbilities: ["Shield Guard I"],
-      description: "As Shield Guard I, but you can now protect up to two adjacent allies with a single Maneuver.",
+      description: "Your shield use is so skilled your opponents have a difficult time connecting with you in battle. When using a shield your Stamina Defense Modifiers are as follows: Shield Guard II Defense Modifiers Stamina Cost 1 5 10 Effect Decrease the amount of Damage received by two (2) points Cancel a single physical Attack made against you in a Round Cancel all physical Attacks made against you in a Round",
     },
     "Skilled": {
-      description: "You have honed your skills beyond those of ordinary people. You gain two (+2) additional Skill Points to spend on Talents. This Ability may be taken multiple times.",
+      description: "One way or another you have managed to learn a bit more than those around you. Gain four (4) additional Talent Points. Note: This Ability may be taken multiple times.",
       canTakeMultiple: true,
     },
     "Specialty Weapon Training": {
       prerequisiteAbilities: ["Martial Weapon Training"],
-      description: "You have trained with the most exotic and rare weapons. You are considered trained in all Specialty weapons.",
+      description: "You have had some training with more exotic weapons. You are now considered trained in all Specialty weapons.",
     },
     "Sure-Footed": {
-      description: "You have exceptional balance and coordination. You automatically succeed on all Checks to avoid being knocked Prone, and you can move at full speed across difficult terrain.",
+      description: "Once you have rooted yourself to the ground you are unshakable. You cannot be given the Lame or Prone State.",
     },
     "Thick Skull": {
-      description: "You are remarkably resistant to head trauma. You are immune to being Dazed or Stunned from physical attacks.",
+      description: "You are extremely hard-headed. You are immune to the Stunned State or attempts to knock you Unconscious. Additionally, once per Encounter, as an Action, you can headbutt an enemy to give them the Stunned State.",
     },
     "Tireless": {
-      description: "You have exceptional endurance. You can travel twice as far in a day without suffering from exhaustion, and you ignore the first level of exhaustion penalties.",
+      description: "You do not get tired in battle. Gain one (+1) additional Fatigued point per Level. 214 Abilities",
     },
     "Tough": {
-      description: "You are incredibly resilient. You gain a permanent bonus of one (+1) to your Defense.",
+      description: "You are not injured easily. Gain one (+1) additional Battered point per Level.",
     },
     "Unbreakable": {
-      description: "Your will is iron and your resolve unshakable. You are immune to all mind-affecting Effects (Charm, Fear, Compulsion, etc.). The GM has final say on what Effects do or do not affect you.",
+      description: "Despite your enemy’s best efforts, you cannot be killed easily. Characters with this Ability gain one (+1) additional Injured point per Level.",
     },
     "Unremarkable": {
-      description: "You have a forgettable face and presence. You gain Advantage on all Checks to blend into crowds, avoid detection, or be forgotten. People have difficulty remembering specific details about you.",
+      description: "You have a rather non-descript face, are very common looking, or are otherwise unassuming. Using this to your advantage, you are often overlooked and rarely remembered. You are easily lost in a crowd and details of your description are often vague at best.",
     },
     "Untouchable": {
-      description: "You are exceptionally difficult to hit. Once per Encounter, when you would be hit by an attack, you can choose to have that attack miss instead.",
+      description: "Be it a sixth sense for danger, a knack for dodging out of the way, or perhaps even a very tough hide you are less subject to acts of violence. With this Ability your Defense increases by one (+1). 215 ATHIA –",
     },
     "Wizened": {
-      description: "Your years have granted you great wisdom and insight. You gain two (+2) additional Skill Points that must be spent on Knowledge Talents.",
+      description: "You have a constant thirst for learning and are one who truly believes that knowledge is power. Your mind is your greatest asset. You gain a bonus of +1 to your Knowledge Attribute. This bonus cannot raise your Attribute beyond its maximum.",
     },
   },
 };
