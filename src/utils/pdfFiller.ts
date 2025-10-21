@@ -98,7 +98,7 @@ const DARING_Y = 645; // Y position for Daring
 const DEFENSE_Y = 615; // Y position for Defense
 const FAVOR_Y = 594; // Y position for Favor (Acolytes only)
 const MANA_Y = 565; // Y position for Mana (Mages only)
-const SPEED_Y = 541; // Y position for Mana (Mages only)
+// const SPEED_Y = 541; // Y position for Mana (Mages only)
 const STAMINA_Y = 507; // Y position for Stamina
 
 // Define the exact order of talent names
