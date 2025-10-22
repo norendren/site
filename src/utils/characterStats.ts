@@ -177,13 +177,19 @@ export function calculateAllCharacterStats(data: BasicCharacterData): CharacterS
   );
 
   // Calculate derived stats
-  const derivedStats = calculateDerivedStats(
+  const calculatedDerivedStats = calculateDerivedStats(
     data.class,
     level,
     data.race,
     data.racialPerks || [],
     attributeMap
   ).stats;
+
+  // Apply manual overrides if they exist
+  const derivedStats = {
+    ...calculatedDerivedStats,
+    ...(data.manualOverrides || {}),
+  };
 
   // Get movement speed
   const movement = getMovementFromEffects(allEffects);

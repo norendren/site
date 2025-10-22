@@ -21,7 +21,7 @@ import { RacialPerksSelector } from './RacialPerksSelector';
 import { ClassSpecialtySelector } from './ClassSpecialtySelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
-import { DerivedStatsDisplay } from './DerivedStatsDisplay';
+import { EditableDerivedStatsDisplay } from './EditableDerivedStatsDisplay';
 import { AbilitySelector } from './AbilitySelector';
 import { useDevMode } from '../hooks/useDevMode';
 import { getTestCharacterByClass } from '../utils/testData';
@@ -45,6 +45,7 @@ export function CharacterCreator() {
     rogueSpecialties: [],
     warriorStyles: [],
     abilities: [],
+    manualOverrides: {},
   });
   const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
   const [isGenerating, setIsGenerating] = useState(false);
@@ -211,6 +212,37 @@ export function CharacterCreator() {
     }));
   };
 
+  // Handler for manual stat overrides in review page
+  const handleStatOverride = (statName: string, value: number | undefined) => {
+    setCharacterData(prev => ({
+      ...prev,
+      manualOverrides: {
+        ...prev.manualOverrides,
+        [statName]: value,
+      },
+    }));
+  };
+
+  // Handler for editing attribute points in review page
+  const handleAttributePointsEdit = (attrName: string, points: number) => {
+    setCharacterData(prev => ({
+      ...prev,
+      attributes: prev.attributes?.map(attr =>
+        attr.name === attrName ? { ...attr, points } : attr
+      ) || [],
+    }));
+  };
+
+  // Handler for editing talent points in review page
+  const handleTalentPointsEdit = (talentName: string, points: number) => {
+    setCharacterData(prev => ({
+      ...prev,
+      talents: prev.talents?.map(talent =>
+        talent.name === talentName ? { ...talent, points } : talent
+      ) || [],
+    }));
+  };
+
   // Clear all character data (dev mode utility)
   const clearData = () => {
     setCharacterData({
@@ -228,6 +260,7 @@ export function CharacterCreator() {
       rogueSpecialties: [],
       warriorStyles: [],
       abilities: [],
+      manualOverrides: {},
     });
     setBaseAttributePool(2); // Reset to default (Young Heroes)
     setError(null);
@@ -603,38 +636,73 @@ export function CharacterCreator() {
         return (
           <div className="step-content">
             <h2>Review & Generate</h2>
-            <p className="step-description">Review your character and generate the PDF character sheet.</p>
+            <p className="step-description">Review and edit your character details, then generate the PDF character sheet.</p>
 
             <div className="review-section">
               <h3>Character Summary</h3>
               <div className="review-grid">
                 <div className="review-item">
-                  <span className="review-label">Name:</span>
-                  <span className="review-value">{characterData.characterName || '—'}</span>
+                  <label className="review-label">Name:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.characterName}
+                    onChange={(e) => handleInputChange('characterName', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">Class:</span>
-                  <span className="review-value">{characterData.class || '—'}</span>
+                  <label className="review-label">Class:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.class}
+                    onChange={(e) => handleInputChange('class', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">Level:</span>
-                  <span className="review-value">{characterData.level || '—'}</span>
+                  <label className="review-label">Level:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.level}
+                    onChange={(e) => handleInputChange('level', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">Race:</span>
-                  <span className="review-value">{characterData.race || '—'}</span>
+                  <label className="review-label">Race:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.race}
+                    onChange={(e) => handleInputChange('race', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">House:</span>
-                  <span className="review-value">{characterData.house || '—'}</span>
+                  <label className="review-label">House:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.house}
+                    onChange={(e) => handleInputChange('house', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">Faith:</span>
-                  <span className="review-value">{characterData.faith || '—'}</span>
+                  <label className="review-label">Faith:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.faith}
+                    onChange={(e) => handleInputChange('faith', e.target.value)}
+                  />
                 </div>
                 <div className="review-item">
-                  <span className="review-label">Age:</span>
-                  <span className="review-value">{characterData.age || '—'}</span>
+                  <label className="review-label">Age:</label>
+                  <input
+                    type="text"
+                    className="review-input"
+                    value={characterData.age}
+                    onChange={(e) => handleInputChange('age', e.target.value)}
+                  />
                 </div>
               </div>
 
@@ -656,9 +724,16 @@ export function CharacterCreator() {
                   <h3>Attributes</h3>
                   <div className="review-list">
                     {characterData.attributes.map((attr, idx) => (
-                      <div key={idx} className="review-list-item">
-                        <span>{attr.name}:</span>
-                        <span>{attr.points}</span>
+                      <div key={idx} className="review-list-item editable">
+                        <label>{attr.name}:</label>
+                        <input
+                          type="number"
+                          className="review-points-input"
+                          value={attr.points}
+                          onChange={(e) => handleAttributePointsEdit(attr.name, parseInt(e.target.value) || 0)}
+                          min={-3}
+                          max={3}
+                        />
                       </div>
                     ))}
                   </div>
@@ -670,9 +745,16 @@ export function CharacterCreator() {
                   <h3>Talents</h3>
                   <div className="review-list">
                     {characterData.talents.map((talent, idx) => (
-                      <div key={idx} className="review-list-item">
-                        <span>{talent.name}:</span>
-                        <span>{talent.points}</span>
+                      <div key={idx} className="review-list-item editable">
+                        <label>{talent.name}:</label>
+                        <input
+                          type="number"
+                          className="review-points-input"
+                          value={talent.points}
+                          onChange={(e) => handleTalentPointsEdit(talent.name, parseInt(e.target.value) || 0)}
+                          min={0}
+                          max={6}
+                        />
                       </div>
                     ))}
                   </div>
@@ -700,14 +782,16 @@ export function CharacterCreator() {
                 </>
               )}
 
-              {/* Show derived stats if class, race, and attributes are set */}
+              {/* Show editable derived stats if class, race, and attributes are set */}
               {characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0 && (
-                <DerivedStatsDisplay
+                <EditableDerivedStatsDisplay
                   className={characterData.class}
                   level={parseInt(characterData.level) || 1}
                   raceName={characterData.race}
                   selectedPerks={characterData.racialPerks || []}
                   attributes={characterData.attributes}
+                  manualOverrides={characterData.manualOverrides}
+                  onOverrideChange={handleStatOverride}
                 />
               )}
             </div>

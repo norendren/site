@@ -10,6 +10,9 @@ import type {
 import {
   COMBAT_STYLE_DESCRIPTIONS,
   type CombatStyleTier,
+  ROGUE_TALENT_BONUS_DESCRIPTIONS,
+  ROGUE_TALENT_SPECIALTY_DESCRIPTION,
+  ROGUE_TALENT_BONUSES,
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 import { abilities } from '../data/abilities';
@@ -41,6 +44,14 @@ export interface BasicCharacterData {
   rogueSpecialties?: RogueSpecialtySelection[]; // Rogue only
   warriorStyles?: WarriorStyleSelection[]; // Warrior only
   // Acolyte Bless is auto-calculated from level, no storage needed
+  // Manual overrides for final review page (allows editing any value)
+  manualOverrides?: {
+    defense?: number;
+    daring?: number;
+    stamina?: number;
+    mana?: number;
+    favor?: number;
+  };
 }
 
 // ===========================================
@@ -83,7 +94,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles' | 'manualOverrides'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -111,6 +122,8 @@ const CLASS_SPECIALTY_START_X = 92; // X position for class specialty text (alig
 const CLASS_SPECIALTY_START_Y = 440; // Y position for first class specialty
 const CLASS_SPECIALTY_LINE_HEIGHT = 13; // Space between title and description within one specialty
 const CLASS_SPECIALTY_SPACING = 38; // Space between different specialties (title to next title)
+const CLASS_SPECIALTY_MAX_LINE_WIDTH = 225; // Maximum width for text wrapping (left column width)
+const CLASS_SPECIALTY_LENGTH_THRESHOLD = 115; // Character threshold for printing full description
 
 // ===== PAGE 1: Abilities =====
 // Abilities go on the left column of page 1, below class specialties
@@ -119,9 +132,24 @@ const ABILITIES_START_Y = 370; // Y position for first ability (below class spec
 const ABILITY_NAME_SIZE = 9; // Font size for ability names
 const ABILITY_DESC_SIZE = 7; // Font size for ability descriptions
 const ABILITY_SPACING = 16; // Space between ability name and description
-const ABILITY_ENTRY_SPACING = 4; // Space between different abilities
+const ABILITY_SLOT_HEIGHT = 38; // Total vertical space for each ability slot (name + description)
 const ABILITY_MAX_LINE_WIDTH = 225; // Maximum width for text wrapping (left column width)
 const ABILITY_LENGTH_THRESHOLD = 115; // Character threshold for printing full description
+
+// ===== ABILITY REFERENCE SHEET (Additional Page) =====
+const REF_SHEET_TITLE_X = 50; // X position for reference sheet title
+const REF_SHEET_TITLE_Y = 750; // Y position for reference sheet title
+const REF_SHEET_TITLE_SIZE = 18; // Font size for title
+const REF_SHEET_CHAR_NAME_Y = 730; // Y position for character name on reference sheet
+const REF_SHEET_CHAR_NAME_SIZE = 12; // Font size for character name
+const REF_SHEET_ABILITY_START_X = 50; // X position for ability content
+const REF_SHEET_ABILITY_START_Y = 700; // Y position for first ability
+const REF_SHEET_ABILITY_NAME_SIZE = 11; // Font size for ability names
+const REF_SHEET_ABILITY_DESC_SIZE = 9; // Font size for ability descriptions
+const REF_SHEET_LINE_HEIGHT = 12; // Line height for description text
+const REF_SHEET_ABILITY_SPACING = 20; // Space between abilities
+const REF_SHEET_MAX_WIDTH = 500; // Maximum width for text
+const REF_SHEET_BOTTOM_MARGIN = 50; // Minimum Y before starting new page
 
 // ===== RIGHT COLUMN: Talents =====
 const TALENT_START_Y = 372.5; // Starting Y position for first talent
@@ -270,6 +298,15 @@ export async function fillCharacterSheet(
     // Draw abilities on page 1 (left column, below class specialties/racial perks)
     if (characterData.abilities && characterData.abilities.length > 0) {
       drawAbilities(firstPage, characterData.abilities, font);
+    }
+
+    // Draw reference sheet (additional page with all class specialties and abilities in full)
+    const hasAbilities = characterData.abilities && characterData.abilities.length > 0;
+    const hasWarriorStyles = characterData.class === 'Warrior' && characterData.warriorStyles && characterData.warriorStyles.length > 0;
+    const hasRogueSpecialties = characterData.class === 'Rogue' && characterData.rogueSpecialties && characterData.rogueSpecialties.length > 0;
+
+    if (hasAbilities || hasWarriorStyles || hasRogueSpecialties) {
+      drawReferenceSheet(pdfDoc, characterData, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -588,6 +625,8 @@ function drawDerivedStats(
  *   1. "Collaborative (Apprentice)" with Apprentice description
  *   2. "Collaborative (Journeyman)" with Journeyman description
  *
+ * Descriptions longer than the threshold will show "See reference sheet"
+ *
  * @param page - PDF page to draw on
  * @param warriorStyles - Array of warrior style selections
  * @param font - Font to use for rendering
@@ -627,14 +666,25 @@ function drawWarriorStyles(
         color: rgb(0, 0, 0),
       });
 
-      // Draw description (smaller, indented)
+      // Get description and determine what to print
       const description = COMBAT_STYLE_DESCRIPTIONS[styleSelection.style][tier];
-      page.drawText(description, {
-        x: CLASS_SPECIALTY_START_X,
-        y: yPosition - CLASS_SPECIALTY_LINE_HEIGHT,
-        size: 6,
-        font: font,
-        color: rgb(0.2, 0.2, 0.2),
+      const textToPrint = description.length > CLASS_SPECIALTY_LENGTH_THRESHOLD
+        ? 'See reference sheet'
+        : description;
+
+      // Wrap and draw description
+      const lines = wrapText(textToPrint, CLASS_SPECIALTY_MAX_LINE_WIDTH, font, 6);
+      let descriptionY = yPosition - CLASS_SPECIALTY_LINE_HEIGHT;
+
+      lines.forEach((line) => {
+        page.drawText(line, {
+          x: CLASS_SPECIALTY_START_X,
+          y: descriptionY,
+          size: 6,
+          font: font,
+          color: rgb(0.2, 0.2, 0.2),
+        });
+        descriptionY -= 8; // Line height for wrapped text
       });
 
       entryIndex++;
@@ -647,6 +697,8 @@ function drawWarriorStyles(
 /**
  * Draws Rogue Specialties on the PDF
  * Each specialty shows its type and description
+ *
+ * Descriptions longer than the threshold will show "See reference sheet"
  *
  * @param page - PDF page to draw on
  * @param rogueSpecialties - Array of rogue specialty selections
@@ -690,7 +742,7 @@ function drawRogueSpecialties(
         }
         break;
       case 'Talent':
-        description = 'Special talent bonuses (Ace, Certain, Easy, Golden, Swift)';
+        description = ROGUE_TALENT_SPECIALTY_DESCRIPTION; // Will trigger "See reference sheet" due to length
         break;
       case 'Stamina':
         description = '+2 Stamina';
@@ -706,13 +758,24 @@ function drawRogueSpecialties(
       color: rgb(0, 0, 0),
     });
 
-    // Draw description (smaller, indented)
-    page.drawText(description, {
-      x: CLASS_SPECIALTY_START_X + 10,
-      y: yPosition - CLASS_SPECIALTY_LINE_HEIGHT,
-      size: 7,
-      font: font,
-      color: rgb(0.2, 0.2, 0.2),
+    // Determine what to print based on description length
+    const textToPrint = description.length > CLASS_SPECIALTY_LENGTH_THRESHOLD
+      ? 'See reference sheet'
+      : description;
+
+    // Wrap and draw description
+    const lines = wrapText(textToPrint, CLASS_SPECIALTY_MAX_LINE_WIDTH, font, 7);
+    let descriptionY = yPosition - CLASS_SPECIALTY_LINE_HEIGHT;
+
+    lines.forEach((line) => {
+      page.drawText(line, {
+        x: CLASS_SPECIALTY_START_X + 10,
+        y: descriptionY,
+        size: 7,
+        font: font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
+      descriptionY -= 9; // Line height for wrapped text
     });
 
     entryIndex++;
@@ -775,6 +838,9 @@ function wrapText(text: string, maxWidth: number, font: any, fontSize: number): 
  * - Abilities ≤115 characters: Print full description
  * - Abilities >115 characters: Print "See reference sheet"
  *
+ * Each ability occupies a fixed slot on the PDF, with the next ability name
+ * positioned at a fixed interval regardless of description length.
+ *
  * @param page - PDF page to draw on (page 1)
  * @param abilityNames - Array of ability names selected by character
  * @param font - Font to use for rendering
@@ -784,10 +850,11 @@ function drawAbilities(
   abilityNames: string[],
   font: any
 ): void {
-  let currentY = ABILITIES_START_Y;
-  let abilitylocationy = currentY;
+  abilityNames.forEach((abilityName, index) => {
+    // Calculate fixed Y position for this ability name based on index
+    // Each ability gets a fixed slot, regardless of description length
+    const abilityNameY = ABILITIES_START_Y - (index * ABILITY_SLOT_HEIGHT);
 
-  abilityNames.forEach((abilityName) => {
     const description = getAbilityDescription(abilityName);
 
     if (!description) {
@@ -795,16 +862,17 @@ function drawAbilities(
       return;
     }
 
-    // Draw ability name (bold-ish by using larger size)
+    // Draw ability name at fixed position
     page.drawText(abilityName, {
       x: ABILITIES_START_X,
-      y: currentY,
+      y: abilityNameY,
       size: ABILITY_NAME_SIZE,
       font: font,
       color: rgb(0, 0, 0),
     });
 
-    currentY -= ABILITY_SPACING;
+    // Description starts below the ability name
+    let descriptionY = abilityNameY - ABILITY_SPACING;
 
     // Determine what to print based on description length
     const textToPrint = description.length > ABILITY_LENGTH_THRESHOLD
@@ -816,18 +884,285 @@ function drawAbilities(
 
     lines.forEach((line) => {
       page.drawText(line, {
-        x: ABILITIES_START_X, // Slight indent for description
-        y: currentY,
+        x: ABILITIES_START_X,
+        y: descriptionY,
         size: ABILITY_DESC_SIZE,
         font: font,
-        color: rgb(0, 0, 0), 
+        color: rgb(0, 0, 0),
       });
-      currentY -= ABILITY_DESC_SIZE + 2; // Line height + small gap
+      descriptionY -= ABILITY_DESC_SIZE + 2; // Line height + small gap
     });
 
-    // Add spacing before next ability
-    currentY -= ABILITY_ENTRY_SPACING;
+    // Note: Next ability name position is calculated independently based on index,
+    // not affected by how many description lines were drawn
   });
+}
+
+/**
+ * Creates a Reference Sheet with class specialties and abilities printed in full
+ * Automatically adds additional pages as needed
+ *
+ * @param pdfDoc - PDF document to add pages to
+ * @param characterData - Character data including specialties and abilities
+ * @param font - Font to use for rendering
+ */
+function drawReferenceSheet(
+  pdfDoc: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  // Add a new page for the reference sheet
+  let currentPage = pdfDoc.addPage();
+  let currentY = REF_SHEET_ABILITY_START_Y;
+
+  // Draw title on first page
+  currentPage.drawText('Reference Sheet', {
+    x: REF_SHEET_TITLE_X,
+    y: REF_SHEET_TITLE_Y,
+    size: REF_SHEET_TITLE_SIZE,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw character name
+  currentPage.drawText(`Character: ${characterData.characterName || 'Unknown Character'}`, {
+    x: REF_SHEET_TITLE_X,
+    y: REF_SHEET_CHAR_NAME_Y,
+    size: REF_SHEET_CHAR_NAME_SIZE,
+    font: font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+
+  // Helper function to check if we need a new page
+  const checkNewPage = (estimatedHeight: number) => {
+    if (currentY - estimatedHeight < REF_SHEET_BOTTOM_MARGIN) {
+      currentPage = pdfDoc.addPage();
+      currentY = REF_SHEET_ABILITY_START_Y + 50;
+    }
+  };
+
+  // Draw Warrior Combat Styles (if present)
+  if (characterData.class === 'Warrior' && characterData.warriorStyles && characterData.warriorStyles.length > 0) {
+    // Section header
+    checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + 60);
+    currentPage.drawText('Combat Styles', {
+      x: REF_SHEET_ABILITY_START_X,
+      y: currentY,
+      size: REF_SHEET_ABILITY_NAME_SIZE + 2,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+    currentY -= REF_SHEET_ABILITY_SPACING + 5;
+
+    characterData.warriorStyles.forEach((styleSelection) => {
+      // Determine which tiers to print
+      const tiersToPrint: CombatStyleTier[] = ['Apprentice'];
+      if (styleSelection.tier === 'Journeyman' || styleSelection.tier === 'Master') {
+        tiersToPrint.push('Journeyman');
+      }
+      if (styleSelection.tier === 'Master') {
+        tiersToPrint.push('Master');
+      }
+
+      // Print each tier
+      tiersToPrint.forEach((tier) => {
+        const description = COMBAT_STYLE_DESCRIPTIONS[styleSelection.style][tier];
+        checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + (REF_SHEET_LINE_HEIGHT * 3));
+
+        // Draw style name
+        const title = `${styleSelection.style} (${tier})`;
+        currentPage.drawText(title, {
+          x: REF_SHEET_ABILITY_START_X,
+          y: currentY,
+          size: REF_SHEET_ABILITY_NAME_SIZE,
+          font: font,
+          color: rgb(0, 0, 0),
+        });
+        currentY -= REF_SHEET_ABILITY_SPACING;
+
+        // Wrap and draw description
+        const lines = wrapText(description, REF_SHEET_MAX_WIDTH, font, REF_SHEET_ABILITY_DESC_SIZE);
+        lines.forEach((line) => {
+          checkNewPage(REF_SHEET_LINE_HEIGHT);
+          currentPage.drawText(line, {
+            x: REF_SHEET_ABILITY_START_X + 10,
+            y: currentY,
+            size: REF_SHEET_ABILITY_DESC_SIZE,
+            font: font,
+            color: rgb(0.2, 0.2, 0.2),
+          });
+          currentY -= REF_SHEET_LINE_HEIGHT;
+        });
+        currentY -= REF_SHEET_ABILITY_SPACING;
+      });
+    });
+  }
+
+  // Draw Rogue Specialties (if present)
+  if (characterData.class === 'Rogue' && characterData.rogueSpecialties && characterData.rogueSpecialties.length > 0) {
+    // Section header
+    checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + 60);
+    currentPage.drawText('Rogue Specialties', {
+      x: REF_SHEET_ABILITY_START_X,
+      y: currentY,
+      size: REF_SHEET_ABILITY_NAME_SIZE + 2,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+    currentY -= REF_SHEET_ABILITY_SPACING + 5;
+
+    characterData.rogueSpecialties.forEach((specialty) => {
+      // Build title and description
+      let title: string = specialty.type;
+      let description = '';
+      let isTalentSpecialty = false;
+
+      switch (specialty.type) {
+        case 'Ability':
+          description = '+1 to Ability Checks';
+          break;
+        case 'Arcane':
+          if (specialty.arcaneArt) {
+            title = `Arcane: ${specialty.arcaneArt}`;
+            description = `Proficiency in ${specialty.arcaneArt} arcane art`;
+          } else {
+            description = 'Choose an Arcane Art';
+          }
+          break;
+        case 'Divine':
+          if (specialty.divineInfluence) {
+            title = `Divine: ${specialty.divineInfluence}`;
+            description = `Access to ${specialty.divineInfluence} divine influence`;
+          } else {
+            description = 'Choose a Divine Influence';
+          }
+          break;
+        case 'Talent':
+          isTalentSpecialty = true;
+          description = ROGUE_TALENT_SPECIALTY_DESCRIPTION;
+          break;
+        case 'Stamina':
+          description = '+2 Stamina';
+          break;
+      }
+
+      checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + (REF_SHEET_LINE_HEIGHT * 4));
+
+      // Draw specialty title
+      currentPage.drawText(title, {
+        x: REF_SHEET_ABILITY_START_X,
+        y: currentY,
+        size: REF_SHEET_ABILITY_NAME_SIZE,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+      currentY -= REF_SHEET_ABILITY_SPACING;
+
+      // Wrap and draw description
+      const lines = wrapText(description, REF_SHEET_MAX_WIDTH, font, REF_SHEET_ABILITY_DESC_SIZE);
+      lines.forEach((line) => {
+        checkNewPage(REF_SHEET_LINE_HEIGHT);
+        currentPage.drawText(line, {
+          x: REF_SHEET_ABILITY_START_X + 10,
+          y: currentY,
+          size: REF_SHEET_ABILITY_DESC_SIZE,
+          font: font,
+          color: rgb(0.2, 0.2, 0.2),
+        });
+        currentY -= REF_SHEET_LINE_HEIGHT;
+      });
+      currentY -= REF_SHEET_ABILITY_SPACING;
+
+      // If this is a Talent specialty, print all available talent bonuses
+      if (isTalentSpecialty) {
+        currentY -= 5; // Extra spacing before bonus list
+
+        ROGUE_TALENT_BONUSES.forEach((bonusName) => {
+          const bonusDescription = ROGUE_TALENT_BONUS_DESCRIPTIONS[bonusName];
+
+          checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + (REF_SHEET_LINE_HEIGHT * 3));
+
+          // Draw bonus name (bullet point style)
+          currentPage.drawText(`• ${bonusName}`, {
+            x: REF_SHEET_ABILITY_START_X + 15,
+            y: currentY,
+            size: REF_SHEET_ABILITY_NAME_SIZE - 1,
+            font: font,
+            color: rgb(0, 0, 0),
+          });
+          currentY -= REF_SHEET_LINE_HEIGHT + 3;
+
+          // Wrap and draw bonus description
+          const bonusLines = wrapText(bonusDescription, REF_SHEET_MAX_WIDTH - 30, font, REF_SHEET_ABILITY_DESC_SIZE);
+          bonusLines.forEach((line) => {
+            checkNewPage(REF_SHEET_LINE_HEIGHT);
+            currentPage.drawText(line, {
+              x: REF_SHEET_ABILITY_START_X + 25,
+              y: currentY,
+              size: REF_SHEET_ABILITY_DESC_SIZE,
+              font: font,
+              color: rgb(0.2, 0.2, 0.2),
+            });
+            currentY -= REF_SHEET_LINE_HEIGHT;
+          });
+          currentY -= 8; // Spacing between bonuses
+        });
+
+        currentY -= REF_SHEET_ABILITY_SPACING;
+      }
+    });
+  }
+
+  // Draw Abilities section header (if present)
+  if (characterData.abilities && characterData.abilities.length > 0) {
+    checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + 60);
+    currentPage.drawText('Abilities', {
+      x: REF_SHEET_ABILITY_START_X,
+      y: currentY,
+      size: REF_SHEET_ABILITY_NAME_SIZE + 2,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+    currentY -= REF_SHEET_ABILITY_SPACING + 5;
+
+    // Draw each ability with full description
+    characterData.abilities.forEach((abilityName) => {
+      const description = getAbilityDescription(abilityName);
+
+      if (!description) {
+        console.warn(`No description found for ability: ${abilityName}`);
+        return;
+      }
+
+      // Check if we need a new page
+      checkNewPage(REF_SHEET_ABILITY_NAME_SIZE + REF_SHEET_ABILITY_SPACING + (REF_SHEET_LINE_HEIGHT * 3));
+
+      // Draw ability name
+      currentPage.drawText(abilityName, {
+        x: REF_SHEET_ABILITY_START_X,
+        y: currentY,
+        size: REF_SHEET_ABILITY_NAME_SIZE,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+      currentY -= REF_SHEET_ABILITY_SPACING;
+
+      // Wrap and draw description
+      const lines = wrapText(description, REF_SHEET_MAX_WIDTH, font, REF_SHEET_ABILITY_DESC_SIZE);
+      lines.forEach((line) => {
+        checkNewPage(REF_SHEET_LINE_HEIGHT);
+        currentPage.drawText(line, {
+          x: REF_SHEET_ABILITY_START_X + 10,
+          y: currentY,
+          size: REF_SHEET_ABILITY_DESC_SIZE,
+          font: font,
+          color: rgb(0.2, 0.2, 0.2),
+        });
+        currentY -= REF_SHEET_LINE_HEIGHT;
+      });
+      currentY -= REF_SHEET_ABILITY_SPACING;
+    });
+  }
 }
 
 /**

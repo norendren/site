@@ -75,6 +75,18 @@ export const ROGUE_TALENT_BONUSES = [
 ] as const;
 export type RogueTalentBonus = typeof ROGUE_TALENT_BONUSES[number];
 
+// Detailed descriptions for Rogue Talent Bonuses
+export const ROGUE_TALENT_BONUS_DESCRIPTIONS: Record<RogueTalentBonus, string> = {
+  Ace: "Choose a Talent for this Bonus to be applied. Reduce any Disadvantage you suffer with this Talent by one. For example, an Injured Rogue (at Disadvantage) with this Bonus applied to their Exertion Talent would make their Check without Disadvantage. That same Rogue making an Exertion Check at Double Disadvantage would only suffer Disadvantage on their Check.",
+  Certain: "A Rogue with this Bonus applied to a Talent can use that Talent under favorable conditions to improve their likelihood of success. If they are not stressed or pressed for time, they can make their Talent Check at Advantage. If they have an hour or more to perform their Check, they can do so at Double Advantage.",
+  Easy: "Checks from Talents with this Bonus applied are made at one Difficulty lower. For example, when asked to make an Average Difficulty Check from a Talent with this Bonus, make an Easy Difficulty Check instead. A Rogue with the Easy Bonus automatically succeeds on any Easy Difficulty Checks.",
+  Golden: "When this Bonus is applied to a Talent, the Rogue may cancel any failure with this Talent as if it never happened. For example, if this Bonus is applied to the Athletics Talent, and the Rogue is attempting to jump a chasm, should they fail, they can choose to have not made the attempt, rather than failing in mid-air. Although this ability does allow one to change their action following their failure, it does not allow for \"second attempts\", thus you cannot use this Specialty to attempt the same Check again.",
+  Swift: "Applying this Bonus to a Talent allows the Rogue to make a Talent Check for the designated Talent once per Encounter as a Free Action. For example, a Rogue with this Bonus applied to their Recuperation Talent could roll to recover Stamina as a Free Action in the same Round that they are attacking an enemy.",
+};
+
+// General description for Talent Specialty
+export const ROGUE_TALENT_SPECIALTY_DESCRIPTION = "Each time a Rogue takes the Talent Specialty he has three (3) Talent Bonuses he can add to his character. Each bonus is applied to a single Talent, but any Talent can have more than one Bonus applied to it. Note: Any single Bonus can only be applied to any single Talent once. For example, if a Rogue were to apply one of his Specialties as a Talent Specialty, they could spend their three Talent Bonus picks by adding Ace to their Notice Talent and both Easy and Golden to their Stealth Talent. Unless otherwise stated, these Talent Specialties can only affect one Talent Check per Round.";
+
 export interface RogueSpecialtySelection {
   type: RogueSpecialtyType;
   // For Arcane: which art (Air, Cosmos, etc.)
