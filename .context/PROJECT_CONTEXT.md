@@ -36,11 +36,6 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 
 ### What's In Progress 🚧
 - **Ability Selection & Editable Summary Implementation** (see ABILITY_SELECTION_AND_EDITABLE_SUMMARY.md)
-  - Phase 1: Ability selection UI with two-column browser (search + details)
-    - Fuzzy search with Fuse.js
-    - Prerequisite validation (visual indicators)
-    - Soft warning for > 4 abilities (non-blocking)
-    - Smart sorting: selected → available → locked
   - Phase 2: Fully editable review page
     - ALL fields editable (basic info, attributes, talents, derived stats)
     - Individual and "Reset All" buttons to restore calculated values
@@ -49,8 +44,8 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
     - Abilities have complex, situational effects
     - Users manually adjust stats in editable review page
     - Provides flexibility and handles edge cases/house rules
-- Printing of class specialties on PDF (warrior styles, etc.)
-  - Consider truncation/shortening of ability descriptions, they might quickly get unweildy
+- Specialties/ability description truncation: Consider truncation/shortening of ability descriptions, they might quickly get unweildy
+- Finish work around dev mode, got capped right in the of ensuring data is fully cleaned up when toggling
 - Implement equipment and related calculations
 
 ### Recently Completed ✨ (2025-10-14)
