@@ -36,6 +36,7 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 
 ### What's In Progress 🚧
 - Implement equipment and related calculations
+- As part of weapon we need to implement the base strength damage calculation, found in the combat section (basically 1d4 at 0, 1d6,8,10,12 for STR bonus)
 
 ### Recently Completed ✨ (2025-10-14)
 - **Integrated all racial perk bonuses into character calculations**

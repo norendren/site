@@ -9,6 +9,7 @@ interface DerivedStatsDisplayProps {
   raceName: string;
   selectedPerks: string[];
   attributes: AttributeAllocation[];
+  armorType?: 'none' | 'light' | 'medium' | 'heavy';
 }
 
 /**
@@ -21,6 +22,7 @@ export function DerivedStatsDisplay({
   raceName,
   selectedPerks,
   attributes,
+  armorType = 'none',
 }: DerivedStatsDisplayProps) {
   // Convert attributes array to Map for calculation
   const attributeMap = useMemo(() => {
@@ -31,8 +33,8 @@ export function DerivedStatsDisplay({
 
   // Calculate derived stats
   const { stats, breakdown } = useMemo(
-    () => calculateDerivedStats(className, level, raceName, selectedPerks, attributeMap),
-    [className, level, raceName, selectedPerks, attributeMap]
+    () => calculateDerivedStats(className, level, raceName, selectedPerks, attributeMap, armorType),
+    [className, level, raceName, selectedPerks, attributeMap, armorType]
   );
 
   // Get relevant stats for this class
@@ -42,7 +44,8 @@ export function DerivedStatsDisplay({
   const formatBreakdown = (statName: string): string => {
     switch (statName) {
       case 'defense':
-        return `DEX: ${breakdown.defense.dex >= 0 ? '+' : ''}${breakdown.defense.dex}\n` +
+        return `Armor: ${breakdown.defense.base}\n` +
+               `DEX: ${breakdown.defense.dex >= 0 ? '+' : ''}${breakdown.defense.dex}\n` +
                (breakdown.defense.perkBonus !== 0 ? `Perk Bonus: ${breakdown.defense.perkBonus >= 0 ? '+' : ''}${breakdown.defense.perkBonus}\n` : '') +
                `Total: ${breakdown.defense.total}`;
       case 'daring':
@@ -52,6 +55,7 @@ export function DerivedStatsDisplay({
       case 'stamina':
         return `Class Base: ${breakdown.stamina.classBase}\n` +
                `CON: ${breakdown.stamina.con >= 0 ? '+' : ''}${breakdown.stamina.con}\n` +
+               (breakdown.stamina.armorMod !== 0 ? `Armor Mod: ${breakdown.stamina.armorMod >= 0 ? '+' : ''}${breakdown.stamina.armorMod}\n` : '') +
                (breakdown.stamina.perkBonus !== 0 ? `Perk Bonus: ${breakdown.stamina.perkBonus >= 0 ? '+' : ''}${breakdown.stamina.perkBonus}\n` : '') +
                `Total: ${breakdown.stamina.total}`;
       case 'mana':

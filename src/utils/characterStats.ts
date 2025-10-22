@@ -182,7 +182,8 @@ export function calculateAllCharacterStats(data: BasicCharacterData): CharacterS
     level,
     data.race,
     data.racialPerks || [],
-    attributeMap
+    attributeMap,
+    data.equipment?.armor || 'none'
   ).stats;
 
   // Apply manual overrides if they exist

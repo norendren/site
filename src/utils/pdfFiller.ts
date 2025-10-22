@@ -17,6 +17,7 @@ import {
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 import { abilities } from '../data/abilities';
+import { getArmorData } from './equipmentReference';
 
 export interface TalentAllocation {
   name: string;
@@ -45,6 +46,11 @@ export interface BasicCharacterData {
   rogueSpecialties?: RogueSpecialtySelection[]; // Rogue only
   warriorStyles?: WarriorStyleSelection[]; // Warrior only
   // Acolyte Bless is auto-calculated from level, no storage needed
+  // Equipment
+  equipment?: {
+    armor: 'none' | 'light' | 'medium' | 'heavy';
+    hasShield: boolean;
+  };
   // Manual overrides for final review page (allows editing any value)
   manualOverrides?: {
     defense?: number;
@@ -96,7 +102,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles' | 'manualOverrides'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles' | 'equipment' | 'manualOverrides'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -177,6 +183,27 @@ const DEFENSE_Y = 615; // Y position for Defense
 const FAVOR_Y = 594; // Y position for Favor (Acolytes only)
 const MANA_Y = 565; // Y position for Mana (Mages only)
 const STAMINA_Y = 507; // Y position for Stamina
+
+// ===== EQUIPMENT SECTION (Page 2) =====
+// Armor box has 3 rows:
+//   Row 1: Type
+//   Row 2: Defense, Max Dex, Stamina Mod
+//   Row 3: Shield (checkbox), Damage Reduction
+
+// Row 1: Armor Type
+const ARMOR_TYPE_X = 392;
+const ARMOR_TYPE_Y = 344;
+
+// Row 2: Defense, Max Dex, Stamina Mod (three columns)
+const ARMOR_ROW_2_Y = 329;
+const ARMOR_DEFENSE_X = 372;
+const ARMOR_MAX_DEX_X = 457;
+const ARMOR_STAMINA_MOD_X = 545;
+
+// Row 3: Shield checkbox and DR
+const ARMOR_ROW_3_Y = 316;
+const ARMOR_SHIELD_X = 375;
+const ARMOR_DR_X = 547;
 
 // Page 2
 const BLESS_X = 165; // Y position for Bless (Acolytes only)
@@ -292,6 +319,11 @@ export async function fillCharacterSheet(
     // Draw derived stats (now uses pre-computed stats)
     if (characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0) {
       drawDerivedStats(firstPage, characterData, characterStats, font);
+    }
+
+    // Draw equipment (armor, shield, etc.) on page 2
+    if (characterData.equipment) {
+      drawEquipment(secondPage, characterData, font);
     }
 
     // Draw class specialties (Warrior Combat Styles, Rogue Specialties, and Acolyte Bless)
@@ -621,6 +653,103 @@ function drawDerivedStats(
       x: DERIVED_STATS_X,
       y: FAVOR_Y,
       size: 12,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+  }
+}
+
+/**
+ * Draws equipment information on the PDF (Page 2)
+ *
+ * Layout structure (3 rows):
+ *   Row 1: Armor Type
+ *   Row 2: Defense | Max Dex | Stamina Mod
+ *   Row 3: Shield (checkbox) | Damage Reduction
+ *
+ * @param page - PDF page to draw on (page 2)
+ * @param characterData - Character data with equipment info
+ * @param font - Font to use for rendering
+ */
+function drawEquipment(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  const equipment = characterData.equipment;
+  if (!equipment) return;
+
+  const armorData = getArmorData(equipment.armor);
+
+  // ROW 1: Armor Type (capitalize first letter)
+  const armorTypeText = equipment.armor.charAt(0).toUpperCase() + equipment.armor.slice(1);
+  page.drawText(armorTypeText, {
+    x: ARMOR_TYPE_X,
+    y: ARMOR_TYPE_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // ROW 2: Defense, Max Dex, Stamina Mod (three columns)
+
+  // Column 1: Defense value
+  page.drawText(armorData.defense.toString(), {
+    x: ARMOR_DEFENSE_X,
+    y: ARMOR_ROW_2_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Column 2: Max Dex (show "No limit" if null, otherwise format as +X)
+  const maxDexText = armorData.maxDex === null ? 'No limit' : `+${armorData.maxDex}`;
+  page.drawText(maxDexText, {
+    x: ARMOR_MAX_DEX_X,
+    y: ARMOR_ROW_2_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // Column 3: Stamina Modifier (show "—" if 0, otherwise show the value)
+  const staminaModText = armorData.staminaModifier === 0 ? '—' : armorData.staminaModifier.toString();
+  page.drawText(staminaModText, {
+    x: ARMOR_STAMINA_MOD_X,
+    y: ARMOR_ROW_2_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // ROW 3: Shield and DR
+
+  // Column 1: Shield checkbox (filled circle if has shield)
+  if (equipment.hasShield) {
+    page.drawCircle({
+      x: ARMOR_SHIELD_X,
+      y: ARMOR_ROW_3_Y,
+      size: 4,
+      color: rgb(0, 0, 0),
+    });
+  }else{
+    page.drawCircle({
+      x: ARMOR_SHIELD_X+29,
+      y: ARMOR_ROW_3_Y,
+      size: 4,
+      color: rgb(0, 0, 0),
+    });
+
+  }
+
+  // Column 2: DR value (only if shield is equipped)
+  if (equipment.hasShield) {
+    const level = parseInt(characterData.level) || 1;
+    const drText = level.toString();
+    page.drawText(drText, {
+      x: ARMOR_DR_X,
+      y: ARMOR_ROW_3_Y,
+      size: 10,
       font: font,
       color: rgb(0, 0, 0),
     });

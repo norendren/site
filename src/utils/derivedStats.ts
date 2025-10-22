@@ -18,6 +18,7 @@ import {
   WARRIOR_PROGRESSION,
 } from './classReference';
 import { calculateDerivedStatBonuses } from './raceReference';
+import { getArmorData, getEffectiveDexForDefense } from './equipmentReference';
 
 export interface DerivedStats {
   defense: number;
@@ -29,8 +30,8 @@ export interface DerivedStats {
 
 export interface DerivedStatsBreakdown {
   defense: {
-    base: number;
-    dex: number;
+    base: number; // Armor defense value
+    dex: number; // DEX modifier (capped by armor max dex)
     perkBonus: number;
     total: number;
   };
@@ -42,6 +43,7 @@ export interface DerivedStatsBreakdown {
   stamina: {
     classBase: number;
     con: number;
+    armorMod: number; // Armor stamina modifier (negative)
     perkBonus: number;
     total: number;
   };
@@ -103,6 +105,7 @@ function getClassDerivedStatBases(className: string, level: number): {
  * @param raceName - Character race (for perk bonuses)
  * @param selectedPerks - Array of selected racial perk names
  * @param attributes - Map of attribute names to their values (e.g., Map([['CON', 2], ['DEX', 1]]))
+ * @param armorType - Type of armor worn (affects Defense and Stamina)
  * @returns Object with both simple totals and detailed breakdowns
  */
 export function calculateDerivedStats(
@@ -110,7 +113,8 @@ export function calculateDerivedStats(
   level: number,
   raceName: string,
   selectedPerks: string[],
-  attributes: Map<string, number>
+  attributes: Map<string, number>,
+  armorType: 'none' | 'light' | 'medium' | 'heavy' = 'none'
 ): { stats: DerivedStats; breakdown: DerivedStatsBreakdown } {
   // Get attribute modifiers
   const dex = attributes.get('DEX') || 0;
@@ -127,12 +131,16 @@ export function calculateDerivedStats(
     ? calculateDerivedStatBonuses(raceName, selectedPerks, level)
     : { defense: 0, daring: 0, stamina: 0, mana: 0, favor: 0 };
 
-  // Calculate Defense (for now, without armor: just DEX + bonuses)
+  // Get armor data
+  const armorData = getArmorData(armorType);
+  const effectiveDex = getEffectiveDexForDefense(dex, armorType);
+
+  // Calculate Defense (Armor + DEX [capped by armor] + bonuses)
   const defense = {
-    base: 0, // Armor value (not implemented yet)
-    dex: dex,
+    base: armorData.defense,
+    dex: effectiveDex,
     perkBonus: perkBonuses.defense,
-    total: dex + perkBonuses.defense,
+    total: armorData.defense + effectiveDex + perkBonuses.defense,
   };
 
   // Calculate Daring (VAL + bonuses)
@@ -142,12 +150,13 @@ export function calculateDerivedStats(
     total: val + perkBonuses.daring,
   };
 
-  // Calculate Stamina (Class base + CON + bonuses)
+  // Calculate Stamina (Class base + CON + Armor Mod + bonuses)
   const stamina = {
     classBase: classBases.stamina,
     con: con,
+    armorMod: armorData.staminaModifier,
     perkBonus: perkBonuses.stamina,
-    total: classBases.stamina + con + perkBonuses.stamina,
+    total: classBases.stamina + con + armorData.staminaModifier + perkBonuses.stamina,
   };
 
   // Calculate Mana (Class base + STR + bonuses) - Mages only

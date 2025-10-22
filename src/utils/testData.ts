@@ -42,6 +42,10 @@ export const TEST_WARRIOR: BasicCharacterData = {
     { style: 'Ferocious', tier: 'Journeyman' },
     { style: 'Martial', tier: 'Apprentice' },
   ] as WarriorStyleSelection[],
+  equipment: {
+    armor: 'heavy',
+    hasShield: true,
+  },
 };
 
 export const TEST_MAGE: BasicCharacterData = {
@@ -72,6 +76,10 @@ export const TEST_MAGE: BasicCharacterData = {
     { art: 'Air', points: 3 },
     { art: 'Cosmos', points: 2 },
   ] as ArcaneAptitudeAllocation[],
+  equipment: {
+    armor: 'light',
+    hasShield: false,
+  },
 };
 
 export const TEST_ROGUE: BasicCharacterData = {
@@ -102,6 +110,10 @@ export const TEST_ROGUE: BasicCharacterData = {
     { type: 'Stamina' },
     { type: 'Arcane', arcaneArt: 'Air' },
   ] as RogueSpecialtySelection[],
+  equipment: {
+    armor: 'medium',
+    hasShield: false,
+  },
 };
 
 export const TEST_ACOLYTE: BasicCharacterData = {
@@ -127,6 +139,10 @@ export const TEST_ACOLYTE: BasicCharacterData = {
     { name: 'STR', points: 0 },
     { name: 'KNO', points: 0 },
   ],
+  equipment: {
+    armor: 'medium',
+    hasShield: true,
+  },
 };
 
 // ===== Partial Test Data (for testing specific sections) =====
@@ -142,6 +158,10 @@ export const MINIMAL_CHARACTER: BasicCharacterData = {
   racialPerks: ['Versatile', 'Sharp'],
   talents: [],
   attributes: [],
+  equipment: {
+    armor: 'none',
+    hasShield: false,
+  },
 };
 
 // ===== Helper Functions =====

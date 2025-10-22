@@ -9,6 +9,7 @@ interface EditableDerivedStatsDisplayProps {
   raceName: string;
   selectedPerks: string[];
   attributes: AttributeAllocation[];
+  armorType?: 'none' | 'light' | 'medium' | 'heavy';
   manualOverrides?: {
     defense?: number;
     daring?: number;
@@ -29,6 +30,7 @@ export function EditableDerivedStatsDisplay({
   raceName,
   selectedPerks,
   attributes,
+  armorType = 'none',
   manualOverrides = {},
   onOverrideChange,
 }: EditableDerivedStatsDisplayProps) {
@@ -41,8 +43,8 @@ export function EditableDerivedStatsDisplay({
 
   // Calculate derived stats
   const { stats, breakdown } = useMemo(
-    () => calculateDerivedStats(className, level, raceName, selectedPerks, attributeMap),
-    [className, level, raceName, selectedPerks, attributeMap]
+    () => calculateDerivedStats(className, level, raceName, selectedPerks, attributeMap, armorType),
+    [className, level, raceName, selectedPerks, attributeMap, armorType]
   );
 
   // Get relevant stats for this class
@@ -52,13 +54,14 @@ export function EditableDerivedStatsDisplay({
   const formatBreakdown = (statName: string): string => {
     switch (statName) {
       case 'defense':
-        return `Base: DEX ${breakdown.defense.dex >= 0 ? '+' : ''}${breakdown.defense.dex}` +
+        return `Armor: ${breakdown.defense.base} + DEX ${breakdown.defense.dex >= 0 ? '+' : ''}${breakdown.defense.dex}` +
                (breakdown.defense.perkBonus !== 0 ? ` + Perks ${breakdown.defense.perkBonus >= 0 ? '+' : ''}${breakdown.defense.perkBonus}` : '');
       case 'daring':
         return `Base: VAL ${breakdown.daring.val >= 0 ? '+' : ''}${breakdown.daring.val}` +
                (breakdown.daring.perkBonus !== 0 ? ` + Perks ${breakdown.daring.perkBonus >= 0 ? '+' : ''}${breakdown.daring.perkBonus}` : '');
       case 'stamina':
-        return `Base: ${breakdown.stamina.classBase} + CON ${breakdown.stamina.con >= 0 ? '+' : ''}${breakdown.stamina.con}` +
+        return `Class: ${breakdown.stamina.classBase} + CON ${breakdown.stamina.con >= 0 ? '+' : ''}${breakdown.stamina.con}` +
+               (breakdown.stamina.armorMod !== 0 ? ` + Armor ${breakdown.stamina.armorMod >= 0 ? '+' : ''}${breakdown.stamina.armorMod}` : '') +
                (breakdown.stamina.perkBonus !== 0 ? ` + Perks ${breakdown.stamina.perkBonus >= 0 ? '+' : ''}${breakdown.stamina.perkBonus}` : '');
       case 'mana':
         return `Base: ${breakdown.mana.classBase} + STR ${breakdown.mana.str >= 0 ? '+' : ''}${breakdown.mana.str}` +

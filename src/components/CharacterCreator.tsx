@@ -24,6 +24,7 @@ import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import { EditableDerivedStatsDisplay } from './EditableDerivedStatsDisplay';
 import { AbilitySelector } from './AbilitySelector';
+import ArmorSelector from './ArmorSelector';
 import { useDevMode } from '../hooks/useDevMode';
 import { getTestCharacterByClass } from '../utils/testData';
 import { abilities } from '../data/abilities';
@@ -46,6 +47,10 @@ export function CharacterCreator() {
     rogueSpecialties: [],
     warriorStyles: [],
     abilities: [],
+    equipment: {
+      armor: 'none',
+      hasShield: false,
+    },
     manualOverrides: {},
   });
   const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
@@ -213,6 +218,28 @@ export function CharacterCreator() {
     }));
   };
 
+  const handleArmorChange = (armorType: 'none' | 'light' | 'medium' | 'heavy') => {
+    setCharacterData(prev => ({
+      ...prev,
+      equipment: {
+        ...prev.equipment,
+        armor: armorType,
+        hasShield: prev.equipment?.hasShield || false,
+      },
+    }));
+  };
+
+  const handleShieldChange = (hasShield: boolean) => {
+    setCharacterData(prev => ({
+      ...prev,
+      equipment: {
+        ...prev.equipment,
+        armor: prev.equipment?.armor || 'none',
+        hasShield,
+      },
+    }));
+  };
+
   // Handler for manual stat overrides in review page
   const handleStatOverride = (statName: string, value: number | undefined) => {
     setCharacterData(prev => ({
@@ -261,6 +288,10 @@ export function CharacterCreator() {
       rogueSpecialties: [],
       warriorStyles: [],
       abilities: [],
+      equipment: {
+        armor: 'none',
+        hasShield: false,
+      },
       manualOverrides: {},
     });
     setBaseAttributePool(2); // Reset to default (Young Heroes)
@@ -320,7 +351,7 @@ export function CharacterCreator() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 7));
+      setCurrentStep(prev => Math.min(prev + 1, 8));
     }
   };
 
@@ -636,6 +667,23 @@ export function CharacterCreator() {
       case 7:
         return (
           <div className="step-content">
+            <h2>Equipment</h2>
+            <p className="step-description">
+              Select your armor and shield. This will affect your Defense and Stamina values.
+            </p>
+            <ArmorSelector
+              selectedArmor={characterData.equipment?.armor || 'none'}
+              hasShield={characterData.equipment?.hasShield || false}
+              characterLevel={parseInt(characterData.level) || 1}
+              onArmorChange={handleArmorChange}
+              onShieldChange={handleShieldChange}
+            />
+          </div>
+        );
+
+      case 8:
+        return (
+          <div className="step-content">
             <h2>Review & Generate</h2>
             <p className="step-description">Review and edit your character details, then generate the PDF character sheet.</p>
 
@@ -783,6 +831,29 @@ export function CharacterCreator() {
                 </>
               )}
 
+              {/* Show equipment if selected */}
+              {characterData.equipment && (
+                <>
+                  <h3>Equipment</h3>
+                  <div className="review-list">
+                    <div className="review-list-item">
+                      <label>Armor:</label>
+                      <span>{characterData.equipment.armor.charAt(0).toUpperCase() + characterData.equipment.armor.slice(1)}</span>
+                    </div>
+                    <div className="review-list-item">
+                      <label>Shield:</label>
+                      <span>{characterData.equipment.hasShield ? 'Yes' : 'No'}</span>
+                    </div>
+                    {characterData.equipment.hasShield && (
+                      <div className="review-list-item">
+                        <label>Shield DR:</label>
+                        <span>{parseInt(characterData.level) || 1}</span>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+
               {/* Show editable derived stats if class, race, and attributes are set */}
               {characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0 && (
                 <EditableDerivedStatsDisplay
@@ -791,6 +862,7 @@ export function CharacterCreator() {
                   raceName={characterData.race}
                   selectedPerks={characterData.racialPerks || []}
                   attributes={characterData.attributes}
+                  armorType={characterData.equipment?.armor || 'none'}
                   manualOverrides={characterData.manualOverrides}
                   onOverrideChange={handleStatOverride}
                 />
@@ -921,10 +993,18 @@ export function CharacterCreator() {
         </div>
         <div className="progress-line"></div>
         <div
-          className={`progress-step ${currentStep >= 7 ? 'active' : ''} ${canNavigateToStep(7) ? 'clickable' : ''}`}
+          className={`progress-step ${currentStep >= 7 ? 'active' : ''} ${currentStep > 7 ? 'completed' : ''} ${canNavigateToStep(7) ? 'clickable' : ''}`}
           onClick={() => handleStepClick(7)}
         >
           <div className="progress-circle">7</div>
+          <div className="progress-label">Equipment</div>
+        </div>
+        <div className="progress-line"></div>
+        <div
+          className={`progress-step ${currentStep >= 8 ? 'active' : ''} ${canNavigateToStep(8) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(8)}
+        >
+          <div className="progress-circle">8</div>
           <div className="progress-label">Review</div>
         </div>
       </div>
@@ -952,7 +1032,7 @@ export function CharacterCreator() {
               Back
             </button>
 
-            {currentStep < 7 ? (
+            {currentStep < 8 ? (
               <button
                 type="button"
                 className="nav-button next-button"
