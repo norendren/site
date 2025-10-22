@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { fillCharacterSheet, downloadPDF } from '../utils/pdfFiller';
 import type { BasicCharacterData, TalentAllocation, AttributeAllocation } from '../utils/pdfFiller';
 import { CLASSES, RACES, HOUSES, FAITHS } from '../utils/athiaConstants';
@@ -22,6 +22,7 @@ import { ClassSpecialtySelector } from './ClassSpecialtySelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import { DerivedStatsDisplay } from './DerivedStatsDisplay';
+import { AbilitySelector } from './AbilitySelector';
 import { useDevMode } from '../hooks/useDevMode';
 import { getTestCharacterByClass } from '../utils/testData';
 import './CharacterCreator.css';
@@ -50,6 +51,7 @@ export function CharacterCreator() {
 
   // Dev mode for rapid testing
   const { isDevMode, toggleDevMode } = useDevMode();
+  const prevDevMode = useRef(isDevMode);
 
   // Auto-fill test data when dev mode is enabled (initial load)
   useEffect(() => {
@@ -78,6 +80,16 @@ export function CharacterCreator() {
       }));
     }
   }, [characterData.class, isDevMode]); // Re-run when class changes in dev mode
+
+  // Clear all data when dev mode is disabled
+  useEffect(() => {
+    // Detect transition from dev mode ON to OFF
+    if (prevDevMode.current && !isDevMode) {
+      clearData();
+      setCurrentStep(1);
+    }
+    prevDevMode.current = isDevMode;
+  }, [isDevMode]);
 
   // Calculate total attribute pool: base pool + level bonus
   const totalAttributePool = useMemo(() => {
@@ -178,6 +190,13 @@ export function CharacterCreator() {
     }));
   };
 
+  const handleAbilitiesChange = (abilities: string[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      abilities,
+    }));
+  };
+
   // Clear all character data (dev mode utility)
   const clearData = () => {
     setCharacterData({
@@ -251,7 +270,7 @@ export function CharacterCreator() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 6));
+      setCurrentStep(prev => Math.min(prev + 1, 7));
     }
   };
 
@@ -545,6 +564,28 @@ export function CharacterCreator() {
       case 6:
         return (
           <div className="step-content">
+            <h2>Abilities</h2>
+            <p className="step-description">
+              Select character abilities that define your unique capabilities and skills.
+            </p>
+            {characterData.class && characterData.level ? (
+              <AbilitySelector
+                className={characterData.class}
+                level={parseInt(characterData.level) || 1}
+                selectedAbilities={characterData.abilities || []}
+                onAbilitiesChange={handleAbilitiesChange}
+              />
+            ) : (
+              <div className="warning-message">
+                Please complete Step 1 (Basic Information) to select abilities.
+              </div>
+            )}
+          </div>
+        );
+
+      case 7:
+        return (
+          <div className="step-content">
             <h2>Review & Generate</h2>
             <p className="step-description">Review your character and generate the PDF character sheet.</p>
 
@@ -622,6 +663,19 @@ export function CharacterCreator() {
                 </>
               )}
 
+              {characterData.abilities && characterData.abilities.length > 0 && (
+                <>
+                  <h3>Abilities</h3>
+                  <div className="review-list">
+                    {characterData.abilities.map((ability, idx) => (
+                      <div key={idx} className="review-list-item">
+                        <span>{ability}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
               {/* Show derived stats if class, race, and attributes are set */}
               {characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0 && (
                 <DerivedStatsDisplay
@@ -646,38 +700,21 @@ export function CharacterCreator() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h1 style={{ color: '#cbd5e1', margin: 0 }}>Athia Character Creator</h1>
 
-        {/* Dev Mode Toggle */}
-        <button
-          type="button"
-          onClick={toggleDevMode}
-          style={{
-            padding: '0.5rem 1rem',
-            fontSize: '0.875rem',
-            backgroundColor: isDevMode ? '#fbbf24' : '#6b7280',
-            color: isDevMode ? '#000' : '#fff',
-            border: 'none',
-            borderRadius: '0.375rem',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-          title="Enable dev mode to skip validation and use test data"
-        >
-          {isDevMode ? '🔧 DEV MODE ON' : '🔧 Dev Mode'}
-        </button>
+        {/* Subtle dev mode indicator */}
+        {isDevMode && (
+          <div
+            style={{
+              fontSize: '0.75rem',
+              color: '#fbbf24',
+              opacity: 0.6,
+              fontFamily: 'monospace',
+            }}
+            title="Dev mode active (Ctrl+Shift+D to toggle)"
+          >
+            [dev]
+          </div>
+        )}
       </div>
-
-      {isDevMode && (
-        <div style={{
-          padding: '0.75rem',
-          marginBottom: '1rem',
-          backgroundColor: '#fef3c7',
-          border: '2px solid #fbbf24',
-          borderRadius: '0.5rem',
-          color: '#92400e'
-        }}>
-          <strong>Dev Mode Active:</strong> Test data auto-loaded. Validation disabled. Click "Next" to jump to any section for testing.
-        </div>
-      )}
 
       {/* Progress indicator */}
       <div className="wizard-progress">
@@ -722,15 +759,23 @@ export function CharacterCreator() {
         </div>
         <div className="progress-line"></div>
         <div
-          className={`progress-step ${currentStep >= 6 ? 'active' : ''} ${canNavigateToStep(6) ? 'clickable' : ''}`}
+          className={`progress-step ${currentStep >= 6 ? 'active' : ''} ${currentStep > 6 ? 'completed' : ''} ${canNavigateToStep(6) ? 'clickable' : ''}`}
           onClick={() => handleStepClick(6)}
         >
           <div className="progress-circle">6</div>
+          <div className="progress-label">Abilities</div>
+        </div>
+        <div className="progress-line"></div>
+        <div
+          className={`progress-step ${currentStep >= 7 ? 'active' : ''} ${canNavigateToStep(7) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(7)}
+        >
+          <div className="progress-circle">7</div>
           <div className="progress-label">Review</div>
         </div>
       </div>
 
-      <div className="creator-layout">
+      <div className={`creator-layout ${currentStep === 1 ? '' : 'full-width'}`}>
         <div className="character-form">
           {/* Step content */}
           {renderStepContent()}
@@ -753,7 +798,7 @@ export function CharacterCreator() {
               Back
             </button>
 
-            {currentStep < 6 ? (
+            {currentStep < 7 ? (
               <button
                 type="button"
                 className="nav-button next-button"
@@ -774,24 +819,26 @@ export function CharacterCreator() {
           </div>
         </div>
 
-        {/* Right sidebar: Helper text area */}
-        <aside className="helper-sidebar">
-          <div className="sidebar-sticky">
-            {characterData.class ? (
-              <ClassInfoPreview
-                className={characterData.class}
-                currentLevel={parseInt(characterData.level) || 1}
-                currentTalentPoints={totalTalentPoints}
-                onShowDetails={() => setIsClassInfoOpen(true)}
-              />
-            ) : (
-              <div className="helper-placeholder">
-                <h3>Need help choosing?</h3>
-                <p>Select a class to learn more about it. We'll show you details about playstyle, strengths, and what makes each class unique.</p>
-              </div>
-            )}
-          </div>
-        </aside>
+        {/* Right sidebar: Helper text area - only on step 1 */}
+        {currentStep === 1 && (
+          <aside className="helper-sidebar">
+            <div className="sidebar-sticky">
+              {characterData.class ? (
+                <ClassInfoPreview
+                  className={characterData.class}
+                  currentLevel={parseInt(characterData.level) || 1}
+                  currentTalentPoints={totalTalentPoints}
+                  onShowDetails={() => setIsClassInfoOpen(true)}
+                />
+              ) : (
+                <div className="helper-placeholder">
+                  <h3>Need help choosing?</h3>
+                  <p>Select a class to learn more about it. We'll show you details about playstyle, strengths, and what makes each class unique.</p>
+                </div>
+              )}
+            </div>
+          </aside>
+        )}
       </div>
 
       {/* Layer 2: Detailed info modal */}

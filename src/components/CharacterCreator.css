@@ -18,6 +18,13 @@
   align-items: start;
 }
 
+/* Full-width layout (no sidebar) */
+.creator-layout.full-width {
+  grid-template-columns: 1fr;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .character-form {
   display: flex;
   flex-direction: column;

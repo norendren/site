@@ -17,7 +17,7 @@ import type {
 export const TEST_WARRIOR: BasicCharacterData = {
   characterName: 'Test Warrior',
   class: 'Warrior',
-  level: '3',
+  level: '1',
   race: 'Human',
   house: 'Dragonhelm',
   faith: 'The Old Faith',
@@ -47,7 +47,7 @@ export const TEST_WARRIOR: BasicCharacterData = {
 export const TEST_MAGE: BasicCharacterData = {
   characterName: 'Test Mage',
   class: 'Mage',
-  level: '2',
+  level: '1',
   race: 'Elf',
   house: 'Thornveil',
   faith: 'The Old Faith',
@@ -77,7 +77,7 @@ export const TEST_MAGE: BasicCharacterData = {
 export const TEST_ROGUE: BasicCharacterData = {
   characterName: 'Test Rogue',
   class: 'Rogue',
-  level: '2',
+  level: '1',
   race: 'Human',
   house: 'Cerrak',
   faith: 'The New Faith',
@@ -107,7 +107,7 @@ export const TEST_ROGUE: BasicCharacterData = {
 export const TEST_ACOLYTE: BasicCharacterData = {
   characterName: 'Test Acolyte',
   class: 'Acolyte',
-  level: '3',
+  level: '1',
   race: 'Dwarf',
   house: 'Ironforge',
   faith: 'The Old Faith',

@@ -1,0 +1,273 @@
+.ability-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Tabs */
+.ability-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.ability-tab {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.ability-tab:hover {
+  color: #4299e1;
+  background: #f7fafc;
+}
+
+.ability-tab.active {
+  color: #4299e1;
+  border-bottom-color: #4299e1;
+  font-weight: 600;
+}
+
+/* Search bar */
+.ability-search {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ability-search-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.ability-search-input:focus {
+  outline: none;
+  border-color: #4299e1;
+}
+
+/* Warning message */
+.ability-warning {
+  padding: 1rem;
+  background: #fef5e7;
+  border: 1px solid #f9e79f;
+  border-radius: 4px;
+  color: #856404;
+  font-size: 0.9rem;
+}
+
+/* Two-column layout */
+.ability-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  min-height: 400px;
+}
+
+/* Left column: Ability list */
+.ability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ability-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.selected-count {
+  font-size: 0.85rem;
+  color: #4299e1;
+  font-weight: 500;
+}
+
+.ability-list-items {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.ability-item {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.ability-item:last-child {
+  border-bottom: none;
+}
+
+.ability-item:hover {
+  background: #f7fafc;
+}
+
+.ability-item.active {
+  background: #ebf8ff;
+  border-left: 3px solid #4299e1;
+}
+
+.ability-item-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.ability-item-label input[type="checkbox"] {
+  margin-top: 0.25rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ability-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ability-item-name {
+  font-weight: 500;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ability-prereq-warning {
+  font-size: 0.85rem;
+  color: #e53e3e;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ability-restriction {
+  font-size: 0.85rem;
+  color: #d69e2e;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ability-list-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Right column: Ability details */
+.ability-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.ability-details-name {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ability-details-description {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  white-space: pre-line;
+}
+
+.ability-details-meta {
+  padding: 0.75rem;
+  background: #f7fafc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.ability-details-meta strong {
+  color: #2d3748;
+}
+
+.ability-details-restriction {
+  padding: 0.75rem;
+  background: #fef5e7;
+  border: 1px solid #f9e79f;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #856404;
+}
+
+.ability-details-restriction strong {
+  color: #856404;
+}
+
+.ability-details-note {
+  padding: 0.75rem;
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #22543d;
+}
+
+.ability-details-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .ability-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ability-details {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ability-list-items,
+  .ability-details {
+    max-height: 400px;
+  }
+}
