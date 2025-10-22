@@ -193,6 +193,24 @@
   align-items: center;
   gap: 0.5rem;
   position: relative;
+  user-select: none;
+}
+
+.progress-step.clickable {
+  cursor: pointer;
+}
+
+.progress-step.clickable:hover .progress-circle {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.progress-step.clickable.active:hover .progress-circle {
+  box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.3);
+}
+
+.progress-step.clickable.completed:hover .progress-circle {
+  box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
 }
 
 .progress-circle {

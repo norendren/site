@@ -1,11 +1,9 @@
 export interface Ability {
   description?: string;
-  effect?: string; // Human-readable summary of what the ability does mechanically
   prerequisiteClass?: string;
   prerequisiteAbilities?: string[];
   restrictions?: string;
   canTakeMultiple?: boolean;
-  hasMechanicalEffect?: boolean; // True if this ability modifies character sheet stats/calculations
 }
 
 export interface AbilitiesByClass {
@@ -20,335 +18,266 @@ export const abilities: AbilitiesByClass = {
   acolyte: {
     "Anoint": {
       prerequisiteClass: "Acolyte",
-      description: "Your Blessings are not confined to the living. With this Ability the Acolyte may bestow their Bless upon an object, allowing its wielder to gain Advantage on their next Check with the item. This Ability could be used on a weapon to grant Advantage on its next Hit check, or on a healer’s kit to grant Advantage on the user’s next Hermetics Check.",
-      effect: "Can use Bless on objects to grant Advantage to the wielder's next Check with that item",
+      description: "Your Blessings are not confined to the living. With this Ability the Acolyte may bestow their Bless upon an object, allowing its wielder to gain Advantage on their next Check with the item. This Ability could be used on a weapon to grant Advantage on its next Hit check, or on a healer’s kit to grant Advantage on the user’s next Hermetics Check."
     },
     "Beneficent God": {
       prerequisiteClass: "Acolyte",
       description: "Your god is always there to assist those around you. You begin the game with one additional (+1) Bless (for a total of 2) and gain an additional Bless every level (rather than every other).",
-      effect: "+1 starting Bless; gain +1 Bless every level instead of every other level",
-      hasMechanicalEffect: true,
     },
     "Bred For Battle": {
       prerequisiteClass: "Acolyte",
       description: "Selecting this Ability allows you to immediately select an Ability from the Warrior’s list of Abilities. For example, selecting the Bred For Battle Ability and choosing the Warrior’s Born In Armor Ability would give you the Ability: Bred for Battle: Born in Armor as a single Ability choice.",
-      effect: "Gain one Warrior Ability of your choice",
     },
     "Child of the Moon": {
       prerequisiteClass: "Acolyte",
       description: "Your connection to the Divine is as much to the Moon as to Selene herself. With proper prayer and veneration, Lady Moon can bestow her boons upon the Acolyte: • 176 Admonition: With but an hour of prayer the Acolyte becomes aware of anyone seeking to do them harm while they rest. This watch lasts Abilities throughout the Acolyte’s rest and will stir them from slumber should they be asleep. • Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte. • Quiet: For every hour of prayer the Acolyte gains four hours of absolute silence. Nothing the Acolyte does makes a sound unless they choose to make a sound. Note: Only one “Child of…” Ability may be taken at a time.",
-      effect: "Prayer grants: Admonition (sense harm during rest), Inner Peace (4hr Rest), Quiet (silent for 4hrs per 1hr prayer)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Night": {
       prerequisiteClass: "Acolyte",
       description: "Your connection to the Divine is as much to the Night as to Erebos himself. With proper prayer and veneration, the High Night can bestow his boons upon the Acolyte: • Adumbration: For every hour of prayer the Acolyte gains four hours of shadowed obscurity. The Acolyte appears as if engulfed in wispy shadows and is considered in hiding unless they make noise or otherwise make their presence known. All Stealth Talent Checks to hide are made at Advantage. • Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area. • Omen: Following an hour of prayer to the High Night, the Acolyte can peer up into the stars above to see omens of events, people, or places as determined by the GM. Note: Only one “Child of…” Ability may be taken at a time.",
-      effect: "Prayer grants: Adumbration (shadowy hiding w/ Advantage for 4hrs), Spiritglow (see spirits for 4hrs), Omen (divine visions)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Sun": {
       prerequisiteClass: "Acolyte",
       description: "Your connection to the Divine is as much to the Sun as to Illios himself. With proper prayer and veneration, Lord Sun can bestow his boons upon the Acolyte: • • Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte’s Holy Aura, as far off as the light of the sun may reach. Clement: With an hour of prayer the Acolyte can cause the immediate area of his Holy Aura to become mild and pleasant. Snow will melt, dampness will evaporate, winds will calm, and heat waves will cool - but only in the area where the prayer was conducted. This Clemency lasts until the Acolyte steps out of the Clement area. 177 ATHIA – • Purify: With dedicated and uninterrupted eight hours of prayer, the Acolyte can purge impurities from their system. When the Acolyte begins their prayer, the effects of toxins, poisons, and disease immediately cease. Should they complete their prayer undisturbed, any toxins, poisons, or disease within their system is immediately cleansed. Otherwise, if interrupted or disturbed, the effects of the toxins, poisons, or disease continue from that point forward. Note: Only one “Child of…” Ability may be taken at a time.",
-      effect: "Prayer grants: Beacon (cast sunlight), Clement (mild weather in Holy Aura), Purify (8hr prayer cleanses toxins/disease)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Child of the Triad": {
       prerequisiteClass: "Acolyte",
       description: "Your connection to the Divine is a connection to each of the gods. With proper prayer and veneration, the Triad can bestow their boons upon the Acolyte: • Beacon: While the Acolyte prays, a ray of light can be cast forth as bright as the sun. The intended target of the Beacon is basked in light as grand as the size of the Acolyte’s Holy Aura, as far off as the light of the sun may reach. • Inner Peace: Four hours of meditative prayer bestows a worthwhile Rest upon the Acolyte. • Spiritglow: For every hour of prayer the Acolyte gains four hours to see the spirits of Athia. This ability does not allow the Acolyte to see in the dark per se, but rather allows them to see the glow of spirits surrounding them. This allows them to see their surroundings because of the ambient glow of spirits in the area. Note: Only one “Child of…” Ability may be taken at a time.",
-      effect: "Prayer grants: Beacon (cast sunlight), Inner Peace (4hr Rest), Spiritglow (see spirits for 4hrs)",
       restrictions: "Only one \"Child of…\" Ability may be taken at a time.",
     },
     "Chosen Vessel I": {
       prerequisiteClass: "Acolyte",
       description: "You can use others as your divine conduit to enact Interventions. Once per Day choose any target in your line of sight to be the center of your Holy Aura.",
-      effect: "1/Day: Choose visible target as center of Holy Aura",
     },
     "Chosen Vessel II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Chosen Vessel I"],
       description: "As Chosen Vessel I, but your Chosen Vessel may be any individual you know. Note: It is up to the GM as to whether an individual is considered known to the Acolyte. 178 Abilities",
-      effect: "1/Day: Choose any known individual as center of Holy Aura (no line of sight required)",
     },
     "Coalesce": {
       prerequisiteClass: "Acolyte",
       description: "You can combine the Influences of your god into greater and greater Divine Interventions. You possess the ability to enact Divine Interventions that combine Effects from all Influences you have access to.",
-      effect: "Can combine Effects from multiple Influences into single Divine Intervention",
     },
     "Conviction": {
       prerequisiteClass: "Acolyte",
       description: "Your faith against fear is an inspiration to others. You may use a Bless as a Free Action to allow anyone in your Holy Aura to use your Daring as their own for the duration of the Encounter.",
-      effect: "Use Bless (Free Action) to share your Daring with all in Holy Aura for the Encounter",
     },
     "Create Relic": {
       prerequisiteClass: "Acolyte",
       description: "You are one of the few individuals capable of creating powerful magical items. You can create a Sacred Relic as described in the Magic Items section.",
-      effect: "Can craft Sacred Relics",
     },
     "Crusader": {
       prerequisiteClass: "Acolyte",
       description: "You are the fist of your god, able to turn divine will into victory on the battlefield. Once per Encounter you may spend Favor, up to your Level, to gain temporary Stamina. For every point of Favor spent you gain 3 points of Stamina. Any unspent, temporary Stamina is lost at the end of the Encounter. Use of this Ability is considered a Free Action.",
-      effect: "1/Encounter: Spend Favor (up to Level) to gain 3 temporary Stamina per Favor spent (Free Action)",
     },
     "Curse": {
       prerequisiteClass: "Acolyte",
       description: "Some gods strive only to help others; yours has a more practical outlook on life. Your Blessings may be used to Disadvantage a Target. The Target of your Curse will make their next Check at Disadvantage.",
-      effect: "Can use Bless to curse a target with Disadvantage on their next Check",
     },
     "Death Devotee": {
       prerequisiteClass: "Acolyte",
       description: "As a devoted adherent to the Divine Influence of Death you have found yourself granted with extraordinary powers. The following powers are granted to a Death Devotee: • Once per day a Death Devotee may automatically succeed on any one Strength-related Check. • Once per day a Death Devotee may double (x2) the range of their Holy Aura for a Death Influence-related Divine Intervention. • Once per day a Death Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Death with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
-      effect: "1/Day each: Auto-succeed Strength Check; Double Holy Aura range for Death Intervention; Free 1-Favor Death Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Disciple of Erebos": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Follower of Erebos"],
       description: "Erebos offers you even more for being worthy of his Blessings. Your Blessings may also be used to double the result of your recipient's next Damage roll.",
-      effect: "Bless can double recipient's next Damage roll",
     },
     "Disciple of Ilios": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Follower of Ilios"],
       description: "Ilios offers you even more for being worthy of his Blessings. Your Blessings may also be used to make Opponents roll their next Hit Checks against the recipient at Disadvantage for the Round.",
-      effect: "Bless makes opponents attack recipient at Disadvantage for the Round",
     },
     "Disciple of Selene": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Follower of Selene"],
       description: "Selene offers you even more for being worthy of her Blessings. Your Blessings may also be used to grant Damage Reduction to the recipient equal to twice your Level for the Round.",
-      effect: "Bless grants Damage Reduction = 2 × Level for the Round",
     },
     "Disciple of the Triad": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Follower of the Triad"],
       description: "The Triad offers you even more for being worthy of their Blessings. Your Blessings may be used to grant a Defense bonus to the recipient equal to your Level. This bonus lasts until the next successful Hit Check is made against the recipient.",
-      effect: "Bless grants Defense = Level until next successful hit",
     },
     "Divination Devotee": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Access to the Divine Influence of Divination"],
       description: "As a devoted adherent to the Divine Influence of Divination you have found yourself granted with extraordinary powers. The following powers are granted to a Divination Devotee: • Once per day a Divination Devotee may automatically succeed on any one Knowledge-related Check. • Once per day a Divination Devotee may double (x2) the range of their Holy Aura for a Divination Influence-related Divine Intervention. • Once per day a Divination Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Divination with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
-      effect: "1/Day each: Auto-succeed Knowledge Check; Double Holy Aura range for Divination Intervention; Free 1-Favor Divination Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Divine Grace": {
       prerequisiteClass: "Acolyte",
       description: "You are a protected servant of the gods when in their good graces. When maintaining at least half of your Favor, you are immune to arcane, mind affecting Effects (Chaos, Charm, Shape Memory, Suggestion, etc.). The GM has final say on what Effects do or do not affect you.",
-      effect: "Immune to arcane mind-affecting Effects when Favor ≥ half maximum",
     },
     "Divine Protection I": {
       prerequisiteClass: "Acolyte",
       description: "Your god protects all those who side with you in battle. As an Action, you can give a number of your allies, equal to your level, a +1 Defense for the duration of the encounter. This ability may be used one time per day.",
-      effect: "1/Day: Grant +1 Defense to Level allies for the Encounter (Action)",
     },
     "Divine Protection II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Divine Protection I"],
       description: "As Divine Protection I, but rather than bestowing a +1 Defense to your allies you now bestow a Defense bonus of +2. This ability may be used one time per day. 185 ATHIA –",
-      effect: "1/Day: Grant +2 Defense to Level allies for the Encounter (Action)",
     },
     "Ear Of The Gods": {
       prerequisiteClass: "Acolyte",
       description: "The simplest of requests are instantly granted by your god. With this Ability you can enact one Divine Intervention as a Free Action, once per Encounter.",
-      effect: "1/Encounter: Enact Divine Intervention as Free Action",
     },
     "Enliven": {
       prerequisiteClass: "Acolyte",
       description: "Acolyte Stamina Regained Level Your faith is invigorating. You can per Round cause those within your Holy Aura 1-2 1 to regain Stamina during an 3-4 2 Encounter. This Ability is activated 5-6 3 with a single Action, then continues 7+ 4 throughout the remainder of the Encounter. Recipients regain Stamina at a rate based upon your level (see the Enliven Table).",
-      effect: "Action: Allies in Holy Aura regain Stamina each Round for rest of Encounter (rate based on Level)",
     },
     "Exalt": {
       prerequisiteClass: "Acolyte",
       description: "You can ask the Divine for just a bit more when it comes to Blessing those around you. By expending two (2) Blessings, you may grant an individual an automatic Success on their next Check.",
-      effect: "Spend 2 Bless to grant auto-success on next Check",
     },
     "Faith Abounding": {
       prerequisiteClass: "Acolyte",
       description: "When brimming with their god’s favor, some Acolytes become empowered. An Acolyte with this Ability gains one of the following powers as associated with their faith, so long as their Favor is at or within one-half their Level (round up) of maximum. For example, a 5th level Acolyte with a maximum Favor of 16, must posess 13 or more Favor to gain one of the benefits below: Faith Abounding Table Faith Erebos Illios Selene Triad Power Gain Advantage on all Talent Checks No Disadvantage as a result of Reactions in combat Gain Damage Reduction equal to their Level Are Immune to all States",
-      effect: "When Favor is high: Erebos (Advantage on Talents), Ilios (No combat Reaction Disadvantage), Selene (DR = Level), Triad (Immune to States)",
     },
     "Glorious Finish": {
       prerequisiteClass: "Acolyte",
       description: "Unbeknownst to your enemies, the ire of your God becomes evident in your most desperate hour. When Downed, all allies within your Holy Aura receive an immediate Bless (this is a free Bless and does not come from the number of Bless the Acolyte has available to them), and have all negative States removed (as decided by the GM). 191 ATHIA –",
-      effect: "When Downed: All allies in Holy Aura get free Bless and negative States removed",
     },
     "Greater God": {
       prerequisiteClass: "Acolyte",
       description: "Your god sees great things in you. As such they have granted you access to one additional Influence for use in enacting Divine Interventions.",
-      effect: "+1 Divine Influence access",
-      hasMechanicalEffect: true,
     },
     "Holy Emanation I": {
       prerequisiteClass: "Acolyte",
       description: "Your god makes you fearsome in battle. The first Hit Check attempted by an enemy against you in an Encounter is done so at Disadvantage.",
-      effect: "1/Encounter: Allies in Holy Aura recover 1 Stamina per Round for Level Rounds",
     },
     "Holy Emanation II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Holy Emanation I"],
       description: "Fear of lashing out against a representative of the Divine cowers your opponent's blows. In addition to your enemies having Disadvantage on their first attempts at a Hit Check against you, all their Damage rolls against you are done so at Disadvantage.",
-      effect: "1/Encounter: Allies in Holy Aura recover 2 Stamina per Round for Level Rounds",
     },
     "Hospitaller": {
       prerequisiteClass: "Acolyte",
       description: "Your powers are always at their best when aiding others. You roll any healing die at Advantage.",
-      effect: "Patient regains 2× Stamina when you help them Recuperate",
-      hasMechanicalEffect: true,
     },
     "Improved Holy Aura": {
       prerequisiteClass: "Acolyte",
       description: "Your god has made your powers far reaching. The radius of your Holy Aura is increased by 50%. Therefore, a Fifth Level Acolyte would have a Holy Aura of 75’ instead of 50’.",
-      effect: "Holy Aura range × 2",
-      hasMechanicalEffect: true,
     },
     "Indulgence": {
       prerequisiteClass: "Acolyte",
       description: "Your greatest moments make the heavens proud, earning you great boons in times of need. When you score a Critical Success add a point to this Ability. Spend this point to automatically succeed (though not a Critical success) on any one Check. Only one point may be banked with this Ability at a time. This Ability may be taken multiple times to increase the number of successes one may bank by one.",
-      effect: "Gain +1 temporary max Favor for every 3 Favor below maximum (removed after one Divine Intervention)",
-      hasMechanicalEffect: true,
       canTakeMultiple: true,
     },
     "Inspiration": {
       prerequisiteClass: "Acolyte",
       description: "No one is better at encouraging those around them to fight on than you. By spending an Action, you can remove any negative Combat Reactions due to Fear from those within your Holy Aura for the Round. 195 ATHIA –",
-      effect: "Bless grants +1 to recipient's next Level Checks",
     },
     "Life Devotee": {
       prerequisiteClass: "Acolyte",
       description: "As a devoted adherent to the Divine Influence of Life you have found yourself granted with extraordinary powers. The following powers are granted to a Life Devotee: 197 ATHIA – • Once per day a Life Devotee may automatically succeed on any one Constitution-related Check. • Once per day a Life Devotee may double (x2) the range of their Holy Aura for a Life Influence-related Divine Intervention. • Once per day a Life Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Life with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
-      effect: "1/Day each: Auto-succeed Constitution Check; Double Holy Aura range for Life Intervention; Free 1-Favor Life Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Martyr I": {
       prerequisiteClass: "Acolyte",
       description: "Sometimes you must sacrifice yourself for others. When an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. Martyr may be used once per encounter. 198 Abilities",
-      effect: "1/Encounter: Take half Damage for ally in Holy Aura",
     },
     "Martyr II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Martyr I"],
       description: "As Martyr I, but any time an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. You are no longer limited in the number of times you may use this Ability in an encounter.",
-      effect: "1/Encounter: Take full Damage for ally in Holy Aura",
     },
     "Miracle": {
       prerequisiteClass: "Acolyte",
       description: "You can enact a divine miracle. This may be anything conceivable devised by you with the consent of the GM, such as turning an entire land fertile or returning a character to life. This Ability once used is lost, but when called upon the god(s) will attempt to do all the character asks of them. Note: This Ability may be taken multiple times.",
-      effect: "+1 Divine Influence access (repeatable)",
-      hasMechanicalEffect: true,
       canTakeMultiple: true,
     },
     "Nature Devotee": {
       prerequisiteClass: "Acolyte",
       description: "As a devoted adherent to the Divine Influence of Nature you have found yourself granted with extraordinary powers. The following powers are granted to a Nature Devotee: • Once per day a Nature Devotee may automatically succeed on any one Instincts-related Check. • Once per day a Nature Devotee may double (x2) the range of their Holy Aura for a Nature Influence-related Divine Intervention. • Once per day a Nature Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Nature with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
-      effect: "1/Day each: Auto-succeed Dexterity Check; Double Holy Aura range for Nature Intervention; Free 1-Favor Nature Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Oathbinder": {
       prerequisiteClass: "Acolyte",
       description: "You can bind people to sworn oaths. Oaths are agreed upon terms between two or more people and may include the Acolyte themselves. Once the terms have been agreed upon, a punishment must also be agreed upon. The Acolyte can then bind the oath, obligating everyone to their word. Should any party fail in delivering upon the oath’s terms, they then suffer the penalties agreed upon, delivered by the hands of the gods themselves. Note: Oath punishments will be settled by the GM and should be as close to the agreed upon punishments as possible.",
-      effect: "Can bind divine oaths between individuals (oath-breakers suffer GM-determined consequences)",
     },
     "Pious": {
       prerequisiteClass: "Acolyte",
       description: "Your heartfelt appeal to the Gods is exceedingly compelling. You gain one (+1) additional Favor with each successful Prayer.",
-      effect: "1/Encounter: Bless all allies in Holy Aura as Free Action",
     },
     "Protection Devotee": {
       prerequisiteClass: "Acolyte",
       description: "As a devoted adherent to the Divine Influence of Protection you have found yourself granted with extraordinary powers. The following powers are granted to a Protection Devotee: • Once per day a Protection Devotee may automatically succeed on any one Valor-related Check. • Once per day a Protection Devotee may double (x2) the range of their Holy Aura for a Protection Influence-related Divine Intervention. • Once per day a Protection Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Protection with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time.",
-      effect: "1/Day each: Auto-succeed Valor Check; Double Holy Aura range for Protection Intervention; Free 1-Favor Protection Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Rapture Devotee": {
       prerequisiteClass: "Acolyte",
       description: "As a devoted adherent to the Divine Influence of Rapture you have found yourself granted with extraordinary powers. The following powers are granted to a Rapture Devotee: • Once per day a Rapture Devotee may automatically succeed on any one Dexterity-related Check. • Once per day a Rapture Devotee may double (x2) the range of their Holy Aura for a Rapture Influence-related Divine Intervention. • Once per day a Rapture Devotee may enact (as a Free Action) a Divine Intervention from the Influence of Rapture with a cost of 1 Favor for free. Note: Only one “...Devotee” Ability may be taken at a time. 205 ATHIA –",
-      effect: "1/Day each: Auto-succeed Instincts Check; Double Holy Aura range for Rapture Intervention; Free 1-Favor Rapture Intervention",
       restrictions: "Only one \"...Devotee\" Ability may be taken at a time.",
     },
     "Relic Antiquarian": {
       prerequisiteClass: "Acolyte",
       description: "You have always had a metaphysical connection to the Relics of the Divine. You can detect the presence and the faith of a Sacred Relic while it is within your Holy Aura. Having done so, should the Relic be of an Old Faith, you can convert a Sacred Relic to your faith (see Magic Items for more details) and therefore be able to use it yourself. Finally, having successfully converted a Sacred Relic, or found a relic of your faith, you can then use that icon as a font of Favor. Sacred Relics have a pool of Favor to draw from equal to the following breakdown: 206 Abilities • Minute – 5 Favor • Minor Relic – 10 Favor • Moderate Relic – 20 Favor • Major Relic – 30 Favor • Epic Relic – 50 Favor Note: Once a Sacred Relic is drained of its Favor it reverts to an otherwise mundane (although possibly valuable) object.",
-      effect: "Start with Minor Sacred Relic (1d6 weeks to replace if lost)",
     },
     "Reprisal": {
       prerequisiteClass: "Acolyte",
       description: "Not all Acolytes resort to violence, but those who act in the name of their gods bring with them a divine vengeance. This Ability allows an Acolyte to add their Valor Score to their Hit Checks and Damage results.",
-      effect: "1/Encounter: Use Bless to reflect Damage back to attacker when ally in Holy Aura is hit",
     },
     "Rouse": {
       prerequisiteClass: "Acolyte",
       description: "Through prayer, motivational cheers, or encouraging words you can spur those around you to fight through their wounds. By spending your Action during your turn to Rouse those around you, all those within your Holy Aura can fight without suffering from their wound penalties for that Round. This Ability may be used again and again so long as the Acolyte spends their Action Rousing their comrades.",
-      effect: "1/Encounter: Revive Downed ally to 1 Stamina",
     },
     "Selfish God": {
       prerequisiteClass: "Acolyte",
       description: "Your God looks out for you as well. You may bestow your Blessings upon yourself.",
-      effect: "Lose 1 Influence (not Divination); Maximum Favor × 2",
-      hasMechanicalEffect: true,
     },
     "Sense Enemy": {
       prerequisiteClass: "Acolyte",
       description: "You can detect the presence of those who would seek to do you harm if they are within your Holy Aura. Note: Knowing of the presence of these individuals does not mean you know precisely where they are located (should your target be hidden or invisible).",
-      effect: "Sense direction of hostile creatures within line of sight",
     },
     "Shared Favor": {
       prerequisiteClass: "Acolyte",
       description: "You can gift your Favor to others. As an Action, you can grant up to your Level in Favor to any single individual within your Holy Aura. This gifted Favor is still counted as yours, and thus cannot be recouped until expended. If gifted to an Acolyte, they can expend it as if it were their own. Additionally, it can take their maximum Favor above its normal limit. If gifted to a non-Acolyte, it can be cast as 209 ATHIA – though they were a Rogue (Caster level is considered one less, and their Holy Aura is 5’ radius per Level).",
-      effect: "1/Day: Give +1 Favor to another individual",
     },
     "Sincere": {
       prerequisiteClass: "Acolyte",
       description: "Even the Gods themselves cannot deny your genuine appeals. You gain one Favor following any failed Prayer attempt.",
-      effect: "Prayer time to regain Favor is halved",
     },
     "Smite I": {
       prerequisiteClass: "Acolyte",
       description: "Your god guides your hand in combat against your enemies. Once per Encounter you may add your current Favor to a Hit Check. If this Hit is successful, you may then add your current Favor to your Damage. Note: This Ability does not cost you your Favor to use.",
-      effect: "1/Encounter: Add Level to one Damage roll",
     },
     "Smite II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Smite I"],
       description: "As Smite I, but you may now add your maximum Favor to your Hit once per Encounter, regardless of your current Favor. If the Hit is successful, you may then add your maximum Favor to your Damage. 211 ATHIA –",
-      effect: "1/Round: Add Level to one Damage roll (for entire Encounter)",
     },
     "Soul Steal": {
       prerequisiteClass: "Acolyte",
       description: "When passing from one world to the next there is an energy that exists. Although this energy is usually missed, you can tap into it with great effect. Following the Round in which something dies, you may, as a Free Action, select one soul to steal. Regardless of the number of individuals slain in a Round, the Soul Stealer may only choose one soul to steal. Select one power from the list below to define what type of Soul Steal power you possess: • Fortify: You steal the energy from the release of the departed’s soul to grant all you select within your Holy Aura an amount of Fatigue equal to one-half the Challenge Level or Level of the deceased (round up). This gained Fatigue cannot take a Character beyond their normal Fatigue maximum. • Glorify: You steal the energy from the release of the departed’s soul to grant any one individual within your Holy Aura one point (+1) of Favor. This gained Favor cannot take a Character beyond their normal Favor maximum. • Vivify: You steal the energy from the release of the departed’s soul to grant any one individual within your Holy Aura an amount of temporary Stamina equal to the Challenge Level or Level of the deceased. These temporary Stamina dissipate at the end of the Encounter. In selecting this Ability, the specific capability of the Soul Steal should be noted with the Ability. For example, Soul Steal: Glorify. Despite the number of capabilities within this Ability, Soul Steal may only be taken as an Ability once.",
-      effect: "Gain +1 Favor when delivering killing blow to sentient beings",
     },
     "Stalwart": {
       prerequisiteClass: "Acolyte",
       description: "You have a dedicated sense of will when it comes to enacting Divine Interventions in combat. You may spend your Stamina to improve upon your Faith Checks. This is done in the same manner as spending Stamina to improve a Hit Check, by spending one Stamina point to improve a Faith Check result by one point.",
-      effect: "DR = Level against physical Damage when Favor ≥ half maximum",
-      hasMechanicalEffect: true,
     },
     "Thaumaturge": {
       prerequisiteClass: "Acolyte",
       description: "You have a knack for infusing your Divine capabilities into simple tinctures, powders, or balms. With a successful Average (12) Hermetics Check and the expenditure of the appropriate amount of Favor, you can imbue a potion, salve, oil, or the like with a specific Divine Effect. This Effect will only affect the item or individual that applies the oil, drinks the potion, etc. This Favor is considered expended the moment the tincture is created but can be replaced with an appropriate amount of prayer.",
-      effect: "Create Divine tinctures/potions with Average (12) Hermetics Check + Favor expenditure",
     },
     "Venerable Spirit": {
       prerequisiteClass: "Acolyte",
       description: "Your very essence is nearly otherworldly, leaving you with an almost supernatural spirit. As a result, you will not rise as a member of the Sick when you pass from this world to the next. Likewise, you are impervious to having another spirit Reincarnated into your body. In fact, your spirit is so different from those of the people around you that you can walk among the Sick with a Successful Faith Check at Average (12) Difficulty (treating it much like a successful Stealth Check).",
-      effect: "1/Encounter: Nullify one Divine Intervention targeting you",
     },
     "Vesting Faith": {
       prerequisiteClass: "Acolyte",
       description: "Turning to their faith in times of need, an Acolyte can grant hidden reserves of strength. Vesting Faith allows the Acolyte to spend their Blessings to bestow Stamina. Stamina is granted at a rate of 2 plus the Acolyte’s Level points per Blessing. This Stamina remains with the Target until used.",
-      effect: "+1 Defense when Favor ≥ half maximum",
-      hasMechanicalEffect: true,
     },
     "Zealot I": {
       prerequisiteClass: "Acolyte",
       description: "Your conviction to the will of the Gods is unwavering. You always succeed on your initial Faith Checks for your Divine Interventions. All subsequent Faith Checks are made normally.",
-      effect: "1/Day: Frighten target for Level Rounds (requires successful Valor Check)",
     },
     "Zealot II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Zealot I"],
       description: "As Zealot I, but now you succeed on your first two Faith Checks for your Divine Interventions. Again, all subsequent Faith Checks are made normally. 217",
-      effect: "1/Day: Frighten target for Level Rounds (no Check required)",
     },
   },
 

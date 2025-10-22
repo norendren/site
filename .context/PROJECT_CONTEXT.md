@@ -35,8 +35,23 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 - Class progression tracking using arithmetic progression (base + increment × (level - 1))
 
 ### What's In Progress 🚧
-- Testing and refining PDF coordinate accuracy for derived stats
-- Adding validation for talent point limits at character creation (max 3 points per talent)
+- **Ability Selection & Editable Summary Implementation** (see ABILITY_SELECTION_AND_EDITABLE_SUMMARY.md)
+  - Phase 1: Ability selection UI with two-column browser (search + details)
+    - Fuzzy search with Fuse.js
+    - Prerequisite validation (visual indicators)
+    - Soft warning for > 4 abilities (non-blocking)
+    - Smart sorting: selected → available → locked
+  - Phase 2: Fully editable review page
+    - ALL fields editable (basic info, attributes, talents, derived stats)
+    - Individual and "Reset All" buttons to restore calculated values
+    - User notes for ability effects, equipment, and other adjustments
+  - **Design Decision**: NOT automating ability benefit calculations
+    - Abilities have complex, situational effects
+    - Users manually adjust stats in editable review page
+    - Provides flexibility and handles edge cases/house rules
+- Printing of class specialties on PDF (warrior styles, etc.)
+  - Consider truncation/shortening of ability descriptions, they might quickly get unweildy
+- Implement equipment and related calculations
 
 ### Recently Completed ✨ (2025-10-14)
 - **Integrated all racial perk bonuses into character calculations**
@@ -49,8 +64,15 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
   - ✅ All bonuses now automatically calculated and applied throughout the system
 
 ### What's Next 📋
+- **IMMEDIATE**: Implement ability selection UI (Phase 1)
+  - Create AbilitySelector components
+  - Add fuzzy search functionality
+  - Integrate into character creator as step 6
+- **IMMEDIATE**: Implement editable review page (Phase 2)
+  - Create EditableField components
+  - Make all review fields editable
+  - Add user notes sections
 - Extend helper text to races and talents
-- Implement class abilities bonuses to talent scores
 - Add base movement display and calculation (accounting for "Fast" perk)
 - Add derived stat for Movement Speed
 - Test PDF coordinate accuracy for all newly added fields
@@ -220,7 +242,7 @@ border-left: 4px solid #2e7d32;
 ```
 src/
 ├── components/
-│   ├── CharacterCreator.tsx       # Main 6-step wizard component
+│   ├── CharacterCreator.tsx       # Main 7-step wizard component (updated from 6)
 │   ├── CharacterCreator.css       # Form styling with grid layout
 │   ├── TalentAllocator.tsx        # Talent point distribution UI (0-6 points per talent)
 │   ├── TalentAllocator.css        # Talent bubble styling
@@ -230,12 +252,22 @@ src/
 │   ├── ClassSpecialtySelector.tsx # Router for class-specific components
 │   ├── DerivedStatsDisplay.tsx    # Calculated stats display with perk bonuses
 │   ├── DerivedStatsDisplay.css    # Derived stats styling
+│   ├── AbilitySelector.tsx        # NEW: Main ability selection component (step 6)
+│   ├── AbilitySelector.css        # NEW: Two-column layout styling
+│   ├── AbilitySearchBar.tsx       # NEW: Search input with fuzzy search
+│   ├── AbilityList.tsx            # NEW: Scrollable list of ability cards
+│   ├── AbilityCard.tsx            # NEW: Individual ability card component
+│   ├── AbilityDetailsPanel.tsx    # NEW: Right-side details panel
+│   ├── EditableField.tsx          # NEW: Generic editable field component
+│   ├── EditableField.css          # NEW: Editable field styling
+│   ├── EditableStatField.tsx      # NEW: Editable derived stat with reset
 │   ├── ClassInfoPreview.tsx       # Layer 1: Inline class summary on selection
 │   ├── ClassInfoPreview.css       # Preview card styling
 │   ├── ClassInfoPanel.tsx         # Layer 2: Detailed class modal
 │   └── ClassInfoPanel.css         # Modal overlay styling
 ├── data/
-│   └── classDescriptions.ts       # Rich class data for educational helper text
+│   ├── classDescriptions.ts       # Rich class data for educational helper text
+│   └── abilities.ts               # Complete ability data for all classes
 ├── utils/
 │   ├── pdfFiller.ts               # PDF generation logic with bubble rendering
 │   ├── pdfInspector.ts            # Dev tool for finding PDF coordinates
@@ -267,6 +299,9 @@ BasicCharacterData {
   age: string
   attributes: AttributeAllocation[]  // 6 core attributes
   talents: TalentAllocation[]        // 18 talents with point allocation
+  abilities?: string[]               // NEW: Selected ability names (step 6)
+  derivedStats?: DerivedStats        // NEW: User-edited derived stats (override calculated)
+  userNotes?: UserNotes              // NEW: Free-form notes (step 7)
 }
 
 AttributeAllocation {
@@ -277,6 +312,21 @@ AttributeAllocation {
 TalentAllocation {
   name: string          // One of 18 talent names
   points: number        // 0-6 points invested (1 point = 1 bubble)
+}
+
+DerivedStats {
+  defense?: number      // Override calculated defense
+  daring?: number       // Override calculated daring
+  stamina?: number      // Override calculated stamina
+  mana?: number         // Override calculated mana (Mages)
+  favor?: number        // Override calculated favor (Acolytes)
+  blessCount?: number   // Override calculated bless count (Acolytes)
+}
+
+UserNotes {
+  abilityNotes: string  // How abilities affect stats
+  equipment: string     // Starting equipment
+  otherNotes: string    // Any other notes
 }
 ```
 
@@ -408,6 +458,45 @@ TalentAllocation {
   - Layer 1: Inline summary on selection
   - Layer 2: Detailed info panel/modal
   - (Future) Layer 3: Comparison mode
+
+### Ability Selection & Manual Stat Adjustment Architecture
+**Decision**: Do NOT automate ability benefit calculations; use manual adjustment in editable review page
+**Why**: Ability effects are complex, situational, and varied:
+- Many effects are conditional ("Advantage when...", "Once per day...")
+- Some effects are narrative/descriptive ("Can speak to animals")
+- Trying to automate all edge cases would be error-prone and time-consuming
+- Manual adjustment provides flexibility for house rules and homebrew content
+**Implementation**:
+- **Ability Selection UI** (Step 6): Two-column browser with fuzzy search
+  - Left column: Searchable list with visual status indicators (✓ selected, ⚠ restricted, 🔒 locked)
+  - Right column: Detailed description panel
+  - Fuzzy search using Fuse.js (searches names and descriptions)
+  - Prerequisite validation with visual feedback
+  - Soft warning for > 4 abilities (non-blocking)
+  - Smart sorting: selected → available → locked
+- **Editable Review Page** (Step 7): ALL fields are editable
+  - Basic info: name, class, level, race, house, faith, age
+  - Attributes: all 6 attributes (CON, DEX, INS, KNO, STR, VAL)
+  - Talents: all 18 talent point allocations
+  - Derived stats: Defense, Daring, Stamina, Mana, Favor, Bless count
+  - User notes: Ability effects, equipment, other adjustments
+  - Individual and "Reset All" buttons to restore calculated values
+  - Override indicators show when values differ from calculated
+  - NO validation on edited values (trust the user)
+**Benefits**:
+- Simpler implementation (no complex rule parsing)
+- Handles all edge cases and unusual builds
+- Supports house rules and GM variations
+- User has final control and ownership
+- Educational: forces users to understand their abilities
+**Trade-off**: Users must manually calculate ability bonuses (acceptable for RPG audience)
+**User Experience**:
+1. User selects abilities in step 6 (sees full descriptions)
+2. User proceeds to review (step 7)
+3. Review shows calculated defaults for all stats
+4. User manually adjusts stats to account for abilities
+5. User adds notes about ability effects for reference
+6. PDF generated with final (potentially edited) values
 
 ---
 
@@ -545,5 +634,5 @@ npm run dev
 
 ---
 
-*Last Updated: 2025-10-14*
-*Current Focus: Racial perk bonus integration COMPLETE. All perk effects (talent points, health tiers, derived stats) are now automatically calculated and applied in both UI and PDF generation. Derived stats system (Defense, Daring, Stamina, Mana, Favor) fully implemented with perk bonuses integrated. Character creation system now has complete end-to-end perk bonus flow.*
+*Last Updated: 2025-10-21*
+*Current Focus: Ability selection and editable summary implementation planned. See ABILITY_SELECTION_AND_EDITABLE_SUMMARY.md for comprehensive design doc. Two-phase approach: (1) Ability selector with fuzzy search and prerequisite validation, (2) Fully editable review page with manual stat adjustment. Key decision: NOT automating ability benefit calculations due to complexity; users manually adjust stats in final review. 7-step wizard: Basic Info → Perks → Class → Attributes → Talents → Abilities → Review (editable).*

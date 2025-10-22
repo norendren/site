@@ -7,6 +7,10 @@ import type {
   RogueSpecialtySelection,
   WarriorStyleSelection,
 } from './classSpecialties';
+import {
+  COMBAT_STYLE_DESCRIPTIONS,
+  type CombatStyleTier,
+} from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 
 export interface TalentAllocation {
@@ -38,10 +42,40 @@ export interface BasicCharacterData {
   // Acolyte Bless is auto-calculated from level, no storage needed
 }
 
-// Coordinate mappings for where to place text on the PDF
+// ===========================================
+// PDF COORDINATE SYSTEM
+// ===========================================
 // The coordinate system has (0,0) at the bottom-left corner
-// Format: { x: horizontal position, y: vertical position, size: font size }
-// ✓ = verified position, ⚠ = needs adjustment
+// All Y values increase upward, X values increase rightward
+//
+// PDF LAYOUT (approximate):
+//
+//    0        100       200       300       400       500       600
+//  ┌─────────────────────────────────────────────────────────────────┐
+// 750│ [Name]          [Class]   [Level]                    [Health] │ TOP SECTION
+// 700│ [Race] [House]  [Faith]   [Age]                      MaxValues│
+//    │                                                                │
+// 650│ CON: +0                               Daring: +0               │ ATTRIBUTES &
+// 600│ DEX: +0                               Defense: 10              │ DERIVED STATS
+// 550│ INS: +0                               Mana/Favor               │ (right side)
+// 500│ KNO: +0                               Stamina                  │
+// 450│ STR: +0                                                        │
+// 400│ VAL: +0                                          [Talents]     │ TALENTS
+//    │                                                  (18 rows)     │ (right side)
+// 350│ [Racial Perks]                                   with bubbles  │ LEFT COLUMN
+// 300│ Perk 1 name                                      & totals     │
+// 250│ - description                                                  │
+//    │ Perk 2 name                                                    │
+// 200│ - description                                                  │
+//    │                                                                │
+// 150│ [Class Specialties]                                            │
+// 100│ (Warriors/Rogues)                                              │
+//  50│                                                                │
+//   0└─────────────────────────────────────────────────────────────────┘
+//
+// ===========================================
+
+// ===== TOP SECTION: Basic Character Info =====
 interface FieldCoordinates {
   x: number;
   y: number;
@@ -58,47 +92,48 @@ const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attr
   age:           { x: 280, y: 703, size: 12 },
 };
 
-// Bubble sizing and spacing constants
-const BUBBLE_RADIUS = 3;
-const BUBBLE_HORIZONTAL_SPACING = 10.5; // Distance between bubbles (left-most to 2nd, 2nd to 3rd)
-
-// Define the constants for the calculation
-const TALENT_START_Y = 372.5;
-const TALENT_Y_STEP = 14.125;
-const TALENT_STATIC_X = 484;
-const TALENT_TOTAL_X = 440; // X position for talent total scores (after the bubbles)
-const TALENT_TOTAL_Y_OFFSET = -4; // Vertical offset for talent totals (adjust if text appears too high/low)
-
-// Attribute text coordinates
-// Each attribute value is drawn as text at a specific position
+// ===== LEFT COLUMN: Attributes =====
 const ATTRIBUTE_START_Y = 645; // Starting Y position for first attribute (CON)
 const ATTRIBUTE_Y_STEP = 28.25; // Vertical spacing between attributes
 const ATTRIBUTE_ZERO_X = 120; // X position where the attribute value text is drawn
-
-// Attribute names in order on the PDF
 const ATTRIBUTE_NAMES = ['CON', 'DEX', 'INS', 'KNO', 'STR', 'VAL'] as const;
 
-// Health tier maximum coordinates (top-right area of sheet)
-// These are educated guesses - user will adjust if needed
-const HEALTH_MAX_X = 530; // X position for health maximum values
-const HEALTH_FATIGUED_Y = 620; // Y position for Fatigued max
-const HEALTH_BATTERED_Y = 592; // Y position for Battered max
-const HEALTH_INJURED_Y = 565; // Y position for Injured max
-
-// Racial perks coordinates (placeholder - adjust as needed)
+// ===== LEFT COLUMN: Racial Perks =====
 const RACIAL_PERKS_START_X = 94; // X position for racial perk text (left side)
 const RACIAL_PERKS_START_Y = 462; // Y position for first racial perk
 const RACIAL_PERKS_LINE_HEIGHT = 14; // Space between perk name and description
 const RACIAL_PERKS_PERK_SPACING = 36; // Space between perks
 
-// Derived stats coordinates (placeholders - adjust as needed)
-// These are positioned on the right side of the sheet, below health
+// ===== LEFT COLUMN: Class Specialties =====
+// Warrior Combat Styles and Rogue Specialties
+const CLASS_SPECIALTY_START_X = 92; // X position for class specialty text (aligned with racial perks)
+const CLASS_SPECIALTY_START_Y = 440; // Y position for first class specialty
+const CLASS_SPECIALTY_LINE_HEIGHT = 13; // Space between title and description within one specialty
+const CLASS_SPECIALTY_SPACING = 38; // Space between different specialties (title to next title)
+
+// ===== RIGHT COLUMN: Talents =====
+const TALENT_START_Y = 372.5; // Starting Y position for first talent
+const TALENT_Y_STEP = 14.125; // Vertical spacing between talents
+const TALENT_STATIC_X = 484; // X position for talent bubble start
+const TALENT_TOTAL_X = 440; // X position for talent total scores (before the bubbles)
+const TALENT_TOTAL_Y_OFFSET = -4; // Vertical offset for talent totals (adjust if text appears too high/low)
+
+// Talent bubble styling
+const BUBBLE_RADIUS = 3;
+const BUBBLE_HORIZONTAL_SPACING = 10.5; // Distance between bubbles
+
+// ===== RIGHT COLUMN: Health =====
+const HEALTH_MAX_X = 530; // X position for health maximum values
+const HEALTH_FATIGUED_Y = 620; // Y position for Fatigued max
+const HEALTH_BATTERED_Y = 592; // Y position for Battered max
+const HEALTH_INJURED_Y = 565; // Y position for Injured max
+
+// ===== RIGHT COLUMN: Derived Stats (Aspects) =====
 const DERIVED_STATS_X = 355; // X position for derived stat values
 const DARING_Y = 645; // Y position for Daring
 const DEFENSE_Y = 615; // Y position for Defense
 const FAVOR_Y = 594; // Y position for Favor (Acolytes only)
 const MANA_Y = 565; // Y position for Mana (Mages only)
-// const SPEED_Y = 541; // Y position for Mana (Mages only)
 const STAMINA_Y = 507; // Y position for Stamina
 
 // Define the exact order of talent names
@@ -162,6 +197,7 @@ export async function fillCharacterSheet(
   // Get the first page (character sheets are typically one page)
   const pages = pdfDoc.getPages();
   const firstPage = pages[0];
+  const secondPage = pages[1];
 
   // Embed a standard font
   const font = await pdfDoc.embedFont('Helvetica');
@@ -210,6 +246,13 @@ export async function fillCharacterSheet(
     // Draw derived stats (now uses pre-computed stats)
     if (characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0) {
       drawDerivedStats(firstPage, characterData.class, characterStats, font);
+    }
+
+    // Draw class specialties (Warrior Combat Styles and Rogue Specialties)
+    if (characterData.class === 'Warrior' && characterData.warriorStyles && characterData.warriorStyles.length > 0) {
+      drawWarriorStyles(secondPage, characterData.warriorStyles, font);
+    } else if (characterData.class === 'Rogue' && characterData.rogueSpecialties && characterData.rogueSpecialties.length > 0) {
+      drawRogueSpecialties(secondPage, characterData.rogueSpecialties, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -519,6 +562,146 @@ function drawDerivedStats(
       color: rgb(0, 0, 0),
     });
   }
+}
+
+/**
+ * Draws Warrior Combat Styles on the PDF
+ * Each style is expanded into separate entries for each tier the warrior has achieved
+ * For example, "Collaborative - Journeyman" prints as TWO entries:
+ *   1. "Collaborative (Apprentice)" with Apprentice description
+ *   2. "Collaborative (Journeyman)" with Journeyman description
+ *
+ * @param page - PDF page to draw on
+ * @param warriorStyles - Array of warrior style selections
+ * @param font - Font to use for rendering
+ * @returns The number of entries drawn (for coordinate tracking)
+ */
+function drawWarriorStyles(
+  page: any,
+  warriorStyles: WarriorStyleSelection[],
+  font: any
+): number {
+  let entryIndex = 0; // Track how many entries we've drawn
+
+  warriorStyles.forEach((styleSelection) => {
+    // Determine which tiers to print (all tiers up to and including current tier)
+    const tiersToPrint: CombatStyleTier[] = [];
+
+    // Add tiers in order
+    tiersToPrint.push('Apprentice');
+    if (styleSelection.tier === 'Journeyman' || styleSelection.tier === 'Master') {
+      tiersToPrint.push('Journeyman');
+    }
+    if (styleSelection.tier === 'Master') {
+      tiersToPrint.push('Master');
+    }
+
+    // Draw each tier as a separate entry
+    tiersToPrint.forEach((tier) => {
+      const yPosition = CLASS_SPECIALTY_START_Y - (entryIndex * CLASS_SPECIALTY_SPACING);
+
+      // Draw title: "Style Name (Tier)"
+      const title = `${styleSelection.style} (${tier})`;
+      page.drawText(title, {
+        x: CLASS_SPECIALTY_START_X,
+        y: yPosition,
+        size: 9,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+
+      // Draw description (smaller, indented)
+      const description = COMBAT_STYLE_DESCRIPTIONS[styleSelection.style][tier];
+      page.drawText(description, {
+        x: CLASS_SPECIALTY_START_X,
+        y: yPosition - CLASS_SPECIALTY_LINE_HEIGHT,
+        size: 6,
+        font: font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
+
+      entryIndex++;
+    });
+  });
+
+  return entryIndex; // Return number of entries drawn
+}
+
+/**
+ * Draws Rogue Specialties on the PDF
+ * Each specialty shows its type and description
+ *
+ * @param page - PDF page to draw on
+ * @param rogueSpecialties - Array of rogue specialty selections
+ * @param font - Font to use for rendering
+ * @param startEntryIndex - Starting index for positioning (allows stacking with other abilities)
+ * @returns The number of entries drawn (for coordinate tracking)
+ */
+function drawRogueSpecialties(
+  page: any,
+  rogueSpecialties: RogueSpecialtySelection[],
+  font: any,
+  startEntryIndex: number = 0
+): number {
+  let entryIndex = startEntryIndex;
+
+  rogueSpecialties.forEach((specialty) => {
+    const yPosition = CLASS_SPECIALTY_START_Y - (entryIndex * CLASS_SPECIALTY_SPACING);
+
+    // Build title based on specialty type
+    let title: string = specialty.type;
+    let description = '';
+
+    switch (specialty.type) {
+      case 'Ability':
+        description = '+1 to Ability Checks';
+        break;
+      case 'Arcane':
+        if (specialty.arcaneArt) {
+          title = `Arcane: ${specialty.arcaneArt}`;
+          description = `Proficiency in ${specialty.arcaneArt} arcane art`;
+        } else {
+          description = 'Choose an Arcane Art';
+        }
+        break;
+      case 'Divine':
+        if (specialty.divineInfluence) {
+          title = `Divine: ${specialty.divineInfluence}`;
+          description = `Access to ${specialty.divineInfluence} divine influence`;
+        } else {
+          description = 'Choose a Divine Influence';
+        }
+        break;
+      case 'Talent':
+        description = 'Special talent bonuses (Ace, Certain, Easy, Golden, Swift)';
+        break;
+      case 'Stamina':
+        description = '+2 Stamina';
+        break;
+    }
+
+    // Draw title
+    page.drawText(title, {
+      x: CLASS_SPECIALTY_START_X,
+      y: yPosition,
+      size: 9,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+
+    // Draw description (smaller, indented)
+    page.drawText(description, {
+      x: CLASS_SPECIALTY_START_X + 10,
+      y: yPosition - CLASS_SPECIALTY_LINE_HEIGHT,
+      size: 7,
+      font: font,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+
+    entryIndex++;
+  });
+
+  return entryIndex - startEntryIndex; // Return number of entries drawn
 }
 
 /**

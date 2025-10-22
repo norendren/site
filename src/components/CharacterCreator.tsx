@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { fillCharacterSheet, downloadPDF } from '../utils/pdfFiller';
 import type { BasicCharacterData, TalentAllocation, AttributeAllocation } from '../utils/pdfFiller';
 import { CLASSES, RACES, HOUSES, FAITHS } from '../utils/athiaConstants';
@@ -22,6 +22,8 @@ import { ClassSpecialtySelector } from './ClassSpecialtySelector';
 import { ClassInfoPreview } from './ClassInfoPreview';
 import { ClassInfoPanel } from './ClassInfoPanel';
 import { DerivedStatsDisplay } from './DerivedStatsDisplay';
+import { useDevMode } from '../hooks/useDevMode';
+import { getTestCharacterByClass } from '../utils/testData';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
@@ -45,6 +47,37 @@ export function CharacterCreator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isClassInfoOpen, setIsClassInfoOpen] = useState(false);
+
+  // Dev mode for rapid testing
+  const { isDevMode, toggleDevMode } = useDevMode();
+
+  // Auto-fill test data when dev mode is enabled (initial load)
+  useEffect(() => {
+    if (isDevMode && !characterData.characterName) {
+      // Auto-fill with Warrior test data by default
+      const testData = getTestCharacterByClass('Warrior');
+      setCharacterData(testData);
+    }
+  }, [isDevMode]); // Only run when dev mode changes
+
+  // Lazy-load test data when class changes in dev mode
+  useEffect(() => {
+    if (isDevMode && characterData.class) {
+      // Get fresh test data for the selected class
+      const testData = getTestCharacterByClass(characterData.class);
+
+      // Merge with existing data, preserving basic info but updating class-specific fields
+      setCharacterData(prev => ({
+        ...testData,
+        // Keep user-modified basic info if present
+        characterName: prev.characterName || testData.characterName,
+        level: prev.level || testData.level,
+        house: prev.house || testData.house,
+        faith: prev.faith || testData.faith,
+        age: prev.age || testData.age,
+      }));
+    }
+  }, [characterData.class, isDevMode]); // Re-run when class changes in dev mode
 
   // Calculate total attribute pool: base pool + level bonus
   const totalAttributePool = useMemo(() => {
@@ -145,8 +178,40 @@ export function CharacterCreator() {
     }));
   };
 
+  // Clear all character data (dev mode utility)
+  const clearData = () => {
+    setCharacterData({
+      characterName: '',
+      class: '',
+      level: '1',
+      race: '',
+      house: '',
+      faith: '',
+      age: '',
+      racialPerks: [],
+      talents: [],
+      attributes: [],
+      arcaneAllocations: [],
+      rogueSpecialties: [],
+      warriorStyles: [],
+    });
+    setError(null);
+  };
+
+  // Switch test character by class (dev mode utility)
+  const switchTestCharacter = (className: string) => {
+    const testChar = getTestCharacterByClass(className);
+    setCharacterData(testChar);
+    setError(null);
+  };
+
   const validateStep = (step: number): boolean => {
     setError(null);
+
+    // Skip validation in dev mode
+    if (isDevMode) {
+      return true;
+    }
 
     switch (step) {
       case 1:
@@ -195,6 +260,44 @@ export function CharacterCreator() {
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
+  // Check if user can navigate to a specific step
+  const canNavigateToStep = (targetStep: number): boolean => {
+    // In dev mode, allow navigation to any step
+    if (isDevMode) {
+      return true;
+    }
+
+    // Can always navigate to previous steps (already completed)
+    if (targetStep < currentStep) {
+      return true;
+    }
+
+    // Can't skip ahead
+    if (targetStep > currentStep) {
+      return false;
+    }
+
+    // Can stay on current step
+    return true;
+  };
+
+  const handleStepClick = (targetStep: number) => {
+    if (!canNavigateToStep(targetStep)) {
+      return;
+    }
+
+    // If going forward, validate current step first (unless in dev mode)
+    if (targetStep > currentStep && !isDevMode) {
+      if (validateStep(currentStep)) {
+        setCurrentStep(targetStep);
+      }
+    } else {
+      // Going back or staying on current step, just navigate
+      setError(null);
+      setCurrentStep(targetStep);
+    }
+  };
+
   const handleGenerateCharacter = async () => {
     setError(null);
     setIsGenerating(true);
@@ -235,6 +338,36 @@ export function CharacterCreator() {
           <div className="step-content">
             <h2>Basic Information</h2>
             <p className="step-description">Let's start with the basics about your character.</p>
+
+            {/* Dev Mode: Switch Character */}
+            {isDevMode && (
+              <div style={{
+                display: 'flex',
+                gap: '0.5rem',
+                flexWrap: 'wrap',
+                padding: '0.75rem',
+                backgroundColor: '#fef3c7',
+                borderRadius: '0.375rem',
+                marginBottom: '1rem'
+              }}>
+                <strong style={{ width: '100%', fontSize: '0.875rem', color: '#92400e' }}>Switch Test Character:</strong>
+                <button type="button" onClick={() => switchTestCharacter('Warrior')} style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Warrior
+                </button>
+                <button type="button" onClick={() => switchTestCharacter('Mage')} style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: '#8b5cf6', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Mage
+                </button>
+                <button type="button" onClick={() => switchTestCharacter('Rogue')} style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: '#10b981', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Rogue
+                </button>
+                <button type="button" onClick={() => switchTestCharacter('Acolyte')} style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: '#f59e0b', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Acolyte
+                </button>
+                <button type="button" onClick={clearData} style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Clear Data
+                </button>
+              </div>
+            )}
 
             <div className="form-group">
               <label htmlFor="characterName">
@@ -510,36 +643,88 @@ export function CharacterCreator() {
 
   return (
     <div className="character-creator">
-      <h1 style={{ color: '#cbd5e1'}}>Athia Character Creator</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h1 style={{ color: '#cbd5e1', margin: 0 }}>Athia Character Creator</h1>
+
+        {/* Dev Mode Toggle */}
+        <button
+          type="button"
+          onClick={toggleDevMode}
+          style={{
+            padding: '0.5rem 1rem',
+            fontSize: '0.875rem',
+            backgroundColor: isDevMode ? '#fbbf24' : '#6b7280',
+            color: isDevMode ? '#000' : '#fff',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+          title="Enable dev mode to skip validation and use test data"
+        >
+          {isDevMode ? '🔧 DEV MODE ON' : '🔧 Dev Mode'}
+        </button>
+      </div>
+
+      {isDevMode && (
+        <div style={{
+          padding: '0.75rem',
+          marginBottom: '1rem',
+          backgroundColor: '#fef3c7',
+          border: '2px solid #fbbf24',
+          borderRadius: '0.5rem',
+          color: '#92400e'
+        }}>
+          <strong>Dev Mode Active:</strong> Test data auto-loaded. Validation disabled. Click "Next" to jump to any section for testing.
+        </div>
+      )}
 
       {/* Progress indicator */}
       <div className="wizard-progress">
-        <div className={`progress-step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''} ${canNavigateToStep(1) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(1)}
+        >
           <div className="progress-circle">1</div>
           <div className="progress-label">Basic Info</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''} ${canNavigateToStep(2) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(2)}
+        >
           <div className="progress-circle">2</div>
           <div className="progress-label">Perks</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''} ${canNavigateToStep(3) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(3)}
+        >
           <div className="progress-circle">3</div>
           <div className="progress-label">Class</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 4 ? 'active' : ''} ${currentStep > 4 ? 'completed' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 4 ? 'active' : ''} ${currentStep > 4 ? 'completed' : ''} ${canNavigateToStep(4) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(4)}
+        >
           <div className="progress-circle">4</div>
           <div className="progress-label">Attributes</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 5 ? 'active' : ''} ${currentStep > 5 ? 'completed' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 5 ? 'active' : ''} ${currentStep > 5 ? 'completed' : ''} ${canNavigateToStep(5) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(5)}
+        >
           <div className="progress-circle">5</div>
           <div className="progress-label">Talents</div>
         </div>
         <div className="progress-line"></div>
-        <div className={`progress-step ${currentStep >= 6 ? 'active' : ''}`}>
+        <div
+          className={`progress-step ${currentStep >= 6 ? 'active' : ''} ${canNavigateToStep(6) ? 'clickable' : ''}`}
+          onClick={() => handleStepClick(6)}
+        >
           <div className="progress-circle">6</div>
           <div className="progress-label">Review</div>
         </div>
