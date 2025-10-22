@@ -50,7 +50,8 @@ export function CharacterCreator() {
   const [isClassInfoOpen, setIsClassInfoOpen] = useState(false);
 
   // Dev mode for rapid testing
-  const { isDevMode, toggleDevMode } = useDevMode();
+  // const { isDevMode, toggleDevMode } = useDevMode();
+  const { isDevMode } = useDevMode();
   const prevDevMode = useRef(isDevMode);
 
   // Auto-fill test data when dev mode is enabled (initial load)
