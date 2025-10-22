@@ -43,6 +43,7 @@ export function CharacterCreator() {
     arcaneAllocations: [],
     rogueSpecialties: [],
     warriorStyles: [],
+    abilities: [],
   });
   const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
   const [isGenerating, setIsGenerating] = useState(false);
@@ -214,7 +215,9 @@ export function CharacterCreator() {
       arcaneAllocations: [],
       rogueSpecialties: [],
       warriorStyles: [],
+      abilities: [],
     });
+    setBaseAttributePool(2); // Reset to default (Young Heroes)
     setError(null);
   };
 

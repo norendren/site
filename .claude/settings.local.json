@@ -8,7 +8,22 @@
       "Bash(npx tsx scripts/update-ability-descriptions.ts)",
       "Bash(npm run build)",
       "Bash(git restore src/data/abilities.ts)",
-      "Bash(cat -A src/data/abilities.ts)"
+      "Bash(cat -A src/data/abilities.ts)",
+      "Bash(journalctl -b 38d3fde34fcb46669b89b9d72c1a0765 -p err -k)",
+      "Bash(journalctl -b 9fe181e1166b48b3ba535ac66acd197b -p err -k)",
+      "Bash(journalctl -b 38d3fde34fcb46669b89b9d72c1a0765)",
+      "Bash(journalctl -b 9fe181e1166b48b3ba535ac66acd197b)",
+      "Bash(journalctl -b 38d3fde34fcb46669b89b9d72c1a0765 -n 200)",
+      "Bash(journalctl -b 9fe181e1166b48b3ba535ac66acd197b -n 200)",
+      "Bash(journalctl -b 38d3fde34fcb46669b89b9d72c1a0765 --since \"2025-10-21 20:50:00\" --until \"2025-10-21 20:54:00\" -k)",
+      "Bash(journalctl -b 9fe181e1166b48b3ba535ac66acd197b --since \"2025-10-21 21:05:00\" --until \"2025-10-21 21:10:00\" -k)",
+      "Bash(journalctl --list-boots)",
+      "Bash(dmesg)",
+      "Read(//var/crash/**)",
+      "Bash(sudo dmesg)",
+      "Bash(lspci -vv -s 29:00.0)",
+      "Bash(nvidia-smi --query-gpu=name,pcie.link.gen.current,pcie.link.gen.max,pcie.link.width.current,pcie.link.width.max --format=csv)",
+      "Read(//etc/default/**)"
     ],
     "deny": [],
     "ask": []
