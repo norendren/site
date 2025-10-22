@@ -13,6 +13,7 @@ import {
   ROGUE_TALENT_BONUS_DESCRIPTIONS,
   ROGUE_TALENT_SPECIALTY_DESCRIPTION,
   ROGUE_TALENT_BONUSES,
+  calculateAcolyteBless,
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 import { abilities } from '../data/abilities';
@@ -51,6 +52,7 @@ export interface BasicCharacterData {
     stamina?: number;
     mana?: number;
     favor?: number;
+    bless?: number; // Acolyte only
   };
 }
 
@@ -176,6 +178,10 @@ const FAVOR_Y = 594; // Y position for Favor (Acolytes only)
 const MANA_Y = 565; // Y position for Mana (Mages only)
 const STAMINA_Y = 507; // Y position for Stamina
 
+// Page 2
+const BLESS_X = 165; // Y position for Bless (Acolytes only)
+const BLESS_Y = 478; // Y position for Bless (Acolytes only)
+
 // Define the exact order of talent names
 const TALENT_NAMES = [
   'Athletics (STR)',
@@ -285,14 +291,16 @@ export async function fillCharacterSheet(
 
     // Draw derived stats (now uses pre-computed stats)
     if (characterData.class && characterData.race && characterData.attributes && characterData.attributes.length > 0) {
-      drawDerivedStats(firstPage, characterData.class, characterStats, font);
+      drawDerivedStats(firstPage, characterData, characterStats, font);
     }
 
-    // Draw class specialties (Warrior Combat Styles and Rogue Specialties)
+    // Draw class specialties (Warrior Combat Styles, Rogue Specialties, and Acolyte Bless)
     if (characterData.class === 'Warrior' && characterData.warriorStyles && characterData.warriorStyles.length > 0) {
       drawWarriorStyles(secondPage, characterData.warriorStyles, font);
     } else if (characterData.class === 'Rogue' && characterData.rogueSpecialties && characterData.rogueSpecialties.length > 0) {
       drawRogueSpecialties(secondPage, characterData.rogueSpecialties, font);
+    } else if (characterData.class === 'Acolyte') {
+      drawAcolyteBless(secondPage, characterData, font);
     }
 
     // Draw abilities on page 1 (left column, below class specialties/racial perks)
@@ -556,17 +564,18 @@ function drawRacialPerks(
  * Displays Defense, Daring, Stamina, and class-specific stats (Mana/Favor)
  *
  * @param page - PDF page to draw on
- * @param className - Character class (for determining which stats to show)
+ * @param characterData - Character data (for class, level, and manual overrides)
  * @param characterStats - Pre-computed character statistics
  * @param font - Font to use for rendering
  */
 function drawDerivedStats(
   page: any,
-  className: string,
+  characterData: BasicCharacterData,
   characterStats: CharacterStats,
   font: any
 ): void {
   const stats = characterStats.derivedStats;
+  const className = characterData.class;
 
   // Draw Defense
   page.drawText(stats.defense.toString(), {
@@ -616,6 +625,36 @@ function drawDerivedStats(
       color: rgb(0, 0, 0),
     });
   }
+}
+
+/**
+ * Draws Acolyte Bless value on page 2 of the PDF
+ * Displays the Bless value with its description
+ *
+ * @param page - PDF page to draw on (page 2)
+ * @param characterData - Character data (for level and manual overrides)
+ * @param font - Font to use for rendering
+ */
+function drawAcolyteBless(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  const level = parseInt(characterData.level) || 1;
+  const blessValue = characterData.manualOverrides?.bless ?? calculateAcolyteBless(level);
+
+  // Starting position for Bless on page 2
+  const startY = BLESS_Y;
+  const startX = BLESS_X;
+
+  // Draw Bless value
+  page.drawText(blessValue.toString(), {
+    x: startX,
+    y: startY,
+    size: 12,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
 }
 
 /**

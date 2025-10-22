@@ -15,6 +15,7 @@ import type {
   RogueSpecialtySelection,
   WarriorStyleSelection,
 } from '../utils/classSpecialties';
+import { calculateAcolyteBless } from '../utils/classSpecialties';
 import { TalentAllocator } from './TalentAllocator';
 import { AttributeAllocator } from './AttributeAllocator';
 import { RacialPerksSelector } from './RacialPerksSelector';
@@ -793,6 +794,51 @@ export function CharacterCreator() {
                   manualOverrides={characterData.manualOverrides}
                   onOverrideChange={handleStatOverride}
                 />
+              )}
+
+              {/* Show Acolyte Bless if character is an Acolyte */}
+              {characterData.class === 'Acolyte' && (
+                <div className="editable-derived-stats-display">
+                  <h3>Acolyte Bless</h3>
+                  <div className="editable-stats-grid">
+                    <div className="editable-stat-item">
+                      <div className="stat-header">
+                        <label htmlFor="stat-bless" className="stat-label">
+                          Bless Value:
+                        </label>
+                      </div>
+                      <input
+                        id="stat-bless"
+                        type="number"
+                        className="stat-input"
+                        value={characterData.manualOverrides?.bless ?? calculateAcolyteBless(parseInt(characterData.level) || 1)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value === '') {
+                            handleStatOverride('bless', undefined);
+                          } else {
+                            handleStatOverride('bless', parseInt(value) || 0);
+                          }
+                        }}
+                        min={0}
+                      />
+                      <div className="stat-breakdown">
+                        {characterData.manualOverrides?.bless !== undefined ? (
+                          <span className="override-note">
+                            Manual override (Auto: {calculateAcolyteBless(parseInt(characterData.level) || 1)})
+                          </span>
+                        ) : (
+                          <span className="auto-calc">
+                            Auto: Level {characterData.level} = {calculateAcolyteBless(parseInt(characterData.level) || 1)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="stats-hint">
+                    Bless grants Advantage. Auto-calculated: 1 at level 1, +1 every odd level (3, 5, 7, 9).
+                  </p>
+                </div>
               )}
             </div>
           </div>
