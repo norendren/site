@@ -35,17 +35,6 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
 - Class progression tracking using arithmetic progression (base + increment × (level - 1))
 
 ### What's In Progress 🚧
-- **Ability Selection & Editable Summary Implementation** (see ABILITY_SELECTION_AND_EDITABLE_SUMMARY.md)
-  - Phase 2: Fully editable review page
-    - ALL fields editable (basic info, attributes, talents, derived stats)
-    - Individual and "Reset All" buttons to restore calculated values
-    - User notes for ability effects, equipment, and other adjustments
-  - **Design Decision**: NOT automating ability benefit calculations
-    - Abilities have complex, situational effects
-    - Users manually adjust stats in editable review page
-    - Provides flexibility and handles edge cases/house rules
-- Specialties/ability description truncation: Consider truncation/shortening of ability descriptions, they might quickly get unweildy
-- Finish work around dev mode, got capped right in the of ensuring data is fully cleaned up when toggling
 - Implement equipment and related calculations
 
 ### Recently Completed ✨ (2025-10-14)
