@@ -55,7 +55,7 @@ export const abilities: AbilitiesByClass = {
     "Chosen Vessel II": {
       prerequisiteClass: "Acolyte",
       prerequisiteAbilities: ["Chosen Vessel I"],
-      description: "As Chosen Vessel I, but your Chosen Vessel may be any individual you know. Note: It is up to the GM as to whether an individual is considered known to the Acolyte. 178 Abilities",
+      description: "As Chosen Vessel I, but your Chosen Vessel may be any individual you know. Note: It is up to the GM as to whether an individual is considered known to the Acolyte.",
     },
     "Coalesce": {
       prerequisiteClass: "Acolyte",
@@ -178,7 +178,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Martyr I": {
       prerequisiteClass: "Acolyte",
-      description: "Sometimes you must sacrifice yourself for others. When an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. Martyr may be used once per encounter. 198 Abilities",
+      description: "Sometimes you must sacrifice yourself for others. When an ally fighting alongside you is wounded, you may choose to take the Damage from that attack yourself. Martyr may be used once per encounter.",
     },
     "Martyr II": {
       prerequisiteClass: "Acolyte",
@@ -313,7 +313,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Avatar of Air": {
       prerequisiteClass: "Mage",
-      description: "As an exemplar of the Arcane powers of Air you have been empowered with the following capabilities: • You can move at your normal rate of speed hovering just inches over the ground. This does not preclude you from falling, nor taking damage from a fall, but does mean you can traverse uneven ground (water, lava, etc.) simply by gliding over it. • You gain a bonus to your Defense of +1 versus any ranged missile attack (arrows, bolts, spears, sing stones, etc.). • You are impervious to the winds or magically created wind attacks. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a Character. 170 Abilities",
+      description: "As an exemplar of the Arcane powers of Air you have been empowered with the following capabilities: • You can move at your normal rate of speed hovering just inches over the ground. This does not preclude you from falling, nor taking damage from a fall, but does mean you can traverse uneven ground (water, lava, etc.) simply by gliding over it. • You gain a bonus to your Defense of +1 versus any ranged missile attack (arrows, bolts, spears, sing stones, etc.). • You are impervious to the winds or magically created wind attacks. Note: Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a Character.",
       restrictions: "Only one Avatar Ability (Avatar of Air, Cosmos, Earth, Fire, or Water) may be taken by a Character.",
     },
     "Avatar of Cosmos": {
@@ -518,7 +518,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Shorthand": {
       prerequisiteClass: "Mage",
-      description: "You have a very condensed cypher all your own and can make a record that only you can decipher. Anyone else reading your Shorthand must make a Difficult Scholar Check to read it. Your Spells take up two less pages (each) to a minimum of one page in your Grimoire, and it takes you half the time to write a Spell. 210 Abilities",
+      description: "You have a very condensed cypher all your own and can make a record that only you can decipher. Anyone else reading your Shorthand must make a Difficult Scholar Check to read it. Your Spells take up two less pages (each) to a minimum of one page in your Grimoire, and it takes you half the time to write a Spell.",
     },
     "Steady Runework": {
       prerequisiteClass: "Mage",
@@ -539,7 +539,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Wild Mage": {
       prerequisiteClass: "Mage",
-      description: "You were born to create magic on a whim. Your Spontaneous Magic costs are reduced by two (-2). 216 Abilities",
+      description: "You were born to create magic on a whim. Your Spontaneous Magic costs are reduced by two (-2).",
     },
   },
 
@@ -555,7 +555,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Ambusher": {
       prerequisiteClass: "Rogue",
-      description: "As a guerrilla fighter you know the sorts of places your enemies may hide. You may take two Actions in any Round in which you have Surprised your enemies (instead of the usual one Action). Any Checks stemming from these two Actions are made at Advantage, as per the Surprise rules described in the Combat section. 168 Abilities",
+      description: "As a guerrilla fighter you know the sorts of places your enemies may hide. You may take two Actions in any Round in which you have Surprised your enemies (instead of the usual one Action). Any Checks stemming from these two Actions are made at Advantage, as per the Surprise rules described in the Combat section.",
     },
     "Arcane Mark": {
       prerequisiteClass: "Rogue",
@@ -624,7 +624,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Dangerous": {
       prerequisiteClass: "Rogue",
-      description: "When you are good, you are dangerous. Any time you score a Critical on a Hit Check you automatically do the maximum amount of Damage you possibly can. 182 Abilities",
+      description: "When you are good, you are dangerous. Any time you score a Critical on a Hit Check you automatically do the maximum amount of Damage you possibly can.",
     },
     "Divine Luck": {
       prerequisiteClass: "Rogue",
@@ -666,7 +666,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Force Strike I": {
       prerequisiteClass: "Rogue",
-      description: "You can focus and release your inner energy as a ranged attack on your enemies. Force Strike does Damage equal to your Base Strength Damage and has a Range of 10’ per level. Your Force Strike is considered a weapon for the purposes of applying other Abilities. 190 Abilities",
+      description: "You can focus and release your inner energy as a ranged attack on your enemies. Force Strike does Damage equal to your Base Strength Damage and has a Range of 10’ per level. Your Force Strike is considered a weapon for the purposes of applying other Abilities.",
     },
     "Force Strike II": {
       prerequisiteClass: "Rogue",
@@ -726,7 +726,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Obscure Knowledge": {
       prerequisiteClass: "Rogue",
-      description: "You have an uncanny knack for pulling information out of the blue. You can make a Knowledge Check (Difficulty to be determined by the GM) to recall a worthwhile, and perhaps surprising piece of information that pertains to your character’s current situation. 202 Abilities",
+      description: "You have an uncanny knack for pulling information out of the blue. You can make a Knowledge Check (Difficulty to be determined by the GM) to recall a worthwhile, and perhaps surprising piece of information that pertains to your character’s current situation.",
     },
     "Performer": {
       prerequisiteClass: "Rogue",
@@ -756,7 +756,7 @@ export const abilities: AbilitiesByClass = {
     "Pugilist II": {
       prerequisiteClass: "Rogue",
       prerequisiteAbilities: ["Pugilist I"],
-      description: "As Pugilist I, but Damage from your limbs is now +1d6 instead of the previous +1d4. 204 Abilities",
+      description: "As Pugilist I, but Damage from your limbs is now +1d6 instead of the previous +1d4.",
     },
     "Ready And Waiting": {
       prerequisiteClass: "Rogue",
@@ -782,7 +782,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Steady Aim I": {
       prerequisiteClass: "Rogue",
-      description: "You aim small and miss small. You no longer suffer Disadvantage with Ranged or Hurled weapons when firing at a Target engaged in melee. 212 Abilities",
+      description: "You aim small and miss small. You no longer suffer Disadvantage with Ranged or Hurled weapons when firing at a Target engaged in melee.",
     },
     "Steady Aim II": {
       prerequisiteClass: "Rogue",
@@ -925,7 +925,7 @@ export const abilities: AbilitiesByClass = {
     "Guardsmanship II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Guardsmanship I"],
-      description: "As Guardsmanship I, but all Hit Checks and Damage rolls against your designated ally are at Disadvantage from all enemies. 192 Abilities",
+      description: "As Guardsmanship I, but all Hit Checks and Damage rolls against your designated ally are at Disadvantage from all enemies.",
     },
     "Here and Gone": {
       prerequisiteClass: "Warrior",
@@ -938,7 +938,7 @@ export const abilities: AbilitiesByClass = {
     "Hold the Line II": {
       prerequisiteClass: "Warrior",
       prerequisiteAbilities: ["Hold the Line I"],
-      description: "As Hold the Line I, but rather than your Defense increasing by one (+1) your Defense now increases by three (+3) until you move. 194 Abilities",
+      description: "As Hold the Line I, but rather than your Defense increasing by one (+1) your Defense now increases by three (+3) until you move.",
     },
     "Improved Critical I": {
       prerequisiteClass: "Warrior",
@@ -971,7 +971,7 @@ export const abilities: AbilitiesByClass = {
     },
     "Mounted Combatant": {
       prerequisiteClass: "Warrior",
-      description: "You can always position your mount out of harm’s way. With a successful Difficult (15) Taming Talent Check you can negate any successful attack against your mount. This Check is made as a Free Action. 200 Abilities",
+      description: "You can always position your mount out of harm’s way. With a successful Difficult (15) Taming Talent Check you can negate any successful attack against your mount. This Check is made as a Free Action.",
     },
     "Opportunist": {
       prerequisiteClass: "Warrior",
@@ -1069,7 +1069,7 @@ export const abilities: AbilitiesByClass = {
       description: "Your understanding of Arcane magic is better than most. You gain two (+2) additional Arcane Aptitude. Note: This Ability does not grant any benefit to a Character’s Mana.",
     },
     "Battle Tested": {
-      description: "You have faced death on more occasions than you can count. You gain one (+1) additional Daring. 172 Abilities",
+      description: "You have faced death on more occasions than you can count. You gain one (+1) additional Daring.",
     },
     "Blessed I": {
       description: "You possess the ability to enact Divine Interventions. You gain two (2) Favor plus any Instincts Modifier you may possess. You may pick any Divine Intervention Effect from any Divine Influence. You are limited in enacting only that one Divine Intervention Effect. Your Holy Aura is 5’ radius per level as opposed to the normal 10’ radius per level for an Acolyte. Additionally, your Caster Level is considered 1 173 ATHIA – level less than your character level (to a minimum of 1). Finally, you recover your Favor through Prayer just as any Character with Favor would (see Prayer for further information).",
@@ -1238,7 +1238,7 @@ export const abilities: AbilitiesByClass = {
       description: "You are extremely hard-headed. You are immune to the Stunned State or attempts to knock you Unconscious. Additionally, once per Encounter, as an Action, you can headbutt an enemy to give them the Stunned State.",
     },
     "Tireless": {
-      description: "You do not get tired in battle. Gain one (+1) additional Fatigued point per Level. 214 Abilities",
+      description: "You do not get tired in battle. Gain one (+1) additional Fatigued point per Level.",
     },
     "Tough": {
       description: "You are not injured easily. Gain one (+1) additional Battered point per Level.",

@@ -25,6 +25,7 @@ import { DerivedStatsDisplay } from './DerivedStatsDisplay';
 import { AbilitySelector } from './AbilitySelector';
 import { useDevMode } from '../hooks/useDevMode';
 import { getTestCharacterByClass } from '../utils/testData';
+import { abilities } from '../data/abilities';
 import './CharacterCreator.css';
 
 export function CharacterCreator() {
@@ -49,6 +50,17 @@ export function CharacterCreator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isClassInfoOpen, setIsClassInfoOpen] = useState(false);
+
+  // Helper function to get ability description
+  const getAbilityDescription = (abilityName: string): string | undefined => {
+    // Search through all class ability lists
+    for (const classAbilities of Object.values(abilities)) {
+      if (classAbilities[abilityName]) {
+        return classAbilities[abilityName].description;
+      }
+    }
+    return undefined;
+  };
 
   // Dev mode for rapid testing
   // const { isDevMode, toggleDevMode } = useDevMode();
@@ -671,11 +683,19 @@ export function CharacterCreator() {
                 <>
                   <h3>Abilities</h3>
                   <div className="review-list">
-                    {characterData.abilities.map((ability, idx) => (
-                      <div key={idx} className="review-list-item">
-                        <span>{ability}</span>
-                      </div>
-                    ))}
+                    {characterData.abilities.map((ability, idx) => {
+                      const description = getAbilityDescription(ability);
+                      return (
+                        <div key={idx} className="review-list-item" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
+                          <strong>{ability}</strong>
+                          {description && (
+                            <div style={{ fontSize: '0.9em', color: '#2d3748', lineHeight: '1.5' }}>
+                              {description}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </>
               )}

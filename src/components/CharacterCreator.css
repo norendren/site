@@ -388,6 +388,7 @@
 
 .review-list {
   display: flex;
+  color: #2d3748;
   flex-direction: column;
   gap: 0.5rem;
 }

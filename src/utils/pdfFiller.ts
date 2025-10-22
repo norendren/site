@@ -12,6 +12,7 @@ import {
   type CombatStyleTier,
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
+import { abilities } from '../data/abilities';
 
 export interface TalentAllocation {
   name: string;
@@ -110,6 +111,17 @@ const CLASS_SPECIALTY_START_X = 92; // X position for class specialty text (alig
 const CLASS_SPECIALTY_START_Y = 440; // Y position for first class specialty
 const CLASS_SPECIALTY_LINE_HEIGHT = 13; // Space between title and description within one specialty
 const CLASS_SPECIALTY_SPACING = 38; // Space between different specialties (title to next title)
+
+// ===== PAGE 1: Abilities =====
+// Abilities go on the left column of page 1, below class specialties
+const ABILITIES_START_X = 90; // X position for abilities section (aligned with perks/specialties)
+const ABILITIES_START_Y = 370; // Y position for first ability (below class specialties)
+const ABILITY_NAME_SIZE = 9; // Font size for ability names
+const ABILITY_DESC_SIZE = 7; // Font size for ability descriptions
+const ABILITY_SPACING = 16; // Space between ability name and description
+const ABILITY_ENTRY_SPACING = 4; // Space between different abilities
+const ABILITY_MAX_LINE_WIDTH = 225; // Maximum width for text wrapping (left column width)
+const ABILITY_LENGTH_THRESHOLD = 115; // Character threshold for printing full description
 
 // ===== RIGHT COLUMN: Talents =====
 const TALENT_START_Y = 372.5; // Starting Y position for first talent
@@ -253,6 +265,11 @@ export async function fillCharacterSheet(
       drawWarriorStyles(secondPage, characterData.warriorStyles, font);
     } else if (characterData.class === 'Rogue' && characterData.rogueSpecialties && characterData.rogueSpecialties.length > 0) {
       drawRogueSpecialties(secondPage, characterData.rogueSpecialties, font);
+    }
+
+    // Draw abilities on page 1 (left column, below class specialties/racial perks)
+    if (characterData.abilities && characterData.abilities.length > 0) {
+      drawAbilities(firstPage, characterData.abilities, font);
     }
   } catch (error) {
     console.error('Error drawing text on PDF:', error);
@@ -702,6 +719,115 @@ function drawRogueSpecialties(
   });
 
   return entryIndex - startEntryIndex; // Return number of entries drawn
+}
+
+/**
+ * Helper function to get ability description from abilities data
+ * @param abilityName - Name of the ability to look up
+ * @returns The ability description or undefined if not found
+ */
+function getAbilityDescription(abilityName: string): string | undefined {
+  // Search through all class ability lists
+  for (const classAbilities of Object.values(abilities)) {
+    if (classAbilities[abilityName]) {
+      return classAbilities[abilityName].description;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Helper function to wrap text to fit within a maximum width
+ * Simple word-wrapping: splits on spaces and breaks when line would exceed max width
+ * @param text - Text to wrap
+ * @param maxWidth - Maximum width in points
+ * @param font - Font to use for measuring
+ * @param fontSize - Font size
+ * @returns Array of text lines
+ */
+function wrapText(text: string, maxWidth: number, font: any, fontSize: number): string[] {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  words.forEach(word => {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+
+    if (testWidth > maxWidth && currentLine) {
+      // Line would be too long, push current line and start new one
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  });
+
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return lines;
+}
+
+/**
+ * Draws character abilities on page 1 of the PDF
+ * - Abilities ≤115 characters: Print full description
+ * - Abilities >115 characters: Print "See reference sheet"
+ *
+ * @param page - PDF page to draw on (page 1)
+ * @param abilityNames - Array of ability names selected by character
+ * @param font - Font to use for rendering
+ */
+function drawAbilities(
+  page: any,
+  abilityNames: string[],
+  font: any
+): void {
+  let currentY = ABILITIES_START_Y;
+  let abilitylocationy = currentY;
+
+  abilityNames.forEach((abilityName) => {
+    const description = getAbilityDescription(abilityName);
+
+    if (!description) {
+      console.warn(`No description found for ability: ${abilityName}`);
+      return;
+    }
+
+    // Draw ability name (bold-ish by using larger size)
+    page.drawText(abilityName, {
+      x: ABILITIES_START_X,
+      y: currentY,
+      size: ABILITY_NAME_SIZE,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+
+    currentY -= ABILITY_SPACING;
+
+    // Determine what to print based on description length
+    const textToPrint = description.length > ABILITY_LENGTH_THRESHOLD
+      ? 'See reference sheet'
+      : description;
+
+    // Wrap and draw description or reference note
+    const lines = wrapText(textToPrint, ABILITY_MAX_LINE_WIDTH, font, ABILITY_DESC_SIZE);
+
+    lines.forEach((line) => {
+      page.drawText(line, {
+        x: ABILITIES_START_X, // Slight indent for description
+        y: currentY,
+        size: ABILITY_DESC_SIZE,
+        font: font,
+        color: rgb(0, 0, 0), 
+      });
+      currentY -= ABILITY_DESC_SIZE + 2; // Line height + small gap
+    });
+
+    // Add spacing before next ability
+    currentY -= ABILITY_ENTRY_SPACING;
+  });
 }
 
 /**
