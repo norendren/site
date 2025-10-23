@@ -25,12 +25,13 @@ function PDFInspector() {
   const [bubblesToFill, setBubblesToFill] = useState(3);
 
   // Common state
+  const [pageNumber, setPageNumber] = useState(1);
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('interactive');
 
   const handleGetDimensions = async () => {
-    const dims = await getPDFDimensions('/pdf/sheet.pdf');
+    const dims = await getPDFDimensions('/pdf/sheet.pdf', pageNumber);
     setDimensions(dims);
   };
 
@@ -38,9 +39,9 @@ function PDFInspector() {
     let pdfBytes: Uint8Array;
 
     if (mode === 'text') {
-      pdfBytes = await testCoordinates('/pdf/sheet.pdf', testText, x, y, fontSize);
+      pdfBytes = await testCoordinates('/pdf/sheet.pdf', testText, x, y, fontSize, pageNumber);
     } else {
-      pdfBytes = await testBubbleCoordinates('/pdf/sheet.pdf', bubbleX, bubbleY, bubbleRadius, horizontalSpacing, bubblesToFill);
+      pdfBytes = await testBubbleCoordinates('/pdf/sheet.pdf', bubbleX, bubbleY, bubbleRadius, horizontalSpacing, bubblesToFill, pageNumber);
     }
 
     // Create blob URL for preview
@@ -89,6 +90,43 @@ function PDFInspector() {
         border: '1px solid #334155'
       }}>
         <h3 style={{ marginBottom: '1rem', color: '#f8fafc' }}>PDF Information</h3>
+
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+          <label style={{ color: '#f8fafc', fontWeight: '500' }}>Page:</label>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              onClick={() => setPageNumber(1)}
+              style={{
+                padding: '0.5rem 1rem',
+                cursor: 'pointer',
+                backgroundColor: pageNumber === 1 ? '#06b6d4' : '#334155',
+                color: pageNumber === 1 ? '#0f172a' : '#f8fafc',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '0.9rem',
+                fontWeight: '600'
+              }}
+            >
+              Page 1
+            </button>
+            <button
+              onClick={() => setPageNumber(2)}
+              style={{
+                padding: '0.5rem 1rem',
+                cursor: 'pointer',
+                backgroundColor: pageNumber === 2 ? '#06b6d4' : '#334155',
+                color: pageNumber === 2 ? '#0f172a' : '#f8fafc',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '0.9rem',
+                fontWeight: '600'
+              }}
+            >
+              Page 2
+            </button>
+          </div>
+        </div>
+
         <button
           onClick={handleGetDimensions}
           style={{
@@ -105,7 +143,7 @@ function PDFInspector() {
         </button>
         {dimensions && (
           <div style={{ marginTop: '1rem', fontFamily: 'monospace', color: '#f8fafc' }}>
-            <strong>Page Size:</strong> {dimensions.width} x {dimensions.height} pixels<br />
+            <strong>Page {pageNumber} Size:</strong> {dimensions.width} x {dimensions.height} pixels<br />
             <small style={{ color: '#94a3b8' }}>Note: (0,0) is at bottom-left corner</small>
           </div>
         )}
@@ -447,6 +485,7 @@ function PDFInspector() {
         {viewMode === 'interactive' ? (
           <InteractivePDFViewer
             pdfUrl="/pdf/sheet.pdf"
+            pageNumber={pageNumber}
             onCoordinateClick={handleCoordinateClick}
           />
         ) : previewUrl ? (

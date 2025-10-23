@@ -6,10 +6,11 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 interface InteractivePDFViewerProps {
   pdfUrl: string;
+  pageNumber?: number; // Optional, defaults to 1
   onCoordinateClick: (x: number, y: number) => void;
 }
 
-export function InteractivePDFViewer({ pdfUrl, onCoordinateClick }: InteractivePDFViewerProps) {
+export function InteractivePDFViewer({ pdfUrl, pageNumber = 1, onCoordinateClick }: InteractivePDFViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [pdfDimensions, setPdfDimensions] = useState<{ width: number; height: number } | null>(null);
   const [mouseCoords, setMouseCoords] = useState<{ x: number; y: number } | null>(null);
@@ -39,7 +40,7 @@ export function InteractivePDFViewer({ pdfUrl, onCoordinateClick }: InteractiveP
 
         if (!isMounted) return;
 
-        const page = await pdf.getPage(1);
+        const page = await pdf.getPage(pageNumber);
 
         if (!isMounted || !canvasRef.current) return;
 
@@ -92,7 +93,7 @@ export function InteractivePDFViewer({ pdfUrl, onCoordinateClick }: InteractiveP
         renderTaskRef.current = null;
       }
     };
-  }, [pdfUrl, scale]);
+  }, [pdfUrl, scale, pageNumber]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !pdfDimensions) return;

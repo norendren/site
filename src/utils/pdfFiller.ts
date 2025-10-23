@@ -17,7 +17,7 @@ import {
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 import { abilities } from '../data/abilities';
-import { getArmorData } from './equipmentReference';
+import { getArmorData, getBaseStrengthDamage, getClassHitBonus } from './equipmentReference';
 
 export interface TalentAllocation {
   name: string;
@@ -205,7 +205,18 @@ const ARMOR_ROW_3_Y = 316;
 const ARMOR_SHIELD_X = 375;
 const ARMOR_DR_X = 547;
 
-// Page 2
+// ===== WEAPON SECTION (Page 2) =====
+// Weapon Slot 3 (Unarmed/Base Strength Damage) - hardcoded reference
+// 2 rows per weapon:
+//   Row 1: Weapon name
+//   Row 2: Hit | Damage
+const WEAPON_3_NAME_X = 389;
+const WEAPON_3_NAME_Y = 196;
+const WEAPON_3_HIT_X = 388;
+const WEAPON_3_DAMAGE_X = 522;
+const WEAPON_3_ROW_2_Y = 177;
+
+// Page 2 - Other
 const BLESS_X = 165; // Y position for Bless (Acolytes only)
 const BLESS_Y = 478; // Y position for Bless (Acolytes only)
 
@@ -324,6 +335,11 @@ export async function fillCharacterSheet(
     // Draw equipment (armor, shield, etc.) on page 2
     if (characterData.equipment) {
       drawEquipment(secondPage, characterData, font);
+    }
+
+    // Draw unarmed weapon (slot 3) with base strength damage
+    if (characterData.class && characterData.attributes && characterData.attributes.length > 0) {
+      drawUnarmedWeapon(secondPage, characterData, font);
     }
 
     // Draw class specialties (Warrior Combat Styles, Rogue Specialties, and Acolyte Bless)
@@ -754,6 +770,69 @@ function drawEquipment(
       color: rgb(0, 0, 0),
     });
   }
+}
+
+/**
+ * Draws unarmed weapon stats on page 2 of the PDF (Weapon Slot 3)
+ * This is a hardcoded reference showing base strength damage for unarmed attacks
+ *
+ * Row 1: "Unarmed" or "Base Strength Damage"
+ * Row 2: Hit = Class Hit Bonus + DEX + (future: abilities/bonuses)
+ *        Damage = Base Strength Damage (based on STR modifier)
+ *
+ * @param page - PDF page to draw on (page 2)
+ * @param characterData - Character data with class, level, and attributes
+ * @param font - Font to use for rendering
+ */
+function drawUnarmedWeapon(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  const level = parseInt(characterData.level) || 1;
+
+  // Get attribute modifiers
+  const attributes = characterData.attributes || [];
+  const strAttr = attributes.find(a => a.name === 'STR');
+  const dexAttr = attributes.find(a => a.name === 'DEX');
+  const strModifier = strAttr?.points || 0;
+  const dexModifier = dexAttr?.points || 0;
+
+  // ROW 1: Weapon name
+  const weaponName = 'Unarmed';
+  page.drawText(weaponName, {
+    x: WEAPON_3_NAME_X,
+    y: WEAPON_3_NAME_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // ROW 2: Hit calculation
+  // Hit = Class Hit Bonus (Rogue only) + DEX modifier + (future: ability bonuses)
+  const classHitBonus = getClassHitBonus(characterData.class, level);
+  const totalHit = classHitBonus + dexModifier;
+  const hitText = totalHit >= 0 ? `+${totalHit}` : totalHit.toString();
+
+  page.drawText(hitText, {
+    x: WEAPON_3_HIT_X,
+    y: WEAPON_3_ROW_2_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
+
+  // ROW 2: Damage calculation
+  // Damage = Base Strength Damage (dice notation based on STR modifier)
+  const baseDamage = getBaseStrengthDamage(strModifier);
+
+  page.drawText(baseDamage, {
+    x: WEAPON_3_DAMAGE_X,
+    y: WEAPON_3_ROW_2_Y,
+    size: 10,
+    font: font,
+    color: rgb(0, 0, 0),
+  });
 }
 
 /**
