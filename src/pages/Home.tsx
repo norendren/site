@@ -39,10 +39,31 @@ function Home() {
           <div className="projects-grid">
             <div className="project-card">
               <div className="project-header">
+                <h4>Athia RPG Builder</h4>
+                <span className="project-tag tag-ttrpg">TTRPG</span>
+              </div>
+              <p>Complete character creation tool for the Athia RPG. Build characters with guided wizards, automatic calculations, and export to PDF.</p>
+              <a href="#/athia-rpg-builder" className="project-card-button">Launch Builder</a>
+            </div>
+
+            <div className="project-card">
+              <div className="project-header">
                 <h4>Athia Spell Crafter</h4>
                 <span className="project-tag tag-ttrpg">TTRPG</span>
               </div>
-              <p>Spell crafter and generator for the Athia RPG by Power Lunch Games</p>
+              <p>Spell crafter and generator for the Athia RPG by Power Lunch Games.</p>
+            </div>
+          </div>
+
+          <h3 className="subsection-title">Dev Tools</h3>
+          <div className="projects-grid">
+            <div className="project-card">
+              <div className="project-header">
+                <h4>PDF Inspector</h4>
+                <span className="project-tag tag-dev">Dev Tool</span>
+              </div>
+              <p>Development utility for finding PDF coordinate mappings. Used internally for form-filling features.</p>
+              <a href="#/pdf-inspector" className="project-card-button">Open Inspector</a>
             </div>
           </div>
         </div>

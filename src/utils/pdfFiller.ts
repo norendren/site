@@ -17,7 +17,8 @@ import {
 } from './classSpecialties';
 import { calculateAllCharacterStats, type CharacterStats } from './characterStats';
 import { abilities } from '../data/abilities';
-import { getArmorData, getBaseStrengthDamage, getClassHitBonus } from './equipmentReference';
+import { getArmorData, getBaseStrengthDamage, getClassHitBonus, getClassDamageBonus } from './equipmentReference';
+import { getWeaponByName } from './weaponReference';
 
 export interface TalentAllocation {
   name: string;
@@ -51,6 +52,7 @@ export interface BasicCharacterData {
     armor: 'none' | 'light' | 'medium' | 'heavy';
     hasShield: boolean;
   };
+  weapons?: string[]; // Array of selected weapon names (max 2)
   // Manual overrides for final review page (allows editing any value)
   manualOverrides?: {
     defense?: number;
@@ -102,7 +104,7 @@ interface FieldCoordinates {
   size?: number; // font size, defaults to 12
 }
 
-const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles' | 'equipment' | 'manualOverrides'>, FieldCoordinates> = {
+const FIELD_COORDINATES: Record<keyof Omit<BasicCharacterData, 'talents' | 'attributes' | 'racialPerks' | 'abilities' | 'arcaneAllocations' | 'rogueSpecialties' | 'warriorStyles' | 'equipment' | 'weapons' | 'manualOverrides'>, FieldCoordinates> = {
   characterName: { x: 52, y: 738, size: 14 },    // ✓ Verified
   class:         { x: 210, y: 738, size: 12 },
   level:         { x: 310, y: 738, size: 12 },
@@ -206,15 +208,38 @@ const ARMOR_SHIELD_X = 375;
 const ARMOR_DR_X = 547;
 
 // ===== WEAPON SECTION (Page 2) =====
-// Weapon Slot 3 (Unarmed/Base Strength Damage) - hardcoded reference
 // 2 rows per weapon:
-//   Row 1: Weapon name
+//   Row 1: Weapon name (with designations)
 //   Row 2: Hit | Damage
-const WEAPON_3_NAME_X = 389;
-const WEAPON_3_NAME_Y = 196;
+
+// Weapon Slot 1 (selected weapon)
+const WEAPON_1_NAME_X = 387;
+const WEAPON_1_NAME_Y = 276;
+const WEAPON_1_HIT_X = 387;
+const WEAPON_1_DAMAGE_X = 515;
+const WEAPON_1_ROW_2_Y = 260;
+
+// Weapon Slot 2 (selected weapon)
+const WEAPON_2_NAME_X = 390;
+const WEAPON_2_NAME_Y = 234;
+const WEAPON_2_HIT_X = 388;
+const WEAPON_2_DAMAGE_X = 515;
+const WEAPON_2_ROW_2_Y = 215;
+
+// Weapon Slot 3 (Unarmed/Base Strength Damage) - hardcoded reference
+const WEAPON_3_NAME_X = 385;
+const WEAPON_3_NAME_Y = 190;
 const WEAPON_3_HIT_X = 388;
 const WEAPON_3_DAMAGE_X = 522;
-const WEAPON_3_ROW_2_Y = 177;
+const WEAPON_3_ROW_2_Y = 172;
+
+// ===== GEAR SECTION (Page 1) =====
+// Full equipment details with wrapping text
+const GEAR_START_X = 325;
+const GEAR_START_Y = 712;
+const GEAR_LINE_HEIGHT = 10;
+const GEAR_MAX_WIDTH = 250; // Maximum width before wrapping
+const GEAR_FONT_SIZE = 8;
 
 // Page 2 - Other
 const BLESS_X = 165; // Y position for Bless (Acolytes only)
@@ -342,6 +367,11 @@ export async function fillCharacterSheet(
       drawUnarmedWeapon(secondPage, characterData, font);
     }
 
+    // Draw selected weapons (slots 1 and 2) on page 2
+    if (characterData.weapons && characterData.weapons.length > 0) {
+      drawSelectedWeapons(secondPage, characterData, font);
+    }
+
     // Draw class specialties (Warrior Combat Styles, Rogue Specialties, and Acolyte Bless)
     if (characterData.class === 'Warrior' && characterData.warriorStyles && characterData.warriorStyles.length > 0) {
       drawWarriorStyles(secondPage, characterData.warriorStyles, font);
@@ -354,6 +384,11 @@ export async function fillCharacterSheet(
     // Draw abilities on page 1 (left column, below class specialties/racial perks)
     if (characterData.abilities && characterData.abilities.length > 0) {
       drawAbilities(firstPage, characterData.abilities, font);
+    }
+
+    // Draw gear section on page 1 (full weapon details with designations)
+    if (characterData.weapons && characterData.weapons.length > 0) {
+      drawGearSection(secondPage, characterData, font);
     }
 
     // Draw reference sheet (additional page with all class specialties and abilities in full)
@@ -799,7 +834,7 @@ function drawUnarmedWeapon(
   const dexModifier = dexAttr?.points || 0;
 
   // ROW 1: Weapon name
-  const weaponName = 'Unarmed';
+  const weaponName = 'Unarmed / Base Strength Damage';
   page.drawText(weaponName, {
     x: WEAPON_3_NAME_X,
     y: WEAPON_3_NAME_Y,
@@ -823,15 +858,210 @@ function drawUnarmedWeapon(
   });
 
   // ROW 2: Damage calculation
-  // Damage = Base Strength Damage (dice notation based on STR modifier)
-  const baseDamage = getBaseStrengthDamage(strModifier);
+  // Damage = Base Strength Dice + Class Damage Bonus (flat number)
+  const baseStrengthDice = getBaseStrengthDamage(strModifier);
+  const classDamageBonus = getClassDamageBonus(characterData.class, level);
 
-  page.drawText(baseDamage, {
+  let damageText = baseStrengthDice;
+  if (classDamageBonus > 0) {
+    damageText += `+${classDamageBonus}`;
+  }
+
+  page.drawText(damageText, {
     x: WEAPON_3_DAMAGE_X,
     y: WEAPON_3_ROW_2_Y,
     size: 10,
     font: font,
     color: rgb(0, 0, 0),
+  });
+}
+
+/**
+ * Draws selected weapons on page 2 of the PDF (Weapon Slots 1 and 2)
+ * Shows weapon name with designations, hit bonus, and damage
+ *
+ * Damage format examples:
+ * - Melee weapon (Dagger): "1d8+1d4+2" (base str + weapon + class bonus)
+ * - Ranged bow: "1d6+1d6+2" (base str + weapon + class bonus)
+ * - Crossbow: "2d6+2" (weapon + class bonus, no base str)
+ *
+ * @param page - PDF page to draw on (page 2)
+ * @param characterData - Character data with selected weapons
+ * @param font - Font to use for rendering
+ */
+function drawSelectedWeapons(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  const level = parseInt(characterData.level) || 1;
+  const weapons = characterData.weapons || [];
+
+  // Get attribute modifiers
+  const attributes = characterData.attributes || [];
+  const strAttr = attributes.find(a => a.name === 'STR');
+  const dexAttr = attributes.find(a => a.name === 'DEX');
+  const strModifier = strAttr?.points || 0;
+  const dexModifier = dexAttr?.points || 0;
+
+  // Get class bonuses
+  const classHitBonus = getClassHitBonus(characterData.class, level);
+  const classDamageBonus = getClassDamageBonus(characterData.class, level);
+  const baseStrengthDice = getBaseStrengthDamage(strModifier);
+
+  // Weapon slot coordinates
+  const slots = [
+    { nameX: WEAPON_1_NAME_X, nameY: WEAPON_1_NAME_Y, hitX: WEAPON_1_HIT_X, damageX: WEAPON_1_DAMAGE_X, row2Y: WEAPON_1_ROW_2_Y },
+    { nameX: WEAPON_2_NAME_X, nameY: WEAPON_2_NAME_Y, hitX: WEAPON_2_HIT_X, damageX: WEAPON_2_DAMAGE_X, row2Y: WEAPON_2_ROW_2_Y },
+  ];
+
+  // Draw each selected weapon
+  weapons.forEach((weaponName, index) => {
+    if (index >= 2) return; // Only 2 weapon slots
+
+    const weaponData = getWeaponByName(weaponName);
+    if (!weaponData) {
+      console.warn(`Weapon not found: ${weaponName}`);
+      return;
+    }
+
+    const slot = slots[index];
+
+    // ROW 1: Weapon name + damage only (designations moved to gear section)
+    const displayName = `${weaponData.name} (${weaponData.damage})`;
+
+    page.drawText(displayName, {
+      x: slot.nameX,
+      y: slot.nameY,
+      size: 10,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+
+    // ROW 2: Hit calculation
+    // Hit = Class Hit Bonus + DEX modifier
+    const totalHit = classHitBonus + dexModifier;
+    const hitText = totalHit >= 0 ? `+${totalHit}` : totalHit.toString();
+
+    page.drawText(hitText, {
+      x: slot.hitX,
+      y: slot.row2Y,
+      size: 10,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+
+    // ROW 2: Damage calculation
+    let damageText = '';
+
+    // Check if weapon has no damage (utility weapons like Bolas, Net, Lasso)
+    if (weaponData.damage === 'n/a') {
+      damageText = 'Special';
+    } else if (weaponData.flatBonus !== undefined) {
+      // BOW/BLOWGUN: Use limited base strength + flat bonus + class bonus
+      // Apply STR limit if present
+      const limitedStrModifier = weaponData.limit !== undefined
+        ? Math.min(strModifier, weaponData.limit)
+        : strModifier;
+      const limitedBaseStrengthDice = getBaseStrengthDamage(limitedStrModifier);
+
+      damageText = `${limitedBaseStrengthDice}+${weaponData.flatBonus}`;
+      if (classDamageBonus > 0) {
+        damageText += `+${classDamageBonus}`;
+      }
+    } else if (weaponData.includesBaseStrength) {
+      // REGULAR WEAPON: weapon dice + base strength + class bonus
+      damageText = `${weaponData.damage}+${baseStrengthDice}`;
+      if (classDamageBonus > 0) {
+        damageText += `+${classDamageBonus}`;
+      }
+    } else {
+      // CROSSBOW: weapon dice + class bonus (no base strength)
+      damageText = weaponData.damage;
+      if (classDamageBonus > 0) {
+        damageText += `+${classDamageBonus}`;
+      }
+    }
+
+    page.drawText(damageText, {
+      x: slot.damageX,
+      y: slot.row2Y,
+      size: 9,
+      font: font,
+      color: rgb(0, 0, 0),
+    });
+  });
+}
+
+/**
+ * Draws gear/equipment section on page 1 of the PDF
+ * Shows full weapon details with designations and wrapping text
+ *
+ * @param page - PDF page to draw on (page 1)
+ * @param characterData - Character data with selected weapons
+ * @param font - Font to use for rendering
+ */
+function drawGearSection(
+  page: any,
+  characterData: BasicCharacterData,
+  font: any
+): void {
+  const weapons = characterData.weapons || [];
+  if (weapons.length === 0) return;
+
+  let currentY = GEAR_START_Y;
+
+  weapons.forEach((weaponName) => {
+    const weaponData = getWeaponByName(weaponName);
+    if (!weaponData) {
+      console.warn(`Weapon not found for gear section: ${weaponName}`);
+      return;
+    }
+
+    // Build full weapon description: Name + Designations + Damage
+    let weaponText = weaponData.name;
+
+    // Build designations with Limit/Requirement numbers
+    const displayDesignations: string[] = [];
+
+    // Add Limit if present
+    if (weaponData.limit !== undefined) {
+      displayDesignations.push(`Limit ${weaponData.limit}`);
+    }
+
+    // Add other designations
+    displayDesignations.push(...weaponData.designations);
+
+    // Add Requirement if present
+    if (weaponData.requirement !== undefined) {
+      displayDesignations.push(`Requirement ${weaponData.requirement}`);
+    }
+
+    // Add designations to text if any exist
+    if (displayDesignations.length > 0) {
+      weaponText += ` (${displayDesignations.join(', ')})`;
+    }
+
+    // Add damage notation at the end
+    weaponText += ` - ${weaponData.damage}`;
+
+    // Wrap text if it exceeds max width
+    const wrappedLines = wrapText(weaponText, GEAR_MAX_WIDTH, font, GEAR_FONT_SIZE);
+
+    // Draw each line
+    wrappedLines.forEach((line) => {
+      page.drawText(line, {
+        x: GEAR_START_X,
+        y: currentY,
+        size: GEAR_FONT_SIZE,
+        font: font,
+        color: rgb(0, 0, 0),
+      });
+      currentY -= GEAR_LINE_HEIGHT;
+    });
+
+    // Add extra spacing between weapons
+    currentY -= 2;
   });
 }
 

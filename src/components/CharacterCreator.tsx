@@ -25,6 +25,7 @@ import { ClassInfoPanel } from './ClassInfoPanel';
 import { EditableDerivedStatsDisplay } from './EditableDerivedStatsDisplay';
 import { AbilitySelector } from './AbilitySelector';
 import ArmorSelector from './ArmorSelector';
+import { WeaponSelector } from './WeaponSelector';
 import { useDevMode } from '../hooks/useDevMode';
 import { getTestCharacterByClass } from '../utils/testData';
 import { abilities } from '../data/abilities';
@@ -51,6 +52,7 @@ export function CharacterCreator() {
       armor: 'none',
       hasShield: false,
     },
+    weapons: [],
     manualOverrides: {},
   });
   const [baseAttributePool, setBaseAttributePool] = useState<number>(2); // Default: Young Heroes (0=Commoners, 2=Young Heroes, 4=Heroes)
@@ -237,6 +239,13 @@ export function CharacterCreator() {
         armor: prev.equipment?.armor || 'none',
         hasShield,
       },
+    }));
+  };
+
+  const handleWeaponsChange = (weapons: string[]) => {
+    setCharacterData(prev => ({
+      ...prev,
+      weapons,
     }));
   };
 
@@ -669,14 +678,25 @@ export function CharacterCreator() {
           <div className="step-content">
             <h2>Equipment</h2>
             <p className="step-description">
-              Select your armor and shield. This will affect your Defense and Stamina values.
+              Select your armor, shield, and weapons. These affect your Defense, Stamina, and combat capabilities.
             </p>
+
+            <h3 style={{ marginTop: '2rem', marginBottom: '1rem' }}>Armor & Shield</h3>
             <ArmorSelector
               selectedArmor={characterData.equipment?.armor || 'none'}
               hasShield={characterData.equipment?.hasShield || false}
               characterLevel={parseInt(characterData.level) || 1}
               onArmorChange={handleArmorChange}
               onShieldChange={handleShieldChange}
+            />
+
+            <h3 style={{ marginTop: '2rem', marginBottom: '1rem' }}>Weapons</h3>
+            <p className="step-description">
+              Select up to 2 weapons. Slot 3 will automatically show "Unarmed" with your base strength damage for reference.
+            </p>
+            <WeaponSelector
+              selectedWeapons={characterData.weapons || []}
+              onWeaponsChange={handleWeaponsChange}
             />
           </div>
         );

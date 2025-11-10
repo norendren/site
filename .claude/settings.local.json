@@ -3,7 +3,8 @@
     "allow": [
       "Bash(modinfo nvidia)",
       "Read(//etc/modprobe.d/**)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(git mv /home/dylan/dev/site/src/pages/CharacterGenerator.tsx /home/dylan/dev/site/src/pages/AthiaRPGBuilder.tsx)"
     ],
     "deny": [],
     "ask": []

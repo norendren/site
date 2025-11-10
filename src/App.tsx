@@ -1,7 +1,7 @@
 import React from 'react'
 import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
-import CharacterGenerator from './pages/CharacterGenerator'
+import AthiaRPGBuilder from './pages/AthiaRPGBuilder'
 import PDFInspector from './pages/PDFInspector'
 import './App.css'
 
@@ -62,9 +62,14 @@ function App() {
             <Link to="/" className="nav-logo">DJ</Link>
             <div className="nav-links">
               <Link to="/">Home</Link>
-              <a href="#projects" onClick={(e) => scrollToId('projects', e)}>Projects</a>
-              <Link to="/character-generator">Character Generator</Link>
-              <Link to="/pdf-inspector">PDF Inspector</Link>
+              <div className="nav-dropdown">
+                <span className="nav-dropdown-toggle">
+                  Projects <span className="dropdown-arrow">▾</span>
+                </span>
+                <div className="nav-dropdown-menu">
+                  <Link to="/athia-rpg-builder" className="nav-dropdown-item">Athia RPG Builder</Link>
+                </div>
+              </div>
               <a href="#about" onClick={(e) => scrollToId('about', e)}>About</a>
               <a href="#contact" onClick={(e) => scrollToId('contact', e)}>Contact</a>
             </div>
@@ -74,7 +79,7 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/character-generator" element={<CharacterGenerator />} />
+          <Route path="/athia-rpg-builder" element={<AthiaRPGBuilder />} />
           <Route path="/pdf-inspector" element={<PDFInspector />} />
         </Routes>
       </div>

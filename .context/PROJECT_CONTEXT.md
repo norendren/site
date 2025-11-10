@@ -29,14 +29,34 @@ Create a character creation tool for the Athia RPG that generates fully filled-o
   - Automatic calculation and PDF rendering
   - Current values left blank for player tracking
 - **Educational helper text system** (Layer 1: inline preview, Layer 2: detailed modal)
+- **Weapon system** (Common weapons complete, Martial/Specialty pending)
+  - Base strength damage calculation (STR modifier → dice: 1, 1d2, 1d3, 1d4, 1d6, 1d8, 1d10, 1d12)
+  - Class hit bonus (Rogue only: +1 per level) and damage bonus (Warrior only: +2 per level)
+  - Weapon selector UI with 3 tabs (Common/Martial/Specialty)
+  - Select up to 2 weapons (rendered in slots 1 & 2)
+  - Slot 3 hardcoded as "Unarmed" with auto-calculated hit/damage
+  - PDF rendering for unarmed weapon (slots 1 & 2 pending coordinate mapping)
 - PDF generation and download using pdf-lib
 - PDF coordinate-based field filling (all basic fields mapped)
 - PDF talent bubble rendering (6 bubbles per talent, arithmetic coordinate calculation)
+- PDF Inspector tool supports both Page 1 and Page 2 coordinate finding
 - Class progression tracking using arithmetic progression (base + increment × (level - 1))
 
 ### What's In Progress 🚧
-- Implement equipment and related calculations
-- As part of weapon we need to implement the base strength damage calculation, found in the combat section (basically 1d4 at 0, 1d6,8,10,12 for STR bonus)
+- **Weapon system expansion**: Add Martial and Specialty weapon categories
+- Implement PDF rendering for selected weapons (slots 1 and 2)
+- Find PDF coordinates for weapon slots 1 and 2
+
+### Recently Completed ✨ (2025-10-23)
+- **Weapon System (Common Weapons)**
+  - ✅ Base strength damage calculation system (STR modifier → dice notation)
+  - ✅ Class hit bonus (Rogue: +1 per level) and damage bonus (Warrior: +2 per level) utilities
+  - ✅ PDF Inspector updated to support Page 2 coordinate finding
+  - ✅ Unarmed weapon rendering on PDF (Weapon Slot 3) with calculated hit/damage
+  - ✅ Weapon reference data structure for Common weapons (11 weapons)
+  - ✅ WeaponSelector UI component with tab system (Common/Martial/Specialty)
+  - ✅ Integrated into Equipment step (Step 7) alongside armor/shield selection
+  - ✅ Select up to 2 weapons for character (slots 1 & 2), slot 3 always shows "Unarmed"
 
 ### Recently Completed ✨ (2025-10-14)
 - **Integrated all racial perk bonuses into character calculations**
@@ -246,6 +266,10 @@ src/
 │   ├── EditableField.tsx          # NEW: Generic editable field component
 │   ├── EditableField.css          # NEW: Editable field styling
 │   ├── EditableStatField.tsx      # NEW: Editable derived stat with reset
+│   ├── ArmorSelector.tsx          # Armor & shield selection UI
+│   ├── ArmorSelector.css          # Armor selector styling
+│   ├── WeaponSelector.tsx         # Weapon selection UI (Common/Martial/Specialty tabs)
+│   ├── WeaponSelector.css         # Weapon selector styling
 │   ├── ClassInfoPreview.tsx       # Layer 1: Inline class summary on selection
 │   ├── ClassInfoPreview.css       # Preview card styling
 │   ├── ClassInfoPanel.tsx         # Layer 2: Detailed class modal
@@ -257,6 +281,8 @@ src/
 │   ├── pdfFiller.ts               # PDF generation logic with bubble rendering
 │   ├── pdfInspector.ts            # Dev tool for finding PDF coordinates
 │   ├── athiaConstants.ts          # Game data: CLASSES, RACES, HOUSES, FAITHS
+│   ├── weaponReference.ts         # Weapon data for all 3 categories (Common/Martial/Specialty)
+│   ├── equipmentReference.ts      # Armor, shield, base strength damage, class bonuses
 │   ├── classReference.ts          # Class progression with arithmetic formulas
 │   ├── raceReference.ts           # Comprehensive race data: traits, health bonuses, perks
 │   ├── derivedStats.ts            # Derived stats calculator (Defense, Daring, Stamina, Mana, Favor)
@@ -285,8 +311,9 @@ BasicCharacterData {
   attributes: AttributeAllocation[]  // 6 core attributes
   talents: TalentAllocation[]        // 18 talents with point allocation
   abilities?: string[]               // NEW: Selected ability names (step 6)
+  weapons?: string[]                 // NEW: Selected weapon names (max 2, step 7)
   derivedStats?: DerivedStats        // NEW: User-edited derived stats (override calculated)
-  userNotes?: UserNotes              // NEW: Free-form notes (step 7)
+  userNotes?: UserNotes              // NEW: Free-form notes (step 8)
 }
 
 AttributeAllocation {
@@ -483,6 +510,58 @@ UserNotes {
 5. User adds notes about ability effects for reference
 6. PDF generated with final (potentially edited) values
 
+### Weapon System Architecture
+**Decision**: Implement comprehensive weapon selection with automatic hit/damage calculations
+**Why**: Weapon stats are formulaic and consistent, unlike abilities:
+- Hit calculation: Class Hit Bonus + DEX modifier + ability bonuses
+- Damage calculation: Base Strength Damage + Weapon Die + Class Damage Bonus + ability bonuses
+- Base strength damage follows simple STR modifier → dice table
+- Class bonuses are arithmetic: Rogue hit (+1/level), Warrior damage (+2/level)
+
+**Implementation**:
+- **Weapon Reference Data** (`weaponReference.ts`): Type-safe weapon database
+  - 3 categories: Common, Martial, Specialty
+  - Properties: name, cost, damage die, size, range, designations, weight
+  - `includesBaseStrength` flag (melee/bow: true, crossbow: false)
+  - Currently: 11 Common weapons complete, Martial/Specialty pending
+- **Base Strength Damage System** (`equipmentReference.ts`):
+  - STR modifier → dice notation: -3=1, -2=1d2, -1=1d3, 0=1d4, +1=1d6, +2=1d8, +3=1d10, +4=1d12
+  - `getBaseStrengthDamage(strModifier)` utility function
+  - `getClassHitBonus(class, level)` - Rogue only: 1 + (level - 1)
+  - `getClassDamageBonus(class, level)` - Warrior only: 2 + (2 × (level - 1))
+- **Weapon Selector UI** (`WeaponSelector.tsx`): Similar to AbilitySelector
+  - Three tabs: Common (active) | Martial (disabled) | Specialty (disabled)
+  - Two-column layout: weapon list | details panel
+  - Search filter for quick finding
+  - Select up to 2 weapons (stored as weapon names in `characterData.weapons[]`)
+  - Summary footer showing selected weapons with remove buttons
+- **PDF Rendering**:
+  - **Slot 3 (Unarmed)**: Always rendered automatically
+    - Row 1: "Unarmed" (x:389, y:196)
+    - Row 2: Hit = Class + DEX (x:388, y:177), Damage = Base STR (x:522, y:177)
+    - Example: Level 3 Rogue, STR +2, DEX +3 → Hit: +6, Damage: 1d8
+  - **Slots 1 & 2 (Selected Weapons)**: Coordinates pending
+    - Will render weapon name + designations (e.g., "Dagger (Hurled)")
+    - Hit calculation same as unarmed
+    - Damage adds weapon die to base strength (e.g., "1d6+1d4" for STR +1 + Dagger)
+    - Warrior gets class damage bonus added to total
+
+**Benefits**:
+- Automated calculations reduce user error
+- Consistent formulas across all weapons
+- Easy to extend with Martial/Specialty weapons
+- PDF automatically shows correct values
+
+**PDF Inspector Enhancement**:
+- Added Page 2 support for finding weapon coordinates
+- Page selector buttons (Page 1 / Page 2)
+- Interactive click-to-coordinate on both pages
+
+**Next Steps**:
+1. Get Martial and Specialty weapon tables from user
+2. Find PDF coordinates for weapon slots 1 and 2
+3. Implement PDF rendering for selected weapons
+
 ---
 
 ## Known Issues & Limitations
@@ -619,5 +698,5 @@ npm run dev
 
 ---
 
-*Last Updated: 2025-10-21*
-*Current Focus: Ability selection and editable summary implementation planned. See ABILITY_SELECTION_AND_EDITABLE_SUMMARY.md for comprehensive design doc. Two-phase approach: (1) Ability selector with fuzzy search and prerequisite validation, (2) Fully editable review page with manual stat adjustment. Key decision: NOT automating ability benefit calculations due to complexity; users manually adjust stats in final review. 7-step wizard: Basic Info → Perks → Class → Attributes → Talents → Abilities → Review (editable).*
+*Last Updated: 2025-10-23*
+*Current Focus: Weapon system implementation. Common weapons (11) complete with selector UI and unarmed damage calculation. Pending: Martial/Specialty weapon data, PDF coordinates for slots 1 & 2, and rendering selected weapons. 8-step wizard: Basic Info → Perks → Class → Attributes → Talents → Abilities → Equipment (armor/shield/weapons) → Review (editable).*
