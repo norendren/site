@@ -45,6 +45,18 @@ function Home() {
             </div>
           </div>
 
+          <h3 className="subsection-title">Open Source Libraries</h3>
+          <div className="projects-grid">
+            <div className="project-card">
+              <div className="project-header">
+                <h4>go-fov</h4>
+                <span className="project-tag">Golang</span>
+              </div>
+              <p>Field of view calculation library for grid-based games using recursive shadowcasting. Minimal API for roguelike developers.</p>
+              <a href="https://github.com/norendren/go-fov" className="project-card-button" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </div>
+          </div>
+
           <h3 className="subsection-title">Dev Tools</h3>
           <div className="projects-grid">
             <div className="project-card">
