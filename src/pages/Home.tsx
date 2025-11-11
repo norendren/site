@@ -38,6 +38,7 @@ function Home() {
             <div className="project-card">
               <div className="project-header">
                 <h4>Athia Spell Crafter</h4>
+                <span className="project-tag tag-ttrpg">In Progress</span>
                 <span className="project-tag tag-ttrpg">TTRPG</span>
               </div>
               <p>Spell crafter and generator for the Athia RPG by Power Lunch Games.</p>
