@@ -173,8 +173,61 @@
 .hero-description {
   font-size: 1.2rem;
   color: var(--text-secondary);
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.75rem;
   line-height: 1.6;
+}
+
+.hero-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 3px solid var(--aqua);
+  margin: 0 auto 2rem;
+  overflow: hidden;
+  background: var(--bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-avatar-placeholder {
+  color: var(--border-color);
+  font-size: 0.75rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero-contact {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-contact a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.hero-contact a:hover {
+  color: var(--aqua);
+}
+
+.hero-contact-sep {
+  color: var(--border-color);
+  font-size: 0.95rem;
+  user-select: none;
 }
 
 .hero-cta {
@@ -295,10 +348,28 @@
   color: var(--bg-dark);
 }
 
+.tag-wip {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--text-secondary);
+}
+
+.project-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
 .project-card p {
   color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
+}
+
+.project-card-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .project-card-button {

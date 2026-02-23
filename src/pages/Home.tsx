@@ -1,20 +1,56 @@
+import { useLayoutEffect } from 'react'
 import '../App.css'
+import { projectCategories, type TagVariant } from '../data/projects'
+
+const tagClass: Record<TagVariant, string> = {
+  default: 'project-tag',
+  ttrpg: 'project-tag tag-ttrpg',
+  dev: 'project-tag tag-dev',
+  wip: 'project-tag tag-wip',
+}
+
+const SCROLL_KEY = 'homeScrollY'
+
+function saveScroll() {
+  sessionStorage.setItem(SCROLL_KEY, String(window.scrollY))
+}
 
 function Home() {
+  useLayoutEffect(() => {
+    const saved = sessionStorage.getItem(SCROLL_KEY)
+    if (saved) {
+      window.scrollTo(0, parseInt(saved))
+      sessionStorage.removeItem(SCROLL_KEY)
+    }
+  }, [])
+
   return (
     <>
       {/* Hero Section */}
       <section id="home" className="hero">
         <div className="hero-content">
+          <div className="hero-avatar">
+            <img src="/headshot.webp" alt="Dylan Jacoby" />
+          </div>
           <h1 className="hero-title">Dylan Jacoby</h1>
-          <p className="hero-subtitle">Software Developer</p>
+          <p className="hero-subtitle">Senior Software Engineer</p>
           <p className="hero-description">
-            Just a guy who likes building systems
-            and sometimes other things too
+            Senior dev focused on building great software and even better engineering cultures.
           </p>
+          <div className="hero-contact">
+            <a href="mailto:me@djacoby.dev">me@djacoby.dev</a>
+            <span className="hero-contact-sep">|</span>
+            <a href="https://github.com/norendren" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <span className="hero-contact-sep">|</span>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+          </div>
           <div className="hero-cta">
-            <a href="#projects" className="btn-primary">View Projects</a>
-            <a href="#contact" className="btn-secondary">Get in Touch</a>
+            <button
+              className="btn-primary"
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              View Projects
+            </button>
           </div>
         </div>
       </section>
@@ -23,51 +59,45 @@ function Home() {
       <section id="projects" className="projects">
         <div className="container">
           <h2 className="section-title">Projects</h2>
-
-          <h3 className="subsection-title">TTRPG Tools</h3>
-          <div className="projects-grid">
-            <div className="project-card">
-              <div className="project-header">
-                <h4>Athia RPG Builder</h4>
-                <span className="project-tag tag-ttrpg">TTRPG</span>
+          {projectCategories.map((category) => (
+            <div key={category.title}>
+              <h3 className="subsection-title">{category.title}</h3>
+              <div className="projects-grid">
+                {category.projects.map((project) => (
+                  <div key={project.title} className="project-card">
+                    <div className="project-header">
+                      <h4>{project.title}</h4>
+                      <div className="project-tags">
+                        {project.tags.map((tag) => (
+                          <span key={tag.label} className={tagClass[tag.variant ?? 'default']}>
+                            {tag.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <p>{project.description}</p>
+                    {project.links && (
+                      <div className="project-card-links">
+                        {project.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            className="project-card-button"
+                            {...(link.external
+                              ? { target: '_blank', rel: 'noopener noreferrer' }
+                              : { onClick: saveScroll }
+                            )}
+                          >
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-              <p>Complete character creation tool for the Athia RPG. Build characters with guided wizards, automatic calculations, and export to PDF.</p>
-              <a href="#/athia-rpg-builder" className="project-card-button">Launch Builder</a>
             </div>
-
-            <div className="project-card">
-              <div className="project-header">
-                <h4>Athia Spell Crafter</h4>
-                <span className="project-tag tag-ttrpg">In Progress</span>
-                <span className="project-tag tag-ttrpg">TTRPG</span>
-              </div>
-              <p>Spell crafter and generator for the Athia RPG by Power Lunch Games.</p>
-            </div>
-          </div>
-
-          <h3 className="subsection-title">Open Source Libraries</h3>
-          <div className="projects-grid">
-            <div className="project-card">
-              <div className="project-header">
-                <h4>go-fov</h4>
-                <span className="project-tag">Golang</span>
-              </div>
-              <p>Field of view calculation library for grid-based games using recursive shadowcasting. Minimal API for roguelike developers.</p>
-              <a href="https://github.com/norendren/go-fov" className="project-card-button" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-            </div>
-          </div>
-
-          <h3 className="subsection-title">Dev Tools</h3>
-          <div className="projects-grid">
-            <div className="project-card">
-              <div className="project-header">
-                <h4>PDF Inspector</h4>
-                <span className="project-tag tag-dev">Dev Tool</span>
-              </div>
-              <p>Development utility for finding PDF coordinate mappings. Used internally for form-filling features.</p>
-              <a href="#/pdf-inspector" className="project-card-button">Open Inspector</a>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -78,11 +108,12 @@ function Home() {
           <div className="about-content">
             <p>
               I'm an experienced software developer passionate about creating
-              high-quality applications that solve real problems.
+              highly-observable, highly scalable systems that solve real problems.
+              I also love fostering a positive and empathetic engineering culture wherever I can.
             </p>
             <p>
               When I'm not coding professionally, I enjoy building tools for the
-              tabletop gaming community and exploring new technologies.
+              tabletop gaming community, making games and exploring new technologies.
             </p>
             <div className="skills">
               <h3>Skills & Technologies</h3>
@@ -110,10 +141,10 @@ function Home() {
             <a href="https://github.com/norendren" className="contact-link" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
-            <a href="mailto:hello@djacoby.dev" className="contact-link">
+            <a href="mailto:me@djacoby.dev" className="contact-link">
               Email
             </a>
-            <a href="https://linkedin.com/in/your-profile" className="contact-link" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/dylan-jacoby/" className="contact-link" target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
           </div>
@@ -122,7 +153,7 @@ function Home() {
 
       {/* Footer */}
       <footer className="footer">
-        <p>&copy; 2025 Dylan Jacoby. All rights reserved.</p>
+        <p>&copy; 2026 Dylan Jacoby. All rights reserved.</p>
       </footer>
     </>
   )

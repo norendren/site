@@ -1,5 +1,5 @@
 import React from 'react'
-import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import AthiaRPGBuilder from './pages/AthiaRPGBuilder'
 import PDFInspector from './pages/PDFInspector'
@@ -59,17 +59,10 @@ function App() {
         {/* Navigation */}
         <nav className="navbar">
           <div className="nav-container">
-            <Link to="/" className="nav-logo">DJ</Link>
+            <a href="#home" className="nav-logo" onClick={(e) => scrollToId('home', e)}>DJ</a>
             <div className="nav-links">
-              <Link to="/">Home</Link>
-              <div className="nav-dropdown">
-                <span className="nav-dropdown-toggle">
-                  Projects <span className="dropdown-arrow">▾</span>
-                </span>
-                <div className="nav-dropdown-menu">
-                  <Link to="/athia-rpg-builder" className="nav-dropdown-item">Athia RPG Builder</Link>
-                </div>
-              </div>
+              <a href="#home" onClick={(e) => scrollToId('home', e)}>Home</a>
+              <a href="#projects" onClick={(e) => scrollToId('projects', e)}>Projects</a>
               <a href="#about" onClick={(e) => scrollToId('about', e)}>About</a>
               <a href="#contact" onClick={(e) => scrollToId('contact', e)}>Contact</a>
             </div>

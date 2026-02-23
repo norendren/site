@@ -1,3 +1,36 @@
+# Developer Setup
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+- npm (comes with Node)
+
+## Getting Started
+
+```bash
+# Clone the repo
+git clone <repo-url>
+cd site
+
+# Install dependencies
+npm install
+
+# Start the dev server with hot-reload
+npm run dev
+```
+
+The dev server will start at `http://localhost:5173`. Changes to files are reflected instantly without a full page reload.
+
+## Other Commands
+
+```bash
+npm run build    # TypeScript compile + Vite production build
+npm run lint     # Run ESLint
+npm run preview  # Serve the production build locally
+```
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
