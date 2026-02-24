@@ -35,14 +35,16 @@ function Home() {
           <h1 className="hero-title">Dylan Jacoby</h1>
           <p className="hero-subtitle">Senior Software Engineer</p>
           <p className="hero-description">
-            Senior dev focused on building great software and even better engineering cultures.
+            Senior Developer focused on building great software and even better engineering cultures
           </p>
           <div className="hero-contact">
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+            <span className="hero-contact-sep">|</span>
             <a href="mailto:me@djacoby.dev">me@djacoby.dev</a>
             <span className="hero-contact-sep">|</span>
             <a href="https://github.com/norendren" target="_blank" rel="noopener noreferrer">GitHub</a>
             <span className="hero-contact-sep">|</span>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+            <a href="https://www.linkedin.com/in/dylan-jacoby/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
           <div className="hero-cta">
             <button
@@ -108,19 +110,19 @@ function Home() {
           <div className="about-content">
             <p>
               I'm an experienced software developer passionate about creating
-              highly-observable, highly scalable systems that solve real problems.
-              I also love fostering a positive and empathetic engineering culture wherever I can.
+              highly observable, highly scalable systems that solve real problems.
+              I also love fostering a positive and empathetic engineering culture.
             </p>
             <p>
               When I'm not coding professionally, I enjoy building tools for the
-              tabletop gaming community, making games and exploring new technologies.
+              tabletop gaming community and exploring new technologies.
             </p>
             <div className="skills">
               <h3>Skills & Technologies</h3>
               <div className="skills-grid">
                 <span className="skill-tag">Golang</span>
                 <span className="skill-tag">Terraform</span>
-                <span className="skill-tag">Google Cloud Platform</span>
+                <span className="skill-tag">GCP</span>
                 <span className="skill-tag">AWS</span>
                 <span className="skill-tag">k8s</span>
                 <span className="skill-tag">Python</span>
