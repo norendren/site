@@ -8,7 +8,8 @@
       "Bash(wc:*)",
       "Bash(git -C /home/dylan/dev/site log --oneline -10)",
       "Bash(rm -f package-lock.json && npm install 2>&1)",
-      "Bash(npm audit:*)"
+      "Bash(npm audit:*)",
+      "WebFetch(domain:www.githubstatus.com)"
     ],
     "deny": [],
     "ask": []
