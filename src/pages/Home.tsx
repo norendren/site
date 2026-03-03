@@ -38,8 +38,6 @@ function Home() {
             Senior Developer focused on building great software and even better engineering cultures
           </p>
           <div className="hero-contact">
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
-            <span className="hero-contact-sep">|</span>
             <a href="mailto:me@djacoby.dev">me@djacoby.dev</a>
             <span className="hero-contact-sep">|</span>
             <a href="https://github.com/norendren" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -118,14 +116,24 @@ function Home() {
               tabletop gaming community and exploring new technologies.
             </p>
             <div className="skills">
-              <h3>Skills & Technologies</h3>
-              <div className="skills-grid">
-                <span className="skill-tag">Golang</span>
-                <span className="skill-tag">Terraform</span>
-                <span className="skill-tag">GCP</span>
-                <span className="skill-tag">AWS</span>
-                <span className="skill-tag">k8s</span>
-                <span className="skill-tag">Python</span>
+              <h3>Technical Skills</h3>
+              <div className="skills-categories">
+                {[
+                  { label: 'Languages', items: ['Golang', 'Bash', 'Ruby', 'Python', 'SQL'] },
+                  { label: 'AI', items: ['Context Engineering', 'Agentic Workflows', 'Guardrail Development'] },
+                  { label: 'Infrastructure', items: ['Terraform', 'Kubernetes', 'Docker', 'GCP', 'AWS'] },
+                  { label: 'Databases', items: ['PostgreSQL', 'Firestore', 'DynamoDB', 'MongoDB', 'Cassandra'] },
+                  { label: 'Observability', items: ['Datadog', 'Rollbar', 'OpenTelemetry', 'Kibana', 'OpenSearch'] },
+                ].map(({ label, items }) => (
+                  <div key={label} className="skill-row">
+                    <span className="skill-category">{label}</span>
+                    <div className="skill-tags">
+                      {items.map(item => (
+                        <span key={item} className="skill-tag">{item}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
